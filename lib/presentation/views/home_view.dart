@@ -12,81 +12,79 @@ class _HomeViewState extends State<HomeView> {
   int _selectedIndex = 0;
   int? _hoveredCardIndex;
 
-  // بيانات بطاقات الخدمة الأساسية (تم اختصار وصف المساعد الذكي لمنع الـ Overflow)
-  final List<Map<String, dynamic>> _services = [
-    {
-      'title': 'التحضير والبصمة',
-      'subtitle': 'الرمز الجغرافي والـ QR',
-      'icon': Icons.fingerprint,
-      'color': const Color(0xFF1E88E5),
-      'bgColor': const Color(0xFFE3F2FD),
-    },
-    {
-      'title': 'سياسات وعطلات الشركة',
-      'subtitle': 'التأخير، التقويم، الإجازات',
-      'icon': Icons.gavel_rounded,
-      'color': const Color(0xFFD84315),
-      'bgColor': const Color(0xFFFBE9E7),
-    },
-    {
-      'title': 'إجازاتي السنوية',
-      'subtitle': 'تقديم الإجازة وملفات الإثبات',
-      'icon': Icons.calendar_month_rounded,
-      'color': const Color(0xFFE91E63),
-      'bgColor': const Color(0xFFFCE4EC),
-    },
-    {
-      'title': 'طلب إذن / عمل إضافي',
-      'subtitle': 'ساعات أو أيام تعويضية',
-      'icon': Icons.more_time_rounded,
-      'color': const Color(0xFF8E24AA),
-      'bgColor': const Color(0xFFF3E5F5),
-    },
-    {
-      'title': 'كشف الرواتب والسلف',
-      'subtitle': 'تحصيل، مستندات، وطلب سلفة',
-      'icon': Icons.account_balance_wallet_rounded,
-      'color': const Color(0xFF3F51B5),
-      'bgColor': const Color(0xFFE8EAF6),
-    },
-    {
-      'title': 'معلومات الشركة والـ HR',
-      'subtitle': 'لمحة، تواصل مباشر، شات',
-      'icon': Icons.business_rounded,
-      'color': const Color(0xFF2E7D32),
-      'bgColor': const Color(0xFFE8F5E9),
-    },
-    {
-      'title': 'المساعد الذكي AI Buddy',
-      'subtitle': 'تواصل مباشر واستفسارات قانونية', // 👈 تم اختصار النص ليكون متناسقاً
-      'icon': Icons.smart_toy_rounded,
-      'color': const Color(0xFF00897B),
-      'bgColor': const Color(0xFFE0F2F1),
-    },
-    {
-      'title': 'التقييمات',
-      'subtitle': 'متابعة تقييم الأداء والملاحظات',
-      'icon': Icons.star_rounded,
-      'color': const Color(0xFFFF8F00),
-      'bgColor': const Color(0xFFFFF8E1),
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
     const primaryNavy = Color(0xFF002166);
+
+    // قائمة الخدمات (مترجمة ديناميكياً باستخدام .tr)
+    final List<Map<String, dynamic>> services = [
+      {
+        'title': 'attendance_tracking'.tr,
+        'subtitle': 'attendance_subtitle'.tr,
+        'icon': Icons.qr_code_scanner_rounded, // 👈 أيقونة الـ QR بدلاً من البصمة
+        'color': const Color(0xFF1E88E5),
+        'bgColor': const Color(0xFFE3F2FD),
+      },
+      {
+        'title': 'company_policies'.tr,
+        'subtitle': 'policies_subtitle'.tr,
+        'icon': Icons.gavel_rounded,
+        'color': const Color(0xFFD84315),
+        'bgColor': const Color(0xFFFBE9E7),
+      },
+      {
+        'title': 'my_annual_leaves'.tr,
+        'subtitle': 'leaves_subtitle'.tr,
+        'icon': Icons.calendar_month_rounded,
+        'color': const Color(0xFFE91E63),
+        'bgColor': const Color(0xFFFCE4EC),
+      },
+      {
+        'title': 'permission_overtime'.tr,
+        'subtitle': 'overtime_subtitle'.tr,
+        'icon': Icons.more_time_rounded,
+        'color': const Color(0xFF8E24AA),
+        'bgColor': const Color(0xFFF3E5F5),
+      },
+      {
+        'title': 'payroll_loans'.tr,
+        'subtitle': 'payroll_subtitle'.tr,
+        'icon': Icons.account_balance_wallet_rounded,
+        'color': const Color(0xFF3F51B5),
+        'bgColor': const Color(0xFFE8EAF6),
+      },
+      {
+        'title': 'company_hr_info'.tr,
+        'subtitle': 'hr_info_subtitle'.tr,
+        'icon': Icons.business_rounded,
+        'color': const Color(0xFF2E7D32),
+        'bgColor': const Color(0xFFE8F5E9),
+      },
+      {
+        'title': 'ai_buddy'.tr,
+        'subtitle': 'ai_buddy_subtitle'.tr,
+        'icon': Icons.smart_toy_rounded,
+        'color': const Color(0xFF00897B),
+        'bgColor': const Color(0xFFE0F2F1),
+      },
+      {
+        'title': 'evaluations'.tr,
+        'subtitle': 'evaluations_subtitle'.tr,
+        'icon': Icons.star_rounded,
+        'color': const Color(0xFFFF8F00),
+        'bgColor': const Color(0xFFFFF8E1),
+      },
+    ];
 
     return Scaffold(
       backgroundColor: const Color(0xFFF4F7FB),
       body: SafeArea(
         child: Column(
           children: [
-            // 🔹 1. Header القسم العلوي الشخصي
+            // 🔹 1. القسم العلوي الشخصي (Header)
             _buildHeader(primaryNavy),
 
-            // 🔹 2. عنوان الخدمات الذاتية
-        
-            // 🔹 3. شبكة الخدمات (Grid Services)
+            // 🔹 2. شبكة الخدمات (Grid Services)
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -99,11 +97,11 @@ class _HomeViewState extends State<HomeView> {
                       crossAxisCount: 2,
                       crossAxisSpacing: 12,
                       mainAxisSpacing: 12,
-                      childAspectRatio: 1.0, // 👈 تم تحسين أبعاد الكرت لتجنيب الطفح
+                      childAspectRatio: 1.0, // أبعاد تمنع أي Overflow
                     ),
-                    itemCount: _services.length,
+                    itemCount: services.length,
                     itemBuilder: (context, index) {
-                      final service = _services[index];
+                      final service = services[index];
                       final isSelected = _hoveredCardIndex == index;
 
                       return GestureDetector(
@@ -111,7 +109,7 @@ class _HomeViewState extends State<HomeView> {
                         onTapUp: (_) => setState(() => _hoveredCardIndex = null),
                         onTapCancel: () => setState(() => _hoveredCardIndex = null),
                         onTap: () {
-                          // توجيهات الشاشات الفرعية هنا
+                          // التوجيه للشاشات الفرعية
                         },
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 200),
@@ -137,10 +135,10 @@ class _HomeViewState extends State<HomeView> {
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start, // 👈 تم تعديلها لتقريب المسافة من الأيقونة
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Align(
-                                alignment: Alignment.topRight,
+                                alignment: AlignmentDirectional.topEnd, // 👈 محاذاة تناسب RTL و LTR
                                 child: Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
@@ -154,7 +152,7 @@ class _HomeViewState extends State<HomeView> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 8), // 👈 مسافة صغيرة ومحددة تماماً بين الأيقونة والكتابة
+                              const SizedBox(height: 8),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -164,7 +162,7 @@ class _HomeViewState extends State<HomeView> {
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: 13.5,
-                                      fontWeight: FontWeight.w900, // 👈 جعل الخط عريض جداً (Bold أقوى)
+                                      fontWeight: FontWeight.w900,
                                       color: service['color'] as Color,
                                       height: 1.2,
                                     ),
@@ -196,14 +194,14 @@ class _HomeViewState extends State<HomeView> {
         ),
       ),
 
-      // 🔹 4. شريط التنقل السفلي المحمي من التداخل
+      // 🔹 3. شريط التنقل السفلي المترجم
       bottomNavigationBar: SafeArea(
         child: _buildAnimatedBottomBar(primaryNavy),
       ),
     );
   }
 
-  // 👤 بناء الجزء العلوي (Header)
+  // 👤 بناء الهيدر العلوي
   Widget _buildHeader(Color primaryColor) {
     const String userName = 'أحمد المحمد';
     const String userRole = 'مهندس برمجيات | سوريا';
@@ -226,7 +224,7 @@ class _HomeViewState extends State<HomeView> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // إيقونة تسجيل الخروج
+          // زر تسجيل الخروج
           InkWell(
             onTap: () {
               Get.offAllNamed('/login');
@@ -246,7 +244,7 @@ class _HomeViewState extends State<HomeView> {
             ),
           ),
 
-          // الاسم والمسمى الوظيفي
+          // معلومات المستخدم
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisSize: MainAxisSize.min,
@@ -270,7 +268,7 @@ class _HomeViewState extends State<HomeView> {
             ],
           ),
 
-          // الصورة الشخصية
+          // الصورة الشخصية / الاختصار
           CircleAvatar(
             radius: 24,
             backgroundColor: Colors.white.withOpacity(0.2),
@@ -292,13 +290,13 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  // 🚀 بناء شريط التنقل السفلي (معدل لمنع أي Overflow)
+  // 🚀 بناء شريط التنقل السفلي (المترجم بالكامل)
   Widget _buildAnimatedBottomBar(Color primaryNavy) {
     final List<Map<String, dynamic>> navItems = [
-      {'icon': Icons.home_rounded, 'label': 'الرئيسية'},
-      {'icon': Icons.person_rounded, 'label': 'حسابي'},
-      {'icon': Icons.info_outline_rounded, 'label': 'الشركة'},
-      {'icon': Icons.settings_rounded, 'label': 'الإعدادات'},
+      {'icon': Icons.home_rounded, 'label': 'nav_home'.tr},
+      {'icon': Icons.person_rounded, 'label': 'nav_account'.tr},
+      {'icon': Icons.info_outline_rounded, 'label': 'nav_company'.tr},
+      {'icon': Icons.settings_rounded, 'label': 'nav_settings'.tr},
     ];
 
     return Container(

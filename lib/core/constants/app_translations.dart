@@ -89,6 +89,35 @@ class AppTranslations extends Translations {
 'failed_reset_password': 'حدث خطأ أثناء تغيير كلمة المرور',
 'success': 'نجاح',
 'error': 'خطأ',
+
+// في القاموس العربي _ar:
+'attendance_tracking': 'تسجيل الحضور والدوام',
+'attendance_subtitle': 'الرمز الجغرافي والـ QR',
+'company_policies': 'سياسات وعطلات الشركة',
+'policies_subtitle': 'التأخير، التقويم، الإجازات',
+'my_annual_leaves': 'إجازاتي السنوية',
+'leaves_subtitle': 'تقديم الإجازة وملفات الإثبات',
+'permission_overtime': 'طلب إذن / عمل إضافي',
+'overtime_subtitle': 'ساعات أو أيام تعويضية',
+'payroll_loans': 'كشف الرواتب والسلف',
+'payroll_subtitle': 'تحصيل، مستندات، وطلب سلفة',
+'company_hr_info': 'معلومات الشركة والـ HR',
+'hr_info_subtitle': 'لمحة، تواصل مباشر، شات',
+'ai_buddy': 'المساعد الذكي AI Buddy',
+'ai_buddy_subtitle': 'تواصل مباشر واستفسارات قانونية',
+'evaluations': 'التقييمات',
+'evaluations_subtitle': 'متابعة تقييم الأداء والملاحظات',
+
+// Navigation Bar
+'nav_home': 'الرئيسية',
+'nav_account': 'حسابي',
+'nav_company': 'الشركة',
+'nav_settings': 'الإعدادات',
+
+
+
+
+
   };
 
   static const Map<String, String> _en = {
@@ -171,5 +200,30 @@ class AppTranslations extends Translations {
 'failed_reset_password': 'Failed to reset password',
 'success': 'Success',
 'error': 'Error',
+
+
+
+'attendance_tracking': 'Attendance Tracking',
+'attendance_subtitle': 'Geo-Location & QR Code',
+'company_policies': 'Company Policies & Holidays',
+'policies_subtitle': 'Delays, Calendar, Leaves',
+'my_annual_leaves': 'My Annual Leaves',
+'leaves_subtitle': 'Leave Requests & Proof Documents',
+'permission_overtime': 'Permission & Overtime',
+'overtime_subtitle': 'Compensatory Hours / Days',
+'payroll_loans': 'Payroll & Advances',
+'payroll_subtitle': 'Payslips, Documents & Loan Request',
+'company_hr_info': 'Company Info & HR',
+'hr_info_subtitle': 'Overview, Direct Contact, Chat',
+'ai_buddy': 'AI Buddy Assistant',
+'ai_buddy_subtitle': 'Direct Contact & Legal Inquiries',
+'evaluations': 'Evaluations',
+'evaluations_subtitle': 'Performance & Feedback Track',
+
+// Navigation Bar
+'nav_home': 'Home',
+'nav_account': 'My Account',
+'nav_company': 'Company',
+'nav_settings': 'Settings',
   };
 }
