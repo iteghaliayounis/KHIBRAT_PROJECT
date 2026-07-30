@@ -1,0 +1,175 @@
+import 'package:get/get.dart';
+
+/// Central translation map used with GetX's built-in localization.
+/// Keys are referenced in the UI via `'key'.tr`.
+class AppTranslations extends Translations {
+  @override
+  Map<String, Map<String, String>> get keys => {
+        'ar_SY': _ar,
+        'en_US': _en,
+      };
+
+  static const Map<String, String> _ar = {
+    // Splash
+    'app_name': 'KHUBRAT',
+    'app_tagline': 'HR SAAS PLATFORM',
+    'app_description': 'شريك التمكين والحلول الإدارية المتكاملة لموظفي الشركات.',
+    'start_now': 'ابدأ الآن',
+
+    // Onboarding welcome
+    'onboard_title': 'كل ما يخص وظيفتك في مكان واحد',
+    'onboard_subtitle':
+        'تتبع دوامك، قدّم إجازاتك، راجع كشف راتبك وتواصل مع الـ HR والمدير المباشر بضغطة زر واحدة.',
+
+    // Language selection
+    'choose_language': 'اختر لغة التطبيق',
+    'choose_language_desc': 'Please select your preferred application language',
+    'arabic': 'اللغة العربية',
+    'english': 'English Language',
+    'continue_btn': 'متابعة',
+
+    // Login
+    'login': 'تسجيل الدخول',
+    'welcome_back': '!أهلاً بك مجدداً ',
+    'login_subtitle': 'الرجاء تسجيل الدخول للمتابعة واستخدام جميع المزايا',
+    'email_address': 'البريد الإلكتروني الوظيفي',
+    'enter_email': 'example@company.com',
+    'password': 'كلمة المرور',
+    'enter_password': 'أدخل كلمة المرور',
+    'forgot_password': 'نسيت كلمة المرور؟',
+    'secure_login': 'تسجيل الدخول ',
+'forgot_password_title': 'استعادة كلمة المرور',
+'send_code': 'إرسال الرمز',
+    // Validation
+    'email_required': 'البريد الإلكتروني مطلوب',
+    'email_invalid': 'صيغة البريد الإلكتروني غير صحيحة',
+    'password_required': 'كلمة المرور مطلوبة',
+    'password_min': 'كلمة المرور يجب أن تكون 6 أحرف على الأقل',
+    'password_confirm_required': 'تأكيد كلمة المرور مطلوب',
+    'password_mismatch': 'كلمتا المرور غير متطابقتين',
+
+    // Errors
+    'invalid_credentials': 'بيانات الدخول غير صحيحة',
+    'account_inactive': 'الحساب غير نشط',
+    'generic_error': 'حدث خطأ ما، يرجى المحاولة مرة أخرى',
+    'network_error': 'تعذّر الاتصال بالخادم، تحقق من اتصالك بالإنترنت',
+
+    // First login / change password
+    'first_login_title': 'تعيين كلمة مرور جديدة',
+    'first_login_subtitle':
+        'لأول مرة تسجّل بها الدخول، يجب عليك تعيين كلمة مرور جديدة وآمنة قبل المتابعة',
+    'new_password': 'كلمة المرور الجديدة',
+    'enter_new_password': 'أدخل كلمة المرور الجديدة',
+    'confirm_password': 'تأكيد كلمة المرور',
+    'enter_confirm_password': 'أعد إدخال كلمة المرور',
+    'save_and_continue': 'حفظ ومتابعة',
+    'password_changed_success': 'تم تحديث كلمة المرور بنجاح، أهلاً بك في Khubrat',
+    'logout': 'تسجيل الخروج',
+
+
+    'verify_code_title': 'رمز التحقق',
+'enter_verification_code': 'أدخل رمز التحقق',
+'code_sent_to': 'تم إرسال رمز التحقق إلى',
+'confirm_code': 'تأكيد الرمز',
+'didnt_receive_code': 'لم تستلم الرمز؟',
+'resend_code': 'إعادة الإرسال',
+'enter_complete_code': 'يرجى إدخال كافة أرقام الرمز',
+'invalid_code': 'رمز التحقق غير صحيح',
+'code_resent_success': 'تم إعادة إرسال الرمز بنجاح',
+'failed_resend_code': 'فشل إرسال الرمز مرة أخرى',
+'reset_password_title': 'تعيين كلمة المرور',
+'create_new_password': 'إنشاء كلمة مرور جديدة',
+'enter_new_password_sub': 'أدخل كلمة المرور الجديدة لتتمكن من تسجيل الدخول',
+'confirm_new_password': 'تأكيد كلمة المرور الجديدة',
+'confirm_new_password_hint': 'أعد كتابة كلمة المرور',
+'save_password': 'حفظ كلمة المرور',
+'password_too_short': 'كلمة المرور يجب أن لا تقل عن 6 أحرف',
+'passwords_dont_match': 'كلمتا المرور غير متطابقتين',
+'password_reset_success': 'تم تغيير كلمة المرور بنجاح',
+'failed_reset_password': 'حدث خطأ أثناء تغيير كلمة المرور',
+'success': 'نجاح',
+'error': 'خطأ',
+  };
+
+  static const Map<String, String> _en = {
+    // Splash
+    'app_name': 'KHUBRAT',
+    'app_tagline': 'HR SAAS PLATFORM',
+    'app_description':
+        'Your enablement partner and integrated management solutions for company employees.',
+    'start_now': 'Get Started',
+
+    // Onboarding welcome
+    'onboard_title': 'Everything About Your Job in One Place',
+    'onboard_subtitle':
+        'Track your attendance, apply for leaves, review your payslip, and reach HR or your direct manager — all in a single tap.',
+
+    // Language selection
+    'choose_language': 'Choose App Language',
+    'choose_language_desc': 'Please select your preferred application language',
+    'arabic': 'Arabic Language',
+    'english': 'English Language',
+    'continue_btn': 'Continue',
+
+    // Login
+    'login': 'Login',
+    'welcome_back': 'Welcome Back!',
+    'login_subtitle': 'Please sign in to continue and access all features',
+    'email_address': 'Work Email Address',
+    'enter_email': 'example@company.com',
+    'password': 'Password',
+    'enter_password': 'Enter your password',
+    'forgot_password': 'Forgot Password?',
+    'secure_login': 'Login',
+'forgot_password_title': 'Forgot Password',
+'send_code': 'Send Code',
+    // Validation
+    'email_required': 'Email is required',
+    'email_invalid': 'Please enter a valid email address',
+    'password_required': 'Password is required',
+    'password_min': 'Password must be at least 6 characters',
+    'password_confirm_required': 'Please confirm your password',
+    'password_mismatch': 'Passwords do not match',
+
+    // Errors
+    'invalid_credentials': 'Invalid login credentials',
+    'account_inactive': 'This account is not active',
+    'generic_error': 'Something went wrong, please try again',
+    'network_error': 'Could not connect to the server, check your internet connection',
+
+    // First login / change password
+    'first_login_title': 'Set a New Password',
+    'first_login_subtitle':
+        'This is your first login. Please set a new, secure password before continuing.',
+    'new_password': 'New Password',
+    'enter_new_password': 'Enter your new password',
+    'confirm_password': 'Confirm Password',
+    'enter_confirm_password': 'Re-enter your password',
+    'save_and_continue': 'Save & Continue',
+    'password_changed_success': 'Password updated successfully. Welcome to Khubrat!',
+    'logout': 'Logout',
+
+    'verify_code_title': 'Verification Code',
+'enter_verification_code': 'Enter Verification Code',
+'code_sent_to': 'Verification code sent to',
+'confirm_code': 'Confirm Code',
+'didnt_receive_code': "Didn't receive the code?",
+'resend_code': 'Resend',
+'enter_complete_code': 'Please enter full code',
+'invalid_code': 'Invalid verification code',
+'code_resent_success': 'Code resent successfully',
+'failed_resend_code': 'Failed to resend code',
+'reset_password_title': 'Reset Password',
+'create_new_password': 'Create New Password',
+'enter_new_password_sub': 'Enter your new password to log in',
+'confirm_new_password': 'Confirm New Password',
+'confirm_new_password_hint': 'Re-enter new password',
+'save_password': 'Save Password',
+'password_too_short': 'Password must be at least 6 characters',
+'passwords_dont_match': 'Passwords do not match',
+'password_reset_success': 'Password reset successfully',
+'failed_reset_password': 'Failed to reset password',
+'success': 'Success',
+'error': 'Error',
+  };
+}
