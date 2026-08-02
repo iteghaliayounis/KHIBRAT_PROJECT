@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'core/constants/app_translations.dart';
 import 'core/routes/app_pages.dart';
 import 'core/theme/app_theme.dart';
@@ -8,6 +9,9 @@ import 'core/utils/storage_service.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await StorageService.init();
+  // مطلوب قبل استخدام DateFormat مع locale مثل 'ar'
+  await initializeDateFormatting('ar');
+  await initializeDateFormatting('en');
   runApp(const KhubratApp());
 }
 

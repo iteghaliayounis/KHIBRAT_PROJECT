@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../core/routes/app_routes.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -38,6 +39,7 @@ class _HomeViewState extends State<HomeView> {
         'icon': Icons.calendar_month_rounded,
         'color': const Color(0xFFE91E63),
         'bgColor': const Color(0xFFFCE4EC),
+        'route': AppRoutes.leaveDashboard,
       },
       {
         'title': 'permission_overtime'.tr,
@@ -105,11 +107,15 @@ class _HomeViewState extends State<HomeView> {
                       final isSelected = _hoveredCardIndex == index;
 
                       return GestureDetector(
+                        behavior: HitTestBehavior.opaque,
                         onTapDown: (_) => setState(() => _hoveredCardIndex = index),
-                        onTapUp: (_) => setState(() => _hoveredCardIndex = null),
                         onTapCancel: () => setState(() => _hoveredCardIndex = null),
                         onTap: () {
-                          // التوجيه للشاشات الفرعية
+                          setState(() => _hoveredCardIndex = null);
+                          final route = service['route'] as String?;
+                          if (route != null && route.isNotEmpty) {
+                            Get.toNamed(route);
+                          }
                         },
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 200),

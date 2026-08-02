@@ -35,6 +35,15 @@ class ApiClientFixed {
   static final ApiClientFixed instance = ApiClientFixed._internal();
   late final Dio _dio;
 
+  Future<Map<String, dynamic>> get(String path, {Map<String, dynamic>? query}) async {
+    try {
+      final response = await _dio.get(path, queryParameters: query);
+      return response.data as Map<String, dynamic>;
+    } on DioException catch (e) {
+      throw _mapError(e);
+    }
+  }
+
   Future<Map<String, dynamic>> post(String path, {Map<String, dynamic>? data}) async {
     try {
       final response = await _dio.post(path, data: data);
@@ -44,7 +53,25 @@ class ApiClientFixed {
     }
   }
 
-ApiException _mapError(DioException e) {
+  /// Multipart POST (e.g. leave apply with attachment file).
+  /// Do not set Content-Type manually — Dio adds the correct boundary.
+  Future<Map<String, dynamic>> postMultipart(
+    String path, {
+    required FormData formData,
+  }) async {
+    try {
+      final response = await _dio.post(
+        path,
+        data: formData,
+        options: Options(headers: {'Accept': 'application/json'}),
+      );
+      return response.data as Map<String, dynamic>;
+    } on DioException catch (e) {
+      throw _mapError(e);
+    }
+  }
+
+  ApiException _mapError(DioException e) {
     // 🔴 1. طباعة التفاصيل كاملة في الـ Console لمعرفة السبب الحقيقي فوراً
     print("--------------------------------------------------");
     print("❌ DIO ERROR TYPE: ${e.type}");
