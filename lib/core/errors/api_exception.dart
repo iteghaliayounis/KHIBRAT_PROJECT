@@ -18,6 +18,14 @@ class ApiException implements Exception {
   factory ApiException.validation(String message, [Map<String, dynamic>? errors]) =>
       ApiException(message: message, statusCode: 422, errors: errors);
 
+  /// HTTP 429 — rate limited (e.g. resend OTP too soon).
+  /// [message] should be the Backend `message` field when available.
+  factory ApiException.tooManyRequests([String? message]) =>
+      ApiException(
+        message: message ?? 'Please wait before requesting another OTP.',
+        statusCode: 429,
+      );
+
   factory ApiException.generic([String? message]) =>
       ApiException(message: message ?? 'generic_error');
 

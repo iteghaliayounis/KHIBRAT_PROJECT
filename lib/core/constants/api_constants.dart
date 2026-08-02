@@ -4,9 +4,19 @@ class ApiConstants {
   ApiConstants._();
 
   static const String baseUrl =
-      'http://192.168.1.104:8000'; // TODO: set real base URL
+      'http://10.187.2.222:8000'; // TODO: set real base URL
 
   static const String login = '/api/auth/login';
+  static const String resendOtp = '/api/auth/resend-otp';
+
+  // Evaluations (My Evaluations feature)
+  // GET  myReviews                          -> list + counters for the current user
+  // GET  myReviews?status=pending|completed -> filtered list
+  // GET  myReviewDetail(id)                 -> single review incl. questions
+  // POST submitReview(id)                   -> submit answers for a review
+  static const String myReviews = '/api/evaluations/my-reviews';
+  static String myReviewDetail(dynamic reviewId) => '$myReviews/$reviewId';
+  static String submitReview(dynamic reviewId) => '$myReviews/$reviewId/submit';
 
   // Employee Leaves
   static const String leaveTypes = '/api/employee/leaves/types';

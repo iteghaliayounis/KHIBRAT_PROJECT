@@ -192,25 +192,38 @@ class VerifyCodeView extends GetView<VerifyCodeController> {
 
               const SizedBox(height: 24),
 
-              // ── نص إعادة الإرسال والتفاعل مع الماوس/اللمس ──
+              // ── نص إعادة الإرسال / عدّاد الانتظار ──
               Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'didnt_receive_code'.tr,
+                child: Obx(() {
+                  final remaining = controller.cooldownRemaining.value;
+                  if (remaining > 0) {
+                    return Text(
+                      '${'resend_code_in'.tr} 0:${remaining.toString().padLeft(2, '0')}',
                       style: GoogleFonts.cairo(
                         fontSize: 13,
-                        color: Colors.grey[600],
+                        color: Colors.grey[500],
                       ),
-                    ),
-                    const SizedBox(width: 4),
-                    _HoverableResendButton(
-                      onTap: controller.resendCode,
-                      text: 'resend_code'.tr,
-                    ),
-                  ],
-                ),
+                    );
+                  }
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'didnt_receive_code'.tr,
+                        style: GoogleFonts.cairo(
+                          fontSize: 13,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      _HoverableResendButton(
+                        onTap: controller.isResending.value ? null : controller.resendCode,
+                        text: 'resend_code'.tr,
+                        enabled: !controller.isResending.value,
+                      ),
+                    ],
+                  );
+                }),
               ),
             ],
           ),
@@ -221,10 +234,15 @@ class VerifyCodeView extends GetView<VerifyCodeController> {
 }
 
 class _HoverableResendButton extends StatefulWidget {
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final String text;
+  final bool enabled;
 
-  const _HoverableResendButton({required this.onTap, required this.text});
+  const _HoverableResendButton({
+    required this.onTap,
+    required this.text,
+    this.enabled = true,
+  });
 
   @override
   State<_HoverableResendButton> createState() => _HoverableResendButtonState();
@@ -235,18 +253,23 @@ class _HoverableResendButtonState extends State<_HoverableResendButton> {
 
   @override
   Widget build(BuildContext context) {
+    final canTap = widget.enabled && widget.onTap != null;
     return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
+      onEnter: (_) {
+        if (canTap) setState(() => _isHovered = true);
+      },
       onExit: (_) => setState(() => _isHovered = false),
       child: GestureDetector(
-        onTap: widget.onTap,
+        onTap: canTap ? widget.onTap : null,
         child: Text(
           widget.text,
           style: GoogleFonts.cairo(
             fontSize: 13,
             fontWeight: FontWeight.bold,
-            color: _isHovered ? const Color(0xFF002166) : Colors.grey[600],
-            decoration: _isHovered ? TextDecoration.underline : TextDecoration.none,
+            color: !canTap
+                ? Colors.grey[400]
+                : (_isHovered ? const Color(0xFF002166) : Colors.grey[600]),
+            decoration: (_isHovered && canTap) ? TextDecoration.underline : TextDecoration.none,
           ),
         ),
       ),

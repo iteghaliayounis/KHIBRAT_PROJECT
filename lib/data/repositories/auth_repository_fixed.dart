@@ -50,6 +50,26 @@ class AuthRepositoryFixed implements AuthRepository {
   }
 
   @override
+  Future<String> resendOtp({required String email}) async {
+    try {
+      final resp = await ApiClientFixed.instance.post(
+        ApiConstants.resendOtp,
+        data: {'email': email},
+      );
+      if (resp['success'] == false) {
+        throw ApiException.generic(
+          (resp['message'] ?? 'failed_resend_code').toString(),
+        );
+      }
+      return (resp['message'] ?? 'OTP resent successfully.').toString();
+    } on ApiException {
+      rethrow;
+    } catch (e) {
+      throw ApiException.generic(e.toString());
+    }
+  }
+
+  @override
   Future<void> verifyResetCode({required String email, required String code}) async {
     try {
       await ApiClientFixed.instance.post('/api/auth/verify-otp', data: {'email': email, 'otp': code});

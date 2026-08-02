@@ -22,7 +22,7 @@ class _HomeViewState extends State<HomeView> {
       {
         'title': 'attendance_tracking'.tr,
         'subtitle': 'attendance_subtitle'.tr,
-        'icon': Icons.qr_code_scanner_rounded, // 👈 أيقونة الـ QR بدلاً من البصمة
+        'icon': Icons.qr_code_scanner_rounded,
         'color': const Color(0xFF1E88E5),
         'bgColor': const Color(0xFFE3F2FD),
       },
@@ -75,6 +75,7 @@ class _HomeViewState extends State<HomeView> {
         'icon': Icons.star_rounded,
         'color': const Color(0xFFFF8F00),
         'bgColor': const Color(0xFFFFF8E1),
+        'route': AppRoutes.myEvaluations,
       },
     ];
 
@@ -83,10 +84,7 @@ class _HomeViewState extends State<HomeView> {
       body: SafeArea(
         child: Column(
           children: [
-            // 🔹 1. القسم العلوي الشخصي (Header)
             _buildHeader(primaryNavy),
-
-            // 🔹 2. شبكة الخدمات (Grid Services)
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -95,11 +93,12 @@ class _HomeViewState extends State<HomeView> {
                   GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 12,
                       mainAxisSpacing: 12,
-                      childAspectRatio: 1.0, // أبعاد تمنع أي Overflow
+                      childAspectRatio: 1.0,
                     ),
                     itemCount: services.length,
                     itemBuilder: (context, index) {
@@ -108,8 +107,10 @@ class _HomeViewState extends State<HomeView> {
 
                       return GestureDetector(
                         behavior: HitTestBehavior.opaque,
-                        onTapDown: (_) => setState(() => _hoveredCardIndex = index),
-                        onTapCancel: () => setState(() => _hoveredCardIndex = null),
+                        onTapDown: (_) =>
+                            setState(() => _hoveredCardIndex = index),
+                        onTapCancel: () =>
+                            setState(() => _hoveredCardIndex = null),
                         onTap: () {
                           setState(() => _hoveredCardIndex = null);
                           final route = service['route'] as String?;
@@ -132,7 +133,8 @@ class _HomeViewState extends State<HomeView> {
                             boxShadow: [
                               BoxShadow(
                                 color: isSelected
-                                    ? (service['color'] as Color).withOpacity(0.2)
+                                    ? (service['color'] as Color)
+                                        .withOpacity(0.2)
                                     : Colors.black.withOpacity(0.04),
                                 blurRadius: isSelected ? 12 : 8,
                                 offset: const Offset(0, 4),
@@ -144,7 +146,7 @@ class _HomeViewState extends State<HomeView> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Align(
-                                alignment: AlignmentDirectional.topEnd, // 👈 محاذاة تناسب RTL و LTR
+                                alignment: AlignmentDirectional.topEnd,
                                 child: Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
@@ -199,15 +201,12 @@ class _HomeViewState extends State<HomeView> {
           ],
         ),
       ),
-
-      // 🔹 3. شريط التنقل السفلي المترجم
       bottomNavigationBar: SafeArea(
         child: _buildAnimatedBottomBar(primaryNavy),
       ),
     );
   }
 
-  // 👤 بناء الهيدر العلوي
   Widget _buildHeader(Color primaryColor) {
     const String userName = 'أحمد المحمد';
     const String userRole = 'مهندس برمجيات | سوريا';
@@ -230,7 +229,6 @@ class _HomeViewState extends State<HomeView> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // زر تسجيل الخروج
           InkWell(
             onTap: () {
               Get.offAllNamed('/login');
@@ -249,8 +247,6 @@ class _HomeViewState extends State<HomeView> {
               ),
             ),
           ),
-
-          // معلومات المستخدم
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisSize: MainAxisSize.min,
@@ -273,8 +269,6 @@ class _HomeViewState extends State<HomeView> {
               ),
             ],
           ),
-
-          // الصورة الشخصية / الاختصار
           CircleAvatar(
             radius: 24,
             backgroundColor: Colors.white.withOpacity(0.2),
@@ -296,7 +290,6 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  // 🚀 بناء شريط التنقل السفلي (المترجم بالكامل)
   Widget _buildAnimatedBottomBar(Color primaryNavy) {
     final List<Map<String, dynamic>> navItems = [
       {'icon': Icons.home_rounded, 'label': 'nav_home'.tr},

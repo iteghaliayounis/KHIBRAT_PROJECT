@@ -10,6 +10,12 @@ abstract class AppRoutes {
   static const resetPassword = '/reset-password';   // مسار تعيين كلمة المرور الجديدة
   static const changePassword = '/change-password';
   static const home = '/home';
+
+  // Leaves
   static const leaveDashboard = '/leave-dashboard';
   static const applyLeave = '/apply-leave';
+
+  // Evaluations
+  static const myEvaluations = '/my-evaluations';
+  static const evaluationDetail = '/evaluation-detail';
 }

@@ -7,5 +7,13 @@ class ApiClient {
   static final _delegate = ApiClientFixed.instance;
   static final ApiClient instance = ApiClient._();
 
-  Future<Map<String, dynamic>> post(String path, {Map<String, dynamic>? data}) => _delegate.post(path, data: data);
+  Future<Map<String, dynamic>> post(
+    String path, {
+    Map<String, dynamic>? data,
+  }) => _delegate.post(path, data: data);
+
+  Future<Map<String, dynamic>> get(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+  }) => _delegate.get(path, queryParameters: queryParameters);
 }

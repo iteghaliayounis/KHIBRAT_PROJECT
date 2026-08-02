@@ -9,6 +9,10 @@ abstract class AuthRepository {
 
   Future<void> sendResetCode({required String email});
 
+  /// POST /api/auth/resend-otp — resend OTP for the current OTP flow email.
+  /// Returns the Backend success `message` when `success` is true.
+  Future<String> resendOtp({required String email});
+
   Future<void> verifyResetCode({
     required String email,
     required String code,

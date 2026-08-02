@@ -35,26 +35,41 @@ class ApiClientFixed {
   static final ApiClientFixed instance = ApiClientFixed._internal();
   late final Dio _dio;
 
-  Future<Map<String, dynamic>> get(String path, {Map<String, dynamic>? query}) async {
+  /// GET request (leaves, evaluations, …).
+  /// Accepts either [query] or [queryParameters] for compatibility.
+  Future<Map<String, dynamic>> get(
+    String path, {
+    Map<String, dynamic>? query,
+    Map<String, dynamic>? queryParameters,
+  }) async {
     try {
-      final response = await _dio.get(path, queryParameters: query);
-      return response.data as Map<String, dynamic>;
+      final params = queryParameters ?? query;
+      final response = await _dio.get(path, queryParameters: params);
+      final data = response.data;
+      if (data is Map<String, dynamic>) return data;
+      if (data is Map) return Map<String, dynamic>.from(data);
+      return {'data': data};
     } on DioException catch (e) {
       throw _mapError(e);
     }
   }
 
-  Future<Map<String, dynamic>> post(String path, {Map<String, dynamic>? data}) async {
+  Future<Map<String, dynamic>> post(
+    String path, {
+    Map<String, dynamic>? data,
+  }) async {
     try {
       final response = await _dio.post(path, data: data);
-      return response.data as Map<String, dynamic>;
+      final body = response.data;
+      if (body is Map<String, dynamic>) return body;
+      if (body is Map) return Map<String, dynamic>.from(body);
+      return {'data': body};
     } on DioException catch (e) {
       throw _mapError(e);
     }
   }
 
   /// Multipart POST (e.g. leave apply with attachment file).
-  /// Do not set Content-Type manually — Dio adds the correct boundary.
   Future<Map<String, dynamic>> postMultipart(
     String path, {
     required FormData formData,
@@ -65,14 +80,16 @@ class ApiClientFixed {
         data: formData,
         options: Options(headers: {'Accept': 'application/json'}),
       );
-      return response.data as Map<String, dynamic>;
+      final data = response.data;
+      if (data is Map<String, dynamic>) return data;
+      if (data is Map) return Map<String, dynamic>.from(data);
+      return {'data': data};
     } on DioException catch (e) {
       throw _mapError(e);
     }
   }
 
   ApiException _mapError(DioException e) {
-    // 🔴 1. طباعة التفاصيل كاملة في الـ Console لمعرفة السبب الحقيقي فوراً
     print("--------------------------------------------------");
     print("❌ DIO ERROR TYPE: ${e.type}");
     print("❌ STATUS CODE: ${e.response?.statusCode}");
@@ -90,7 +107,7 @@ class ApiClientFixed {
     if (response == null) return ApiException.network();
 
     final data = response.data;
-    final serverMessage = (data is Map && data['message'] != null) ? data['message'].toString() : null;
+    final serverMessage = _extractServerMessage(data);
 
     switch (response.statusCode) {
       case 401:
@@ -101,9 +118,25 @@ class ApiClientFixed {
         final errors = (data is Map && data['errors'] is Map)
             ? Map<String, dynamic>.from(data['errors'])
             : null;
-        return ApiException.validation(serverMessage ?? 'validation_error', errors);
+        return ApiException.validation(
+          serverMessage ?? 'validation_error',
+          errors,
+        );
+      case 429:
+        return ApiException.tooManyRequests(
+          serverMessage ?? 'Please wait before requesting another OTP.',
+        );
       default:
         return ApiException.generic(serverMessage ?? 'generic_error');
     }
+  }
+
+  String? _extractServerMessage(dynamic data) {
+    if (data is Map && data['message'] != null) {
+      final msg = data['message'].toString();
+      return msg.isEmpty ? null : msg;
+    }
+    if (data is String && data.trim().isNotEmpty) return data;
+    return null;
   }
 }
