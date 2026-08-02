@@ -44,7 +44,22 @@ class ApiClientFixed {
     }
   }
 
-ApiException _mapError(DioException e) {
+  /// GET request used by read-only screens (e.g. My Evaluations) that need
+  /// to fetch backend-driven data instead of submitting it.
+  Future<Map<String, dynamic>> get(String path, {Map<String, dynamic>? queryParameters}) async {
+    try {
+      final response = await _dio.get(path, queryParameters: queryParameters);
+      final data = response.data;
+      if (data is Map<String, dynamic>) return data;
+      if (data is Map) return Map<String, dynamic>.from(data);
+      // Some backends may return a bare JSON array for list endpoints.
+      return {'data': data};
+    } on DioException catch (e) {
+      throw _mapError(e);
+    }
+  }
+
+  ApiException _mapError(DioException e) {
     // 🔴 1. طباعة التفاصيل كاملة في الـ Console لمعرفة السبب الحقيقي فوراً
     print("--------------------------------------------------");
     print("❌ DIO ERROR TYPE: ${e.type}");
@@ -63,7 +78,7 @@ ApiException _mapError(DioException e) {
     if (response == null) return ApiException.network();
 
     final data = response.data;
-    final serverMessage = (data is Map && data['message'] != null) ? data['message'].toString() : null;
+    final serverMessage = _extractServerMessage(data);
 
     switch (response.statusCode) {
       case 401:
@@ -75,8 +90,23 @@ ApiException _mapError(DioException e) {
             ? Map<String, dynamic>.from(data['errors'])
             : null;
         return ApiException.validation(serverMessage ?? 'validation_error', errors);
+      case 429:
+        // Rate limit (e.g. resend OTP too soon) — surface Backend message only.
+        return ApiException.tooManyRequests(
+          serverMessage ?? 'Please wait before requesting another OTP.',
+        );
       default:
         return ApiException.generic(serverMessage ?? 'generic_error');
     }
+  }
+
+  /// Reads `message` from a JSON map body, or returns a non-empty string body.
+  String? _extractServerMessage(dynamic data) {
+    if (data is Map && data['message'] != null) {
+      final msg = data['message'].toString();
+      return msg.isEmpty ? null : msg;
+    }
+    if (data is String && data.trim().isNotEmpty) return data;
+    return null;
   }
 }

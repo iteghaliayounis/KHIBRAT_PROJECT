@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../core/routes/app_routes.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -73,6 +74,7 @@ class _HomeViewState extends State<HomeView> {
         'icon': Icons.star_rounded,
         'color': const Color(0xFFFF8F00),
         'bgColor': const Color(0xFFFFF8E1),
+        'route': AppRoutes.myEvaluations,
       },
     ];
 
@@ -109,7 +111,8 @@ class _HomeViewState extends State<HomeView> {
                         onTapUp: (_) => setState(() => _hoveredCardIndex = null),
                         onTapCancel: () => setState(() => _hoveredCardIndex = null),
                         onTap: () {
-                          // التوجيه للشاشات الفرعية
+                          final route = service['route'] as String?;
+                          if (route != null) Get.toNamed(route);
                         },
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 200),
