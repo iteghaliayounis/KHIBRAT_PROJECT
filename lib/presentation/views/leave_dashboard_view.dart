@@ -82,23 +82,8 @@ class LeaveDashboardView extends GetView<LeaveDashboardController> {
               ),
             ),
           ),
-          Container(
-            width: 40,
-            height: 40,
-            alignment: Alignment.center,
-            decoration: const BoxDecoration(
-              color: _navy,
-              shape: BoxShape.circle,
-            ),
-            child: Text(
-              controller.userInitial,
-              style: GoogleFonts.cairo(
-                color: Colors.white,
-                fontWeight: FontWeight.w700,
-                fontSize: 16,
-              ),
-            ),
-          ),
+          // مساحة فارغة لموازنة العنوان مع زر الرجوع
+          const SizedBox(width: 40),
         ],
       ),
     );

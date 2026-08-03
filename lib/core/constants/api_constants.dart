@@ -4,7 +4,7 @@ class ApiConstants {
   ApiConstants._();
 
   static const String baseUrl =
-      'http://10.187.2.222:8000'; // TODO: set real base URL
+      'http://10.59.63.222:8000'; // TODO: set real base URL
 
   static const String login = '/api/auth/login';
   static const String resendOtp = '/api/auth/resend-otp';
