@@ -8,7 +8,7 @@ import '../../domain/repositories/auth_repository.dart';
 class VerifyCodeController extends GetxController {
   /// ⚠️ لازم تطابق فترة الـ throttle/cooldown الفعلية بالباك اند لإرسال
   /// OTP (تحقق منها بكود resend-otp endpoint). القيمة الحالية افتراضية.
-  static const int otpCooldownSeconds = 50;
+  static const int otpCooldownSeconds = 60;
 
   final AuthRepository authRepository;
   VerifyCodeController({required this.authRepository});
