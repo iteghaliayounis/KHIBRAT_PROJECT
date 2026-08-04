@@ -14,4 +14,8 @@ abstract class AppRoutes {
   // Evaluations
   static const myEvaluations = '/my-evaluations';
   static const evaluationDetail = '/evaluation-detail';
+
+  // Attendance
+  static const attendance = '/attendance';
+  static const attendanceScanner = '/attendance-scanner';
 }

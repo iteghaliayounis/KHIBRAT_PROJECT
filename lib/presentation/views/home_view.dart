@@ -25,6 +25,7 @@ class _HomeViewState extends State<HomeView> {
         'icon': Icons.qr_code_scanner_rounded, // 👈 أيقونة الـ QR بدلاً من البصمة
         'color': const Color(0xFF1E88E5),
         'bgColor': const Color(0xFFE3F2FD),
+        'route': AppRoutes.attendance,
       },
       {
         'title': 'company_policies'.tr,

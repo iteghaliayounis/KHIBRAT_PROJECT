@@ -5,6 +5,8 @@ import 'package:khibrat_flutter2/presentation/bindings/verify_code_binding.dart'
 import 'package:khibrat_flutter2/presentation/views/forgot_password_view.dart';
 import 'package:khibrat_flutter2/presentation/views/reset_password_view.dart';
 import 'package:khibrat_flutter2/presentation/views/verify_code_view.dart';
+import '../../presentation/bindings/attendance_binding.dart';
+import '../../presentation/bindings/attendance_scanner_binding.dart';
 import '../../presentation/bindings/evaluation_binding.dart';
 import '../../presentation/bindings/home_binding.dart';
 import '../../presentation/bindings/language_binding.dart';
@@ -12,6 +14,8 @@ import '../../presentation/bindings/login_binding.dart';
 import '../../presentation/bindings/my_evaluations_binding.dart';
 import '../../presentation/bindings/onboarding_binding.dart';
 import '../../presentation/bindings/splash_binding.dart';
+import '../../presentation/views/attendance/attendance_dashboard_view.dart';
+import '../../presentation/views/attendance/attendance_scanner_view.dart';
 import '../../presentation/views/evaluation_detail_view.dart';
 import '../../presentation/views/home_view.dart';
 import '../../presentation/views/language_selection_view.dart';
@@ -89,6 +93,18 @@ GetPage(
       name: AppRoutes.evaluationDetail,
       page: () => const EvaluationDetailView(),
       binding: EvaluationBinding(),
+      transition: Transition.rightToLeftWithFade,
+    ),
+    GetPage(
+      name: AppRoutes.attendance,
+      page: () => const AttendanceDashboardView(),
+      binding: AttendanceBinding(),
+      transition: Transition.rightToLeftWithFade,
+    ),
+    GetPage(
+      name: AppRoutes.attendanceScanner,
+      page: () => const AttendanceScannerView(),
+      binding: AttendanceScannerBinding(),
       transition: Transition.rightToLeftWithFade,
     ),
   ];

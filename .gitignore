@@ -44,3 +44,4 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 PROJECT_DOCUMENTATION.md
+ATTENDANCE_FLOW.md

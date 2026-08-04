@@ -17,6 +17,11 @@ class ApiConstants {
   static String myReviewDetail(dynamic reviewId) => '$myReviews/$reviewId';
   static String submitReview(dynamic reviewId) => '$myReviews/$reviewId/submit';
 
+  // Attendance
+  static const String attendanceDashboard = '/api/employee/attendance/dashboard';
+  static const String attendanceCheckIn = '/api/employee/attendance/check-in';
+  static const String attendanceCheckOut = '/api/employee/attendance/check-out';
+
   static const Duration connectTimeout = Duration(seconds: 20);
   static const Duration receiveTimeout = Duration(seconds: 20);
 }
