@@ -47,6 +47,7 @@ class _HomeViewState extends State<HomeView> {
         'icon': Icons.more_time_rounded,
         'color': const Color(0xFF8E24AA),
         'bgColor': const Color(0xFFF3E5F5),
+        'route': AppRoutes.overTime,
       },
       {
         'title': 'payroll_loans'.tr,
@@ -95,11 +96,11 @@ class _HomeViewState extends State<HomeView> {
                     physics: const NeverScrollableScrollPhysics(),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      childAspectRatio: 1.0,
-                    ),
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                          childAspectRatio: 1.0,
+                        ),
                     itemCount: services.length,
                     itemBuilder: (context, index) {
                       final service = services[index];
@@ -133,8 +134,9 @@ class _HomeViewState extends State<HomeView> {
                             boxShadow: [
                               BoxShadow(
                                 color: isSelected
-                                    ? (service['color'] as Color)
-                                        .withOpacity(0.2)
+                                    ? (service['color'] as Color).withOpacity(
+                                        0.2,
+                                      )
                                     : Colors.black.withOpacity(0.04),
                                 blurRadius: isSelected ? 12 : 8,
                                 offset: const Offset(0, 4),
@@ -272,8 +274,9 @@ class _HomeViewState extends State<HomeView> {
           CircleAvatar(
             radius: 24,
             backgroundColor: Colors.white.withOpacity(0.2),
-            backgroundImage:
-                userImageUrl != null ? NetworkImage(userImageUrl) : null,
+            backgroundImage: userImageUrl != null
+                ? NetworkImage(userImageUrl)
+                : null,
             child: userImageUrl == null
                 ? const Text(
                     'AM',
@@ -341,7 +344,7 @@ class _HomeViewState extends State<HomeView> {
                           color: primaryNavy.withOpacity(0.3),
                           blurRadius: 8,
                           offset: const Offset(0, 3),
-                        )
+                        ),
                       ]
                     : [],
               ),

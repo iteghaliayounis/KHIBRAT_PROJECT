@@ -4,7 +4,7 @@ class ApiConstants {
   ApiConstants._();
 
   static const String baseUrl =
-      'http://10.59.63.222:8000'; // TODO: set real base URL
+      'http://192.168.1.103:8000'; // TODO: set real base URL
 
   static const String login = '/api/auth/login';
   static const String resendOtp = '/api/auth/resend-otp';
@@ -22,6 +22,10 @@ class ApiConstants {
   static const String leaveTypes = '/api/employee/leaves/types';
   static const String leaveDashboard = '/api/employee/leaves/dashboard';
   static const String leaveApply = '/api/employee/leaves/apply';
+
+  static const String overtimePreview = '/api/employee/overtime/preview';
+  static const String overtimeApply = '/api/employee/overtime/apply';
+  static const String overtimeList = '/api/employee/overtime';
 
   static const Duration connectTimeout = Duration(seconds: 20);
   static const Duration receiveTimeout = Duration(seconds: 20);
