@@ -283,6 +283,15 @@ class AppTranslations extends Translations {
     'profile_documents_upload_success':
         'استلمت الموارد البشرية وثائقك وستتم مراجعتها قريباً',
     'profile_documents_upload_error': 'تعذر رفع الوثائق، يرجى المحاولة لاحقاً',
+
+    // Company Info
+    'company_info_title': 'معلومات الشركة والاتصال',
+    'company_about_title': 'لمحة بسيطة عن الشركة',
+    'company_contact_title': 'بيانات الاتصال والتواصل',
+    'company_info_load_error': 'تعذر تحميل معلومات الشركة',
+    'company_info_retry': 'اضغط لإعادة المحاولة',
+    'logout_success': 'تم تسجيل الخروج بنجاح',
+    'logout_error': 'تعذر تسجيل الخروج، يرجى المحاولة لاحقاً',
   };
 
   static const Map<String, String> _en = {
@@ -568,5 +577,14 @@ class AppTranslations extends Translations {
         'HR has received your documents and will review them shortly',
     'profile_documents_upload_error':
         'Could not upload documents, please try again later',
+
+    // Company Info
+    'company_info_title': 'Company Information & Contact',
+    'company_about_title': 'A brief overview of the company',
+    'company_contact_title': 'Contact Information',
+    'company_info_load_error': 'Could not load company information',
+    'company_info_retry': 'Tap to retry',
+    'logout_success': 'Logged out successfully',
+    'logout_error': 'Could not log out, please try again later',
   };
 }

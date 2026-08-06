@@ -18,7 +18,12 @@ class AuthProvider {
       },
     );
   }
-Future<Map<String, dynamic>> completeFirstLogin({
+
+  Future<Map<String, dynamic>> logout() {
+    return _client.post(ApiConstants.logout);
+  }
+
+  Future<Map<String, dynamic>> completeFirstLogin({
     required String password,
     required String passwordConfirmation,
   }) {
@@ -30,6 +35,4 @@ Future<Map<String, dynamic>> completeFirstLogin({
       },
     );
   }
-
-  
 }

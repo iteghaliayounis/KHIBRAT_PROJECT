@@ -26,4 +26,7 @@ abstract class AppRoutes {
   //profile
   static const profile = '/profile';
   static const profileDocuments = '/profileDocuments';
+
+  // Company info
+  static const companyInfo = '/company-info';
 }

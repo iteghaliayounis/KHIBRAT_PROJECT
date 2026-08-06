@@ -1,7 +1,10 @@
 import 'package:get/get.dart';
 
-/// No controller needed yet for the placeholder home screen.
+import '../controllers/home_controller.dart';
+
 class HomeBinding extends Bindings {
   @override
-  void dependencies() {}
+  void dependencies() {
+    Get.lazyPut(() => HomeController());
+  }
 }

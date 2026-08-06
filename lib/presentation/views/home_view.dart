@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/routes/app_routes.dart';
+import '../../core/utils/storage_service.dart';
+import '../../data/providers/auth_provider.dart';
+import '../controllers/home_controller.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -12,6 +15,20 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   int _selectedIndex = 0;
   int? _hoveredCardIndex;
+  bool _isLoggingOut = false;
+
+  HomeController get _homeController => Get.find<HomeController>();
+
+  /// عند العودة من أي شاشة فرعية نُبقي أيقونة الرئيسية هي النشطة
+  /// ونحدّث بيانات الهيدر إن لزم.
+  Future<void> _openRouteAndResetNav(String route, {bool refreshProfile = false}) async {
+    await Get.toNamed(route);
+    if (!mounted) return;
+    setState(() => _selectedIndex = 0);
+    if (refreshProfile) {
+      _homeController.loadProfile();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +79,7 @@ class _HomeViewState extends State<HomeView> {
         'icon': Icons.business_rounded,
         'color': const Color(0xFF2E7D32),
         'bgColor': const Color(0xFFE8F5E9),
+        'route': AppRoutes.companyInfo,
       },
       {
         'title': 'ai_buddy'.tr,
@@ -116,7 +134,10 @@ class _HomeViewState extends State<HomeView> {
                           setState(() => _hoveredCardIndex = null);
                           final route = service['route'] as String?;
                           if (route != null && route.isNotEmpty) {
-                            Get.toNamed(route);
+                            _openRouteAndResetNav(
+                              route,
+                              refreshProfile: route == AppRoutes.profile,
+                            );
                           }
                         },
                         child: AnimatedContainer(
@@ -210,87 +231,110 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Widget _buildHeader(Color primaryColor) {
-    const String userName = 'أحمد المحمد';
-    const String userRole = 'مهندس برمجيات | سوريا';
-    const String? userImageUrl = null;
+    return Obx(() {
+      final userName = _homeController.fullName.isNotEmpty
+          ? _homeController.fullName
+          : '—';
+      final userRole = _homeController.jobTitle.isNotEmpty
+          ? _homeController.jobTitle
+          : '—';
+      final userImageUrl = _homeController.profileImageUrl;
+      final initials = _homeController.initials;
 
-    return Container(
-      margin: const EdgeInsets.all(12),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      decoration: BoxDecoration(
-        color: primaryColor,
-        borderRadius: BorderRadius.circular(28),
-        boxShadow: [
-          BoxShadow(
-            color: primaryColor.withOpacity(0.3),
-            blurRadius: 15,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          InkWell(
-            onTap: () {
-              Get.offAllNamed('/login');
-            },
-            borderRadius: BorderRadius.circular(12),
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.12),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.logout_rounded,
-                color: Colors.white,
-                size: 20,
+      return Container(
+        margin: const EdgeInsets.all(12),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        decoration: BoxDecoration(
+          color: primaryColor,
+          borderRadius: BorderRadius.circular(28),
+          boxShadow: [
+            BoxShadow(
+              color: primaryColor.withOpacity(0.3),
+              blurRadius: 15,
+              offset: const Offset(0, 8),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            InkWell(
+              onTap: _isLoggingOut ? null : _handleLogout,
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.12),
+                  shape: BoxShape.circle,
+                ),
+                child: _isLoggingOut
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : const Icon(
+                        Icons.logout_rounded,
+                        color: Colors.white,
+                        size: 20,
+                      ),
               ),
             ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                userName,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                userRole,
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.75),
-                  fontSize: 12,
-                ),
-              ),
-            ],
-          ),
-          CircleAvatar(
-            radius: 24,
-            backgroundColor: Colors.white.withOpacity(0.2),
-            backgroundImage: userImageUrl != null
-                ? NetworkImage(userImageUrl)
-                : null,
-            child: userImageUrl == null
-                ? const Text(
-                    'AM',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      userName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  )
-                : null,
-          ),
-        ],
-      ),
-    );
+                    const SizedBox(height: 2),
+                    Text(
+                      userRole,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.75),
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            CircleAvatar(
+              radius: 24,
+              backgroundColor: Colors.white.withOpacity(0.2),
+              backgroundImage: userImageUrl != null
+                  ? NetworkImage(userImageUrl)
+                  : null,
+              child: userImageUrl == null
+                  ? Text(
+                      initials,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    )
+                  : null,
+            ),
+          ],
+        ),
+      );
+    });
   }
 
   Widget _buildAnimatedBottomBar(Color primaryNavy) {
@@ -323,12 +367,20 @@ class _HomeViewState extends State<HomeView> {
 
           return GestureDetector(
             onTap: () {
-              setState(() {
-                _selectedIndex = index;
-              });
-              // ✅ الانتقال للملف الشخصي عند الضغط على "حسابي"
+              if (index == 0) {
+                setState(() => _selectedIndex = 0);
+                return;
+              }
+              // شاشات الدفع (profile / company) — الرئيسية تبقى active عند العودة
               if (index == 1) {
-                Get.toNamed(AppRoutes.profile);
+                _openRouteAndResetNav(
+                  AppRoutes.profile,
+                  refreshProfile: true,
+                );
+              } else if (index == 2) {
+                _openRouteAndResetNav(AppRoutes.companyInfo);
+              } else {
+                setState(() => _selectedIndex = index);
               }
             },
             behavior: HitTestBehavior.opaque,
@@ -378,5 +430,21 @@ class _HomeViewState extends State<HomeView> {
         }),
       ),
     );
+  }
+
+  Future<void> _handleLogout() async {
+    if (_isLoggingOut) return;
+    setState(() => _isLoggingOut = true);
+    try {
+      await AuthProvider().logout();
+    } catch (_) {
+      // حتى لو فشل الطلب، نمسح الجلسة محلياً
+    } finally {
+      await StorageService.instance.clearSession();
+      if (mounted) {
+        setState(() => _isLoggingOut = false);
+      }
+      Get.offAllNamed(AppRoutes.login);
+    }
   }
 }

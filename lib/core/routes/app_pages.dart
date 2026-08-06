@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
+import 'package:khibrat_flutter2/presentation/bindings/company_info_binding.dart';
 import 'package:khibrat_flutter2/presentation/bindings/forgot_password_binding.dart';
 import 'package:khibrat_flutter2/presentation/bindings/overtime_binding.dart';
 import 'package:khibrat_flutter2/presentation/bindings/profile_binding.dart';
 import 'package:khibrat_flutter2/presentation/bindings/reset_password_binding.dart';
 import 'package:khibrat_flutter2/presentation/bindings/verify_code_binding.dart';
+import 'package:khibrat_flutter2/presentation/views/company_info_view.dart';
 import 'package:khibrat_flutter2/presentation/views/forgot_password_view.dart';
 import 'package:khibrat_flutter2/presentation/views/overtime_view.dart';
 import 'package:khibrat_flutter2/presentation/views/profile_documents_view.dart';
@@ -125,6 +127,13 @@ class AppPages {
       name: AppRoutes.profileDocuments,
       page: () => const ProfileDocumentsView(),
       binding: ProfileBinding(),
+    ),
+
+    GetPage(
+      name: AppRoutes.companyInfo,
+      page: () => const CompanyInfoView(),
+      binding: CompanyInfoBinding(),
+      transition: Transition.rightToLeftWithFade,
     ),
   ];
 }
