@@ -89,6 +89,48 @@ class ApiClientFixed {
     }
   }
 
+  /// PUT request (JSON body, no files) — e.g. simple profile field
+  /// updates when no image is being sent.
+  ///
+  /// ⬅️ مُضاف جديد من أجل شاشة الملف الشخصي (PUT /api/profile).
+  Future<Map<String, dynamic>> put(
+    String path, {
+    Map<String, dynamic>? data,
+  }) async {
+    try {
+      final response = await _dio.put(path, data: data);
+      final body = response.data;
+      if (body is Map<String, dynamic>) return body;
+      if (body is Map) return Map<String, dynamic>.from(body);
+      return {'data': body};
+    } on DioException catch (e) {
+      throw _mapError(e);
+    }
+  }
+
+  /// Multipart PUT (e.g. profile update with an optional image file).
+  ///
+  /// ⬅️ مُضاف جديد من أجل شاشة الملف الشخصي (PUT /api/profile يقبل
+  /// multipart/form-data لأنه بيرسل profile_image كملف).
+  Future<Map<String, dynamic>> putMultipart(
+    String path, {
+    required FormData formData,
+  }) async {
+    try {
+      final response = await _dio.put(
+        path,
+        data: formData,
+        options: Options(headers: {'Accept': 'application/json'}),
+      );
+      final data = response.data;
+      if (data is Map<String, dynamic>) return data;
+      if (data is Map) return Map<String, dynamic>.from(data);
+      return {'data': data};
+    } on DioException catch (e) {
+      throw _mapError(e);
+    }
+  }
+
   ApiException _mapError(DioException e) {
     print("--------------------------------------------------");
     print("❌ DIO ERROR TYPE: ${e.type}");

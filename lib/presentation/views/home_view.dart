@@ -326,6 +326,10 @@ class _HomeViewState extends State<HomeView> {
               setState(() {
                 _selectedIndex = index;
               });
+              // ✅ الانتقال للملف الشخصي عند الضغط على "حسابي"
+              if (index == 1) {
+                Get.toNamed(AppRoutes.profile);
+              }
             },
             behavior: HitTestBehavior.opaque,
             child: AnimatedContainer(

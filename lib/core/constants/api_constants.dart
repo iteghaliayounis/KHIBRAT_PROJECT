@@ -27,6 +27,10 @@ class ApiConstants {
   static const String overtimeApply = '/api/employee/overtime/apply';
   static const String overtimeList = '/api/employee/overtime';
 
+  static const String profilePreview = '/api/profile';
+  static const String profileUpdate = '/api/profile';
+  static const String profileDocuments = '/api/profile/documents';
+
   static const Duration connectTimeout = Duration(seconds: 20);
   static const Duration receiveTimeout = Duration(seconds: 20);
 }

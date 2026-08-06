@@ -1,10 +1,13 @@
 import 'package:get/get.dart';
 import 'package:khibrat_flutter2/presentation/bindings/forgot_password_binding.dart';
 import 'package:khibrat_flutter2/presentation/bindings/overtime_binding.dart';
+import 'package:khibrat_flutter2/presentation/bindings/profile_binding.dart';
 import 'package:khibrat_flutter2/presentation/bindings/reset_password_binding.dart';
 import 'package:khibrat_flutter2/presentation/bindings/verify_code_binding.dart';
 import 'package:khibrat_flutter2/presentation/views/forgot_password_view.dart';
 import 'package:khibrat_flutter2/presentation/views/overtime_view.dart';
+import 'package:khibrat_flutter2/presentation/views/profile_documents_view.dart';
+import 'package:khibrat_flutter2/presentation/views/profile_view.dart';
 import 'package:khibrat_flutter2/presentation/views/reset_password_view.dart';
 import 'package:khibrat_flutter2/presentation/views/verify_code_view.dart';
 import '../../presentation/bindings/apply_leave_binding.dart';
@@ -110,6 +113,18 @@ class AppPages {
       name: AppRoutes.overTime,
       page: () => const OvertimeView(),
       binding: OvertimeBinding(),
+    ),
+
+    GetPage(
+      name: AppRoutes.profile,
+      page: () => const ProfileView(),
+      binding: ProfileBinding(),
+    ),
+
+    GetPage(
+      name: AppRoutes.profileDocuments,
+      page: () => const ProfileDocumentsView(),
+      binding: ProfileBinding(),
     ),
   ];
 }

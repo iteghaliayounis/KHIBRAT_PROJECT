@@ -238,6 +238,51 @@ class AppTranslations extends Translations {
     'overtime_history_item_title': 'عمل إضافي',
     'overtime_full_day_short': 'يوم كامل (8 ساعات)',
     'overtime_hours_worked_count': '@count ساعات عمل',
+
+    // ==========================================
+    // الملف الشخصي (Profile)
+    // ==========================================
+    'profile_title': 'الملف الشخصي للموظف',
+    'profile_hire_date': 'تاريخ التعيين',
+    'profile_personal_professional_data': 'البيانات الشخصية والمهنية',
+    'profile_full_name': 'الاسم الكامل',
+    'profile_email': 'البريد الإلكتروني',
+    'profile_date_of_birth': 'تاريخ الميلاد',
+    'profile_gender': 'الجنس',
+    'profile_gender_male': 'ذكر',
+    'profile_gender_female': 'أنثى',
+    'profile_nationality': 'الجنسية',
+    'profile_department': 'القسم',
+    'profile_job_title': 'المسمى الوظيفي',
+    'profile_contact_data': 'بيانات التواصل',
+    'profile_phone': 'رقم الهاتف الجوال',
+    'profile_address': 'العنوان',
+    'profile_edit': 'تعديل',
+    'profile_edit_field_title': 'تعديل @field',
+    'profile_cancel': 'إلغاء',
+    'profile_save_edit': 'حفظ التعديل',
+    'profile_add_documents_button': 'إضافة وثائق لإكمال الملف الشخصي',
+    'profile_documents_title': 'إضافة وثائق لإكمال الملف',
+    'profile_documents_description':
+        'لإكمال ملفك الشخصي، يرجى إرفاق صورة واضحة عن هويتك الشخصية، ويمكنك أيضاً إرفاق صورة شهادتك العلمية (اختياري)، ثم اضغط زر الرفع لإرسالها إلى قسم الموارد البشرية للمراجعة.',
+    'profile_identity_image': 'صورة الهوية الشخصية',
+    'profile_certificate_image': 'صورة الشهادة العلمية',
+    'profile_optional': 'اختياري',
+    'profile_tap_to_choose': 'اضغط هنا لاختيار @label',
+    'profile_file_attached': 'تم إرفاق: @filename',
+    'profile_file_formats_hint': 'JPG, PNG أو PDF',
+    'profile_upload_documents_button': 'رفع الوثائق إلى الموارد البشرية',
+    'profile_load_error': 'تعذر تحميل بيانات الملف الشخصي',
+    'profile_retry': 'اضغط لإعادة المحاولة',
+    'profile_update_success': 'تم تحديث البيانات بنجاح',
+    'profile_update_error': 'تعذر تحديث بيانات الملف الشخصي',
+    'profile_avatar_update_success': 'تم تحديث صورتك الشخصية بنجاح',
+    'profile_avatar_update_error': 'تعذر تحديث الصورة الشخصية',
+    'profile_empty_field_error': 'يرجى إدخال قيمة صالحة',
+    'profile_identity_required': 'يرجى إرفاق صورة الهوية الشخصية أولاً',
+    'profile_documents_upload_success':
+        'استلمت الموارد البشرية وثائقك وستتم مراجعتها قريباً',
+    'profile_documents_upload_error': 'تعذر رفع الوثائق، يرجى المحاولة لاحقاً',
   };
 
   static const Map<String, String> _en = {
@@ -477,5 +522,51 @@ class AppTranslations extends Translations {
     'overtime_history_item_title': 'Overtime',
     'overtime_full_day_short': 'Full day (8 hours)',
     'overtime_hours_worked_count': '@count work hours',
+
+    // ==========================================
+    // Profile (الملف الشخصي)
+    // ==========================================
+    'profile_title': 'Employee Profile',
+    'profile_hire_date': 'Hire Date',
+    'profile_personal_professional_data': 'Personal & Professional Data',
+    'profile_full_name': 'Full Name',
+    'profile_email': 'Email Address',
+    'profile_date_of_birth': 'Date of Birth',
+    'profile_gender': 'Gender',
+    'profile_gender_male': 'Male',
+    'profile_gender_female': 'Female',
+    'profile_nationality': 'Nationality',
+    'profile_department': 'Department',
+    'profile_job_title': 'Job Title',
+    'profile_contact_data': 'Contact Information',
+    'profile_phone': 'Mobile Phone Number',
+    'profile_address': 'Address',
+    'profile_edit': 'Edit',
+    'profile_edit_field_title': 'Edit @field',
+    'profile_cancel': 'Cancel',
+    'profile_save_edit': 'Save Changes',
+    'profile_add_documents_button': 'Add Documents to Complete Your Profile',
+    'profile_documents_title': 'Add Documents',
+    'profile_documents_description':
+        'To complete your profile, please attach a clear photo of your ID. You may also attach your university certificate (optional), then tap the upload button to send them to HR for review.',
+    'profile_identity_image': 'ID / Identity Photo',
+    'profile_certificate_image': 'University Certificate Photo',
+    'profile_optional': 'optional',
+    'profile_tap_to_choose': 'Tap here to choose @label',
+    'profile_file_attached': 'Attached: @filename',
+    'profile_file_formats_hint': 'JPG, PNG or PDF',
+    'profile_upload_documents_button': 'Upload Documents to HR',
+    'profile_load_error': 'Could not load profile data',
+    'profile_retry': 'Tap to retry',
+    'profile_update_success': 'Data updated successfully',
+    'profile_update_error': 'Could not update profile data',
+    'profile_avatar_update_success': 'Profile picture updated successfully',
+    'profile_avatar_update_error': 'Could not update profile picture',
+    'profile_empty_field_error': 'Please enter a valid value',
+    'profile_identity_required': 'Please attach your ID photo first',
+    'profile_documents_upload_success':
+        'HR has received your documents and will review them shortly',
+    'profile_documents_upload_error':
+        'Could not upload documents, please try again later',
   };
 }

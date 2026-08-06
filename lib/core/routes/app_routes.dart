@@ -22,4 +22,8 @@ abstract class AppRoutes {
 
   //overTime
   static const overTime = '/overtime';
+
+  //profile
+  static const profile = '/profile';
+  static const profileDocuments = '/profileDocuments';
 }
