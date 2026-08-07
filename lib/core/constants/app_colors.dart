@@ -32,6 +32,11 @@ class AppColors {
 
   static const Color cardShadow = Color(0x1A000000);
 
+  /// Brand aliases (same values as primary / secondary / accent).
+  static const Color brandNavy = primary;
+  static const Color brandGold = secondary;
+  static const Color brandBrown = accent;
+
   // Gradient used for primary buttons (gold gradient as seen in language screen)
   static const List<Color> goldGradient = [
     Color(0xFFF5C453),

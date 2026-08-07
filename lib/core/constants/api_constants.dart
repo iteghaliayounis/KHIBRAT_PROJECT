@@ -22,6 +22,13 @@ class ApiConstants {
   static const String attendanceCheckIn = '/api/employee/attendance/check-in';
   static const String attendanceCheckOut = '/api/employee/attendance/check-out';
 
+  // Salary & Advances
+  static const String advancesEligibility = '/api/employee/advances/eligibility';
+  static const String advancesApply = '/api/employee/advances/apply';
+  static const String advancesList = '/api/employee/advances';
+  static const String employeeSalaries = '/api/employee/salaries';
+  static String employeeSalaryDetail(String id) => '$employeeSalaries/$id';
+
   static const Duration connectTimeout = Duration(seconds: 20);
   static const Duration receiveTimeout = Duration(seconds: 20);
 }

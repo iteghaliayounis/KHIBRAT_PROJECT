@@ -18,4 +18,7 @@ abstract class AppRoutes {
   // Attendance
   static const attendance = '/attendance';
   static const attendanceScanner = '/attendance-scanner';
+
+  // Salary & Advances
+  static const salaryDashboard = '/salary-dashboard';
 }

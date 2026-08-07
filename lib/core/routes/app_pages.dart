@@ -13,6 +13,7 @@ import '../../presentation/bindings/language_binding.dart';
 import '../../presentation/bindings/login_binding.dart';
 import '../../presentation/bindings/my_evaluations_binding.dart';
 import '../../presentation/bindings/onboarding_binding.dart';
+import '../../presentation/bindings/salary_binding.dart';
 import '../../presentation/bindings/splash_binding.dart';
 import '../../presentation/views/attendance/attendance_dashboard_view.dart';
 import '../../presentation/views/attendance/attendance_scanner_view.dart';
@@ -22,6 +23,7 @@ import '../../presentation/views/language_selection_view.dart';
 import '../../presentation/views/login_view.dart';
 import '../../presentation/views/my_evaluations_view.dart';
 import '../../presentation/views/onboarding_welcome_view.dart';
+import '../../presentation/views/salary/salary_dashboard_view.dart';
 import '../../presentation/views/splash_view.dart';
 
 
@@ -105,6 +107,12 @@ GetPage(
       name: AppRoutes.attendanceScanner,
       page: () => const AttendanceScannerView(),
       binding: AttendanceScannerBinding(),
+      transition: Transition.rightToLeftWithFade,
+    ),
+    GetPage(
+      name: AppRoutes.salaryDashboard,
+      page: () => const SalaryDashboardView(),
+      binding: SalaryBinding(),
       transition: Transition.rightToLeftWithFade,
     ),
   ];
