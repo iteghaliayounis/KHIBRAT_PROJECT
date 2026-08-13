@@ -4,7 +4,7 @@ class ApiConstants {
   ApiConstants._();
 
   static const String baseUrl =
-      'http://10.82.185.222:8000'; // TODO: set real base URL
+      'http://192.168.1.101:8000'; // TODO: set real base URL
 
   static const String login = '/api/auth/login';
   static const String logout = '/api/auth/logout';
@@ -38,6 +38,20 @@ class ApiConstants {
   static const String profilePreview = '/api/profile';
   static const String profileUpdate = '/api/profile';
   static const String profileDocuments = '/api/profile/documents';
+
+  // Attendance
+  static const String attendanceDashboard =
+      '/api/employee/attendance/dashboard';
+  static const String attendanceCheckIn = '/api/employee/attendance/check-in';
+  static const String attendanceCheckOut = '/api/employee/attendance/check-out';
+
+  // Salary & Advances
+  static const String advancesEligibility =
+      '/api/employee/advances/eligibility';
+  static const String advancesApply = '/api/employee/advances/apply';
+  static const String advancesList = '/api/employee/advances';
+  static const String employeeSalaries = '/api/employee/salaries';
+  static String employeeSalaryDetail(String id) => '$employeeSalaries/$id';
 
   static const Duration connectTimeout = Duration(seconds: 20);
   static const Duration receiveTimeout = Duration(seconds: 20);

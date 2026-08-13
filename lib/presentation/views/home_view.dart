@@ -42,6 +42,7 @@ class _HomeViewState extends State<HomeView> {
         'icon': Icons.qr_code_scanner_rounded,
         'color': const Color(0xFF1E88E5),
         'bgColor': const Color(0xFFE3F2FD),
+        'route': AppRoutes.attendance,
       },
       {
         'title': 'company_policies'.tr,
@@ -73,6 +74,7 @@ class _HomeViewState extends State<HomeView> {
         'icon': Icons.account_balance_wallet_rounded,
         'color': const Color(0xFF3F51B5),
         'bgColor': const Color(0xFFE8EAF6),
+        'route': AppRoutes.salaryDashboard,
       },
       {
         'title': 'company_hr_info'.tr,

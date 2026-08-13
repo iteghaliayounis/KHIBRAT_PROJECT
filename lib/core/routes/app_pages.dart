@@ -15,6 +15,8 @@ import 'package:khibrat_flutter2/presentation/views/profile_view.dart';
 import 'package:khibrat_flutter2/presentation/views/reset_password_view.dart';
 import 'package:khibrat_flutter2/presentation/views/verify_code_view.dart';
 import '../../presentation/bindings/apply_leave_binding.dart';
+import '../../presentation/bindings/attendance_binding.dart';
+import '../../presentation/bindings/attendance_scanner_binding.dart';
 import '../../presentation/bindings/evaluation_binding.dart';
 import '../../presentation/bindings/home_binding.dart';
 import '../../presentation/bindings/language_binding.dart';
@@ -22,8 +24,11 @@ import '../../presentation/bindings/leave_dashboard_binding.dart';
 import '../../presentation/bindings/login_binding.dart';
 import '../../presentation/bindings/my_evaluations_binding.dart';
 import '../../presentation/bindings/onboarding_binding.dart';
+import '../../presentation/bindings/salary_binding.dart';
 import '../../presentation/bindings/splash_binding.dart';
 import '../../presentation/views/apply_leave_view.dart';
+import '../../presentation/views/attendance/attendance_dashboard_view.dart';
+import '../../presentation/views/attendance/attendance_scanner_view.dart';
 import '../../presentation/views/evaluation_detail_view.dart';
 import '../../presentation/views/home_view.dart';
 import '../../presentation/views/language_selection_view.dart';
@@ -31,6 +36,7 @@ import '../../presentation/views/leave_dashboard_view.dart';
 import '../../presentation/views/login_view.dart';
 import '../../presentation/views/my_evaluations_view.dart';
 import '../../presentation/views/onboarding_welcome_view.dart';
+import '../../presentation/views/salary/salary_dashboard_view.dart';
 import '../../presentation/views/splash_view.dart';
 
 import 'app_routes.dart';
@@ -112,36 +118,49 @@ class AppPages {
       binding: EvaluationBinding(),
       transition: Transition.rightToLeftWithFade,
     ),
-
     GetPage(
       name: AppRoutes.overTime,
       page: () => const OvertimeView(),
       binding: OvertimeBinding(),
     ),
-
     GetPage(
       name: AppRoutes.profile,
       page: () => const ProfileView(),
       binding: ProfileBinding(),
     ),
-
     GetPage(
       name: AppRoutes.profileDocuments,
       page: () => const ProfileDocumentsView(),
       binding: ProfileBinding(),
     ),
-
     GetPage(
       name: AppRoutes.companyInfo,
       page: () => const CompanyInfoView(),
       binding: CompanyInfoBinding(),
       transition: Transition.rightToLeftWithFade,
     ),
-
     GetPage(
       name: AppRoutes.companyPolicies,
       page: () => const CompanyPoliciesView(),
       binding: CompanyPoliciesBinding(),
+      transition: Transition.rightToLeftWithFade,
+    ),
+    GetPage(
+      name: AppRoutes.attendance,
+      page: () => const AttendanceDashboardView(),
+      binding: AttendanceBinding(),
+      transition: Transition.rightToLeftWithFade,
+    ),
+    GetPage(
+      name: AppRoutes.attendanceScanner,
+      page: () => const AttendanceScannerView(),
+      binding: AttendanceScannerBinding(),
+      transition: Transition.rightToLeftWithFade,
+    ),
+    GetPage(
+      name: AppRoutes.salaryDashboard,
+      page: () => const SalaryDashboardView(),
+      binding: SalaryBinding(),
       transition: Transition.rightToLeftWithFade,
     ),
   ];
