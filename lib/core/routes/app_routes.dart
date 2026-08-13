@@ -29,4 +29,7 @@ abstract class AppRoutes {
 
   // Company info
   static const companyInfo = '/company-info';
+
+  // Company policies & holidays
+  static const companyPolicies = '/company-policies';
 }

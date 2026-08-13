@@ -49,6 +49,7 @@ class _HomeViewState extends State<HomeView> {
         'icon': Icons.gavel_rounded,
         'color': const Color(0xFFD84315),
         'bgColor': const Color(0xFFFBE9E7),
+        'route': AppRoutes.companyPolicies,
       },
       {
         'title': 'my_annual_leaves'.tr,

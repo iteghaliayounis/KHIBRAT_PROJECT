@@ -4,7 +4,7 @@ class ApiConstants {
   ApiConstants._();
 
   static const String baseUrl =
-      'http://192.168.1.104:8000'; // TODO: set real base URL
+      'http://10.82.185.222:8000'; // TODO: set real base URL
 
   static const String login = '/api/auth/login';
   static const String logout = '/api/auth/logout';
@@ -12,6 +12,10 @@ class ApiConstants {
 
   // Company profile
   static const String companyProfile = '/api/company/profile';
+
+  // Company policies & holidays
+  static const String companyPolicies = '/api/employee/company-policies';
+  static const String companyHolidays = '/api/employee/company-holidays';
 
   // Evaluations (My Evaluations feature)
   // GET  myReviews                          -> list + counters for the current user
