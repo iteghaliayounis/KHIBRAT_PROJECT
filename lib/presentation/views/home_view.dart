@@ -90,6 +90,7 @@ class _HomeViewState extends State<HomeView> {
         'icon': Icons.smart_toy_rounded,
         'color': const Color(0xFF00897B),
         'bgColor': const Color(0xFFE0F2F1),
+        'route': AppRoutes.assistant,
       },
       {
         'title': 'evaluations'.tr,

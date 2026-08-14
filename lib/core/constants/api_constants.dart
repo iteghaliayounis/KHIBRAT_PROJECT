@@ -53,6 +53,14 @@ class ApiConstants {
   static const String employeeSalaries = '/api/employee/salaries';
   static String employeeSalaryDetail(String id) => '$employeeSalaries/$id';
 
+  // Employee AI Assistant (Gemini is called by Laravel only)
+  static const String assistantSessions = '/api/employee/assistant/sessions';
+  static String assistantSession(String sessionId) =>
+      '$assistantSessions/$sessionId';
+  static String assistantSessionMessages(String sessionId) =>
+      '$assistantSessions/$sessionId/messages';
+
   static const Duration connectTimeout = Duration(seconds: 20);
   static const Duration receiveTimeout = Duration(seconds: 20);
+  static const Duration assistantReceiveTimeout = Duration(seconds: 90);
 }

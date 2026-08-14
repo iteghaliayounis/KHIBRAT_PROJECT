@@ -39,4 +39,7 @@ abstract class AppRoutes {
 
   // Salary & Advances
   static const salaryDashboard = '/salary-dashboard';
+
+  // AI Assistant
+  static const assistant = '/assistant';
 }

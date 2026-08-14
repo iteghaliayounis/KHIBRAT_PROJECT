@@ -57,13 +57,33 @@ class ApiClientFixed {
   Future<Map<String, dynamic>> post(
     String path, {
     Map<String, dynamic>? data,
+    Duration? receiveTimeout,
   }) async {
     try {
-      final response = await _dio.post(path, data: data);
+      final response = await _dio.post(
+        path,
+        data: data,
+        options: receiveTimeout != null
+            ? Options(receiveTimeout: receiveTimeout)
+            : null,
+      );
       final body = response.data;
       if (body is Map<String, dynamic>) return body;
       if (body is Map) return Map<String, dynamic>.from(body);
       return {'data': body};
+    } on DioException catch (e) {
+      throw _mapError(e);
+    }
+  }
+
+  Future<Map<String, dynamic>> delete(String path) async {
+    try {
+      final response = await _dio.delete(path);
+      final body = response.data;
+      if (body == null || body == '') return {'success': true};
+      if (body is Map<String, dynamic>) return body;
+      if (body is Map) return Map<String, dynamic>.from(body);
+      return {'success': true, 'data': body};
     } on DioException catch (e) {
       throw _mapError(e);
     }

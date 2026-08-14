@@ -441,6 +441,30 @@ class AppTranslations extends Translations {
     'salary_advance_form_invalid': 'يرجى تعبئة جميع الحقول بشكل صحيح',
     'salary_advance_success': 'تم إرسال طلب السلفة بنجاح',
 
+    // AI Assistant
+    'ai_connected': 'متصل وفعال',
+    'ai_help_now': 'كيف يمكنني مساعدتك الآن؟',
+    'ai_ready_subtitle': 'جاهز لإجابة جميع الاستفسارات والخدمات الذكية',
+    'ai_welcome_chip': 'أهلاً بك، @name',
+    'ai_welcome_chip_generic': 'أهلاً بك',
+    'ai_input_hint': 'اكتب سؤالك هنا بذكاء...',
+    'ai_suggestion_leave': 'رصيد إجازاتي',
+    'ai_suggestion_exit': 'طلب إذن خروج',
+    'ai_suggestion_salary': 'تفاصيل الراتب',
+    'ai_history_title': 'سجل المحادثات الذكية',
+    'ai_new_conversation': 'محادثة جديدة',
+    'ai_previous_chats': 'المحادثات السابقة',
+    'ai_untitled_session': 'محادثة جديدة',
+    'ai_no_sessions': 'لا توجد محادثات سابقة',
+    'ai_delete_title': 'حذف المحادثة',
+    'ai_delete_confirm': 'هل أنت متأكد من حذف هذه المحادثة؟',
+    'ai_delete': 'حذف',
+    'ai_cancel': 'إلغاء',
+    'ai_analyzed_header': 'أهلاً بك! تم تحليل استفسارك بذكاء:',
+    'ai_send_error': 'تعذر إرسال الرسالة، يرجى المحاولة مرة أخرى',
+    'ai_load_error': 'تعذر تحميل المحادثة',
+    'ai_empty_input': 'يرجى كتابة سؤالك أولاً',
+
   };
 
   static const Map<String, String> _en = {
@@ -883,6 +907,30 @@ class AppTranslations extends Translations {
     'salary_submit_advance': 'Submit advance for review',
     'salary_advance_form_invalid': 'Please fill all fields correctly',
     'salary_advance_success': 'Advance request submitted successfully',
+
+    // AI Assistant
+    'ai_connected': 'Online and active',
+    'ai_help_now': 'How can I help you now?',
+    'ai_ready_subtitle': 'Ready to answer all inquiries and smart services',
+    'ai_welcome_chip': 'Welcome, @name',
+    'ai_welcome_chip_generic': 'Welcome',
+    'ai_input_hint': 'Write your question here smartly...',
+    'ai_suggestion_leave': 'My leave balance',
+    'ai_suggestion_exit': 'Exit permit request',
+    'ai_suggestion_salary': 'Salary details',
+    'ai_history_title': 'Smart chat history',
+    'ai_new_conversation': 'New conversation',
+    'ai_previous_chats': 'Previous conversations',
+    'ai_untitled_session': 'New conversation',
+    'ai_no_sessions': 'No previous conversations',
+    'ai_delete_title': 'Delete conversation',
+    'ai_delete_confirm': 'Are you sure you want to delete this conversation?',
+    'ai_delete': 'Delete',
+    'ai_cancel': 'Cancel',
+    'ai_analyzed_header': 'Welcome! Your inquiry has been analyzed:',
+    'ai_send_error': 'Could not send the message, please try again',
+    'ai_load_error': 'Could not load the conversation',
+    'ai_empty_input': 'Please type your question first',
 
   };
 }
