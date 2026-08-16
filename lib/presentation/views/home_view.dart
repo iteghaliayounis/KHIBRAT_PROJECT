@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/routes/app_routes.dart';
+import '../../core/services/push_notification_service.dart';
 import '../../core/utils/storage_service.dart';
 import '../../data/providers/auth_provider.dart';
 import '../controllers/home_controller.dart';
@@ -440,6 +441,11 @@ class _HomeViewState extends State<HomeView> {
     if (_isLoggingOut) return;
     setState(() => _isLoggingOut = true);
     try {
+      try {
+        await PushNotificationService.instance.unregisterBeforeLogout();
+      } catch (_) {
+        // Best-effort: logout must proceed even if FCM unregister fails.
+      }
       await AuthProvider().logout();
     } catch (_) {
       // حتى لو فشل الطلب، نمسح الجلسة محلياً

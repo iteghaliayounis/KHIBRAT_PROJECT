@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1068960230140",
+    "project_id": "khibrat-fcm",
+    "storage_bucket": "khibrat-fcm.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1068960230140:android:ceeb8bef6976ade219c579",
+        "android_client_info": {
+          "package_name": "com.example.khibrat_flutter2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwVerhc-WHdZCyup-5hkUJ34WLloif5GE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

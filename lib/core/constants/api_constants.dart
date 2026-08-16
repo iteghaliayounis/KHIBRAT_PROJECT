@@ -4,7 +4,7 @@ class ApiConstants {
   ApiConstants._();
 
   static const String baseUrl =
-      'http://192.168.1.101:8000'; // TODO: set real base URL
+      'https://e28a-185-177-125-94.ngrok-free.app'; // TODO: set real base URL
 
   static const String login = '/api/auth/login';
   static const String logout = '/api/auth/logout';
@@ -25,6 +25,10 @@ class ApiConstants {
   static const String myReviews = '/api/evaluations/my-reviews';
   static String myReviewDetail(dynamic reviewId) => '$myReviews/$reviewId';
   static String submitReview(dynamic reviewId) => '$myReviews/$reviewId/submit';
+
+  // Device FCM tokens
+  static const String devices = '/api/devices';
+  static const String devicesUnregister = '/api/devices/unregister';
 
   // Employee Leaves
   static const String leaveTypes = '/api/employee/leaves/types';

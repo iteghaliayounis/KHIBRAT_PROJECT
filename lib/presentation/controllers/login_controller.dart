@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/errors/api_exception.dart';
 import '../../core/routes/app_routes.dart';
+import '../../core/services/push_notification_service.dart';
 import '../../core/utils/storage_service.dart';
 import '../../domain/usecases/login_usecase.dart';
 import '../widgets/app_feedback.dart';
@@ -72,11 +73,19 @@ Future<void> login() async {
 
     print("STATUS isFirstLogin: ${result.data.user.isFirstLogin}");
 
+    // Register FCM token with backend (best-effort; never blocks login).
+    try {
+      await PushNotificationService.instance.syncTokenAfterAuth();
+    } catch (e) {
+      print('FCM register after login failed: $e');
+    }
+
     // التوجيه
     if (result.data.user.isFirstLogin) {
       Get.offAllNamed(AppRoutes.resetPassword);
     } else {
       Get.offAllNamed(AppRoutes.home);
+      await PushNotificationService.instance.consumeInitialMessage();
     }
   } on ApiException catch (e) {
     print("🔴 3. ApiException (خطأ من الـ API أو الشبكة): ${e.message}");

@@ -1,0 +1,30 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "khibrat-fcm",
+          "appId": "1:1068960230140:android:ceeb8bef6976ade219c579",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "khibrat-fcm",
+          "appId": "1:1068960230140:ios:013ca2acce2a5fb119c579",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "khibrat-fcm",
+          "configurations": {
+            "android": "1:1068960230140:android:ceeb8bef6976ade219c579",
+            "ios": "1:1068960230140:ios:013ca2acce2a5fb119c579"
+          }
+        }
+      }
+    }
+  }
+}
