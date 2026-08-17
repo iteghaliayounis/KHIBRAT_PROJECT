@@ -465,6 +465,27 @@ class AppTranslations extends Translations {
     'ai_load_error': 'تعذر تحميل المحادثة',
     'ai_empty_input': 'يرجى كتابة سؤالك أولاً',
 
+    // Settings
+    'settings_title': 'الإعدادات',
+    'settings_language_title': 'لغة العرض الأساسية',
+    'settings_language_subtitle': 'اختر اللغة المفضلة لتطبيقك',
+    'settings_lang_ar': 'العربية',
+    'settings_lang_ar_active': 'العربية (مفعلة)',
+    'settings_lang_en': 'English (US)',
+    'settings_lang_en_active': 'English (Enabled)',
+    'settings_2fa_title': 'التحقق بخطوتين',
+    'settings_2fa_desc':
+        'طبقة حماية إضافية عبر رمز يُرسل إلى بريدك الإلكتروني عند تسجيل الدخول',
+    'settings_2fa_on': 'مفعل',
+    'settings_2fa_off': 'غير مفعل',
+    'settings_2fa_updated': 'تم تحديث إعداد التحقق بخطوتين',
+    'settings_logout': 'تسجيل الخروج',
+    'settings_logout_title': 'تسجيل الخروج',
+    'settings_logout_message':
+        'هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟',
+    'settings_logout_confirm': 'تسجيل الخروج',
+    'settings_logout_cancel': 'إلغاء',
+
   };
 
   static const Map<String, String> _en = {
@@ -931,6 +952,27 @@ class AppTranslations extends Translations {
     'ai_send_error': 'Could not send the message, please try again',
     'ai_load_error': 'Could not load the conversation',
     'ai_empty_input': 'Please type your question first',
+
+    // Settings
+    'settings_title': 'Settings',
+    'settings_language_title': 'Primary display language',
+    'settings_language_subtitle': 'Choose your preferred app language',
+    'settings_lang_ar': 'العربية',
+    'settings_lang_ar_active': 'Arabic (Enabled)',
+    'settings_lang_en': 'English (US)',
+    'settings_lang_en_active': 'English (Enabled)',
+    'settings_2fa_title': 'Two-step verification',
+    'settings_2fa_desc':
+        'An extra layer of protection via a code sent to your email when logging in',
+    'settings_2fa_on': 'Enabled',
+    'settings_2fa_off': 'Disabled',
+    'settings_2fa_updated': 'Two-factor authentication setting updated',
+    'settings_logout': 'Log out',
+    'settings_logout_title': 'Log out',
+    'settings_logout_message':
+        'Are you sure you want to log out of your account?',
+    'settings_logout_confirm': 'Log out',
+    'settings_logout_cancel': 'Cancel',
 
   };
 }

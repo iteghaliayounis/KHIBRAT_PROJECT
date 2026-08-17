@@ -35,4 +35,24 @@ class AuthProvider {
       },
     );
   }
+
+  Future<Map<String, dynamic>> setTwoFactor({required bool enabled}) {
+    return _client.post(
+      ApiConstants.twoFactor,
+      data: {'enabled': enabled},
+    );
+  }
+
+  Future<Map<String, dynamic>> verifyLoginOtp({
+    required String email,
+    required String otp,
+  }) {
+    return _client.post(
+      ApiConstants.verifyLoginOtp,
+      data: {
+        'email': email,
+        'otp': otp,
+      },
+    );
+  }
 }

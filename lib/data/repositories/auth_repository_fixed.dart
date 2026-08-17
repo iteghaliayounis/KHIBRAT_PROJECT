@@ -18,14 +18,11 @@ class AuthRepositoryFixed implements AuthRepository {
       final resp = await _provider.login(email: email, password: password);
       final model = LoginResponseModel.fromJson(resp);
 
-      // Accessing fields via model.data
-      if (model.data.token.isNotEmpty) {
-        await StorageService.instance.saveToken(model.data.token);
+      if (model.requires2fa) {
+        return model;
       }
-      await StorageService.instance.saveUser(model.data.user.toJson());
-      await StorageService.instance.saveCompany(model.data.company.toJson());
-      await StorageService.instance.setFirstLogin(model.data.user.isFirstLogin);
 
+      await _persistSession(model);
       return model;
     } on DioException catch (e) {
       final response = e.response;
@@ -112,5 +109,88 @@ class AuthRepositoryFixed implements AuthRepository {
       throw ApiException.generic(e.toString());
     }
   }
-  
+
+  @override
+  Future<bool> setTwoFactorEnabled({required bool enabled}) async {
+    try {
+      final resp = await _provider.setTwoFactor(enabled: enabled);
+      if (resp['success'] == false) {
+        throw ApiException.generic(
+          (resp['message'] ?? 'generic_error').toString(),
+        );
+      }
+      final data = resp['data'];
+      final dataMap = data is Map ? Map<String, dynamic>.from(data) : null;
+      final value = dataMap == null
+          ? enabled
+          : dataMap['two_factor_enabled'] == true;
+      await StorageService.instance.saveTwoFactorEnabled(value);
+      return value;
+    } on ApiException {
+      rethrow;
+    } on DioException catch (e) {
+      final response = e.response;
+      if (response != null &&
+          response.data is Map &&
+          response.data['message'] != null) {
+        throw ApiException(
+          message: response.data['message'].toString(),
+          statusCode: response.statusCode,
+        );
+      }
+      throw ApiException.generic(e.message);
+    } catch (e) {
+      throw ApiException.generic(e.toString());
+    }
+  }
+
+  @override
+  Future<LoginResponseModel> verifyLoginOtp({
+    required String email,
+    required String otp,
+  }) async {
+    try {
+      final resp = await _provider.verifyLoginOtp(email: email, otp: otp);
+      final model = LoginResponseModel.fromJson(resp);
+      if (model.data == null || model.data!.token.isEmpty) {
+        throw ApiException.generic(
+          (resp['message'] ?? 'invalid_code').toString(),
+        );
+      }
+      await _persistSession(model);
+      // Completing login OTP means 2FA is enabled. Token/user payloads
+      // often omit `two_factor_enabled`, which would otherwise store false.
+      await StorageService.instance.saveTwoFactorEnabled(true);
+      return model;
+    } on ApiException {
+      rethrow;
+    } on DioException catch (e) {
+      final response = e.response;
+      if (response != null &&
+          response.data is Map &&
+          response.data['message'] != null) {
+        throw ApiException(
+          message: response.data['message'].toString(),
+          statusCode: response.statusCode,
+        );
+      }
+      throw ApiException.generic(e.message);
+    } catch (e) {
+      throw ApiException.generic(e.toString());
+    }
+  }
+
+  Future<void> _persistSession(LoginResponseModel model) async {
+    final data = model.data;
+    if (data == null) return;
+    if (data.token.isNotEmpty) {
+      await StorageService.instance.saveToken(data.token);
+    }
+    await StorageService.instance.saveUser(data.user.toJson());
+    await StorageService.instance.saveCompany(data.company.toJson());
+    await StorageService.instance.setFirstLogin(data.user.isFirstLogin);
+    if (data.user.twoFactorEnabled) {
+      await StorageService.instance.saveTwoFactorEnabled(true);
+    }
+  }
 }

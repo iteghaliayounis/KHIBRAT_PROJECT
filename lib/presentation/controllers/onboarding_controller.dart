@@ -16,8 +16,15 @@ class _TempMockAuthRepository implements AuthRepository {
   @override
   Future<void> completeFirstLogin({required String password, required String passwordConfirmation}) async {}
   @override
-@override
-Future<String> resendOtp({required String email}) async => '';
+  Future<String> resendOtp({required String email}) async => '';
+  @override
+  Future<bool> setTwoFactorEnabled({required bool enabled}) async => enabled;
+  @override
+  Future<LoginResponseModel> verifyLoginOtp({
+    required String email,
+    required String otp,
+  }) async =>
+      throw UnimplementedError();
 }
 
 class OnboardingController extends GetxController {

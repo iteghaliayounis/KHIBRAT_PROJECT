@@ -170,8 +170,8 @@ onTap: () => Get.offAllNamed('/onboarding'),
                           onPressed: controller.togglePasswordVisibility,
                           icon: Icon(
                             controller.isPasswordHidden.value
-                                ? Icons.visibility_outlined
-                                : Icons.visibility_off_outlined,
+                                ? Icons.visibility_off_outlined
+                                : Icons.visibility_outlined,
                             color: Colors.grey.shade400,
                             size: 20,
                           ),

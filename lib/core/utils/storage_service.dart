@@ -11,6 +11,7 @@ class StorageService {
   static const String _keyUser = 'auth_user';
   static const String _keyCompany = 'auth_company';
   static const String _keyIsFirstLogin = 'is_first_login';
+  static const String _keyTwoFactor = 'two_factor_enabled';
 
   static Future<void> init() async {
     await GetStorage.init();
@@ -47,10 +48,29 @@ class StorageService {
   bool get isFirstLogin => _box.read(_keyIsFirstLogin) ?? false;
   Future<void> setFirstLogin(bool value) => _box.write(_keyIsFirstLogin, value);
 
+  bool get twoFactorEnabled {
+    if (_box.read(_keyTwoFactor) == true) return true;
+    final storedUser = user;
+    if (storedUser != null && storedUser['two_factor_enabled'] == true) {
+      return true;
+    }
+    return false;
+  }
+
+  Future<void> saveTwoFactorEnabled(bool value) async {
+    await _box.write(_keyTwoFactor, value);
+    final storedUser = user;
+    if (storedUser != null) {
+      storedUser['two_factor_enabled'] = value;
+      await _box.write(_keyUser, storedUser);
+    }
+  }
+
   Future<void> clearSession() async {
     await _box.remove(_keyToken);
     await _box.remove(_keyUser);
     await _box.remove(_keyCompany);
     await _box.remove(_keyIsFirstLogin);
+    await _box.remove(_keyTwoFactor);
   }
 }

@@ -18,13 +18,20 @@ class AuthRepositoryImpl implements AuthRepository {
       final resp = await _provider.login(email: email, password: password);
       final model = LoginResponseModel.fromJson(resp);
 
-      // Accessing fields via model.data
-      if (model.data.token.isNotEmpty) {
-        await StorageService.instance.saveToken(model.data.token);
+      if (model.requires2fa) {
+        return model;
       }
-      await StorageService.instance.saveUser(model.data.user.toJson());
-      await StorageService.instance.saveCompany(model.data.company.toJson());
-      await StorageService.instance.setFirstLogin(model.data.user.isFirstLogin);
+
+      if (model.data != null && model.data!.token.isNotEmpty) {
+        await StorageService.instance.saveToken(model.data!.token);
+      }
+      if (model.data != null) {
+        await StorageService.instance.saveUser(model.data!.user.toJson());
+        await StorageService.instance.saveCompany(model.data!.company.toJson());
+        await StorageService.instance.setFirstLogin(model.data!.user.isFirstLogin);
+        await StorageService.instance
+            .saveTwoFactorEnabled(model.data!.user.twoFactorEnabled);
+      }
 
       return model;
   } on DioException catch (e) {
@@ -106,5 +113,16 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<void> completeFirstLogin({required String password, required String passwordConfirmation}) async {
     return;
+  }
+
+  @override
+  Future<bool> setTwoFactorEnabled({required bool enabled}) async => enabled;
+
+  @override
+  Future<LoginResponseModel> verifyLoginOtp({
+    required String email,
+    required String otp,
+  }) async {
+    throw UnimplementedError();
   }
 }

@@ -4,11 +4,13 @@ class ApiConstants {
   ApiConstants._();
 
   static const String baseUrl =
-      'https://e28a-185-177-125-94.ngrok-free.app'; // TODO: set real base URL
+      'http://10.65.10.177:8000'; // TODO: set real base URL
 
   static const String login = '/api/auth/login';
   static const String logout = '/api/auth/logout';
   static const String resendOtp = '/api/auth/resend-otp';
+  static const String twoFactor = '/api/auth/two-factor';
+  static const String verifyLoginOtp = '/api/auth/verify-login-otp';
 
   // Company profile
   static const String companyProfile = '/api/company/profile';

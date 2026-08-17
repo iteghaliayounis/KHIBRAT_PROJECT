@@ -12,35 +12,60 @@ String loginResponseModelToJson(LoginResponseModel data) => json.encode(data.toJ
 class LoginResponseModel {
     final bool success;
     final String message;
-    final Data data;
+    final Data? data;
+    final bool requires2fa;
+    final String? twoFactorEmail;
 
     LoginResponseModel({
         required this.success,
         required this.message,
-        required this.data,
+        this.data,
+        this.requires2fa = false,
+        this.twoFactorEmail,
     });
 
     LoginResponseModel copyWith({
         bool? success,
         String? message,
         Data? data,
+        bool? requires2fa,
+        String? twoFactorEmail,
     }) => 
         LoginResponseModel(
             success: success ?? this.success,
             message: message ?? this.message,
             data: data ?? this.data,
+            requires2fa: requires2fa ?? this.requires2fa,
+            twoFactorEmail: twoFactorEmail ?? this.twoFactorEmail,
         );
 
-    factory LoginResponseModel.fromJson(Map<String, dynamic> json) => LoginResponseModel(
-        success: json["success"],
-        message: json["message"],
-        data: Data.fromJson(json["data"]),
-    );
+    factory LoginResponseModel.fromJson(Map<String, dynamic> json) {
+        final rawData = json["data"];
+        final dataMap = rawData is Map<String, dynamic>
+            ? rawData
+            : rawData is Map
+                ? Map<String, dynamic>.from(rawData)
+                : null;
+        final requires2fa = dataMap?["requires_2fa"] == true;
+
+        return LoginResponseModel(
+            success: json["success"] == true,
+            message: json["message"]?.toString() ?? '',
+            requires2fa: requires2fa,
+            twoFactorEmail: dataMap?["email"]?.toString(),
+            data: (!requires2fa &&
+                    dataMap != null &&
+                    dataMap["token"] != null)
+                ? Data.fromJson(dataMap)
+                : null,
+        );
+    }
 
     Map<String, dynamic> toJson() => {
         "success": success,
         "message": message,
-        "data": data.toJson(),
+        "data": data?.toJson(),
+        if (requires2fa) "requires_2fa": true,
     };
 }
 
@@ -67,9 +92,21 @@ class Data {
         );
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
-        user: User.fromJson(json["user"]),
-        company: Company.fromJson(json["company"]),
-        token: json["token"],
+        user: json["user"] is Map
+            ? User.fromJson(Map<String, dynamic>.from(json["user"] as Map))
+            : User(
+                id: '',
+                companyId: '',
+                fullName: '',
+                email: json["email"]?.toString() ?? '',
+                role: '',
+                status: '',
+                isFirstLogin: false,
+              ),
+        company: json["company"] is Map
+            ? Company.fromJson(Map<String, dynamic>.from(json["company"] as Map))
+            : Company(id: '', name: ''),
+        token: json["token"]?.toString() ?? '',
     );
 
     Map<String, dynamic> toJson() => {
@@ -116,6 +153,7 @@ class User {
     final String role;
     final String status;
     final bool isFirstLogin;
+    final bool twoFactorEnabled;
 
     User({
         required this.id,
@@ -125,6 +163,7 @@ class User {
         required this.role,
         required this.status,
         required this.isFirstLogin,
+        this.twoFactorEnabled = false,
     });
 
     User copyWith({
@@ -135,6 +174,7 @@ class User {
         String? role,
         String? status,
         bool? isFirstLogin,
+        bool? twoFactorEnabled,
     }) => 
         User(
             id: id ?? this.id,
@@ -144,16 +184,18 @@ class User {
             role: role ?? this.role,
             status: status ?? this.status,
             isFirstLogin: isFirstLogin ?? this.isFirstLogin,
+            twoFactorEnabled: twoFactorEnabled ?? this.twoFactorEnabled,
         );
 
     factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json["id"],
-        companyId: json["company_id"],
-        fullName: json["full_name"],
-        email: json["email"],
-        role: json["role"],
-        status: json["status"],
-        isFirstLogin: json["is_first_login"],
+        id: json["id"]?.toString() ?? '',
+        companyId: json["company_id"]?.toString() ?? '',
+        fullName: json["full_name"]?.toString() ?? '',
+        email: json["email"]?.toString() ?? '',
+        role: json["role"]?.toString() ?? '',
+        status: json["status"]?.toString() ?? '',
+        isFirstLogin: json["is_first_login"] == true,
+        twoFactorEnabled: json["two_factor_enabled"] == true,
     );
 
     Map<String, dynamic> toJson() => {
@@ -164,5 +206,6 @@ class User {
         "role": role,
         "status": status,
         "is_first_login": isFirstLogin,
+        "two_factor_enabled": twoFactorEnabled,
     };
 }

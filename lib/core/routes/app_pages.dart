@@ -6,6 +6,7 @@ import 'package:khibrat_flutter2/presentation/bindings/forgot_password_binding.d
 import 'package:khibrat_flutter2/presentation/bindings/overtime_binding.dart';
 import 'package:khibrat_flutter2/presentation/bindings/profile_binding.dart';
 import 'package:khibrat_flutter2/presentation/bindings/reset_password_binding.dart';
+import 'package:khibrat_flutter2/presentation/bindings/settings_binding.dart';
 import 'package:khibrat_flutter2/presentation/bindings/verify_code_binding.dart';
 import 'package:khibrat_flutter2/presentation/views/assistant_view.dart';
 import 'package:khibrat_flutter2/presentation/views/company_info_view.dart';
@@ -15,6 +16,7 @@ import 'package:khibrat_flutter2/presentation/views/overtime_view.dart';
 import 'package:khibrat_flutter2/presentation/views/profile_documents_view.dart';
 import 'package:khibrat_flutter2/presentation/views/profile_view.dart';
 import 'package:khibrat_flutter2/presentation/views/reset_password_view.dart';
+import 'package:khibrat_flutter2/presentation/views/settings_view.dart';
 import 'package:khibrat_flutter2/presentation/views/verify_code_view.dart';
 import '../../presentation/bindings/apply_leave_binding.dart';
 import '../../presentation/bindings/attendance_binding.dart';
@@ -77,6 +79,12 @@ class AppPages {
       name: AppRoutes.home,
       page: () => const HomeView(),
       binding: HomeBinding(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: AppRoutes.settings,
+      page: () => const SettingsView(),
+      binding: SettingsBinding(),
       transition: Transition.fadeIn,
     ),
     GetPage(

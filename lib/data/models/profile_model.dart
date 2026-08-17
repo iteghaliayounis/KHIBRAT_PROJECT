@@ -25,6 +25,7 @@ class ProfileModel {
   final String? hireDate;
   final String? profileImageUrl;
   final bool profileCompleted;
+  final bool? twoFactorEnabled;
 
   const ProfileModel({
     required this.fullName,
@@ -39,6 +40,7 @@ class ProfileModel {
     this.hireDate,
     this.profileImageUrl,
     required this.profileCompleted,
+    this.twoFactorEnabled,
   });
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) {
@@ -57,6 +59,9 @@ class ProfileModel {
       hireDate: json['hire_date']?.toString(),
       profileImageUrl: json['profile_image_url']?.toString(),
       profileCompleted: json['profile_completed'] == true,
+      twoFactorEnabled: json.containsKey('two_factor_enabled')
+          ? json['two_factor_enabled'] == true
+          : null,
     );
   }
 
@@ -65,6 +70,7 @@ class ProfileModel {
     String? residence,
     String? profileImageUrl,
     bool? profileCompleted,
+    bool? twoFactorEnabled,
   }) {
     return ProfileModel(
       fullName: fullName,
@@ -79,6 +85,7 @@ class ProfileModel {
       hireDate: hireDate,
       profileImageUrl: profileImageUrl ?? this.profileImageUrl,
       profileCompleted: profileCompleted ?? this.profileCompleted,
+      twoFactorEnabled: twoFactorEnabled ?? this.twoFactorEnabled,
     );
   }
 }

@@ -63,15 +63,36 @@ Future<void> login() async {
       password: passwordController.text,
     );
 
-    print("✅ 2. نجاح الاستجابة من السيرفر. Token: ${result.data.token}");
+    if (result.requires2fa) {
+      Get.toNamed(
+        AppRoutes.verifyCode,
+        arguments: {
+          'email': result.twoFactorEmail ?? emailController.text.trim(),
+          'purpose': 'login_2fa',
+          'password': passwordController.text,
+        },
+      );
+      return;
+    }
+
+    final data = result.data;
+    if (data == null || data.token.isEmpty) {
+      AppFeedback.showError('generic_error');
+      return;
+    }
+
+    print("✅ 2. نجاح الاستجابة من السيرفر. Token: ${data.token}");
 
     // حفظ البيانات
-    await StorageService.instance.saveToken(result.data.token);
-    await StorageService.instance.saveUser(result.data.user.toJson());
-    await StorageService.instance.saveCompany(result.data.company.toJson());
-    await StorageService.instance.setFirstLogin(result.data.user.isFirstLogin);
+    await StorageService.instance.saveToken(data.token);
+    await StorageService.instance.saveUser(data.user.toJson());
+    await StorageService.instance.saveCompany(data.company.toJson());
+    await StorageService.instance.setFirstLogin(data.user.isFirstLogin);
+    if (data.user.twoFactorEnabled) {
+      await StorageService.instance.saveTwoFactorEnabled(true);
+    }
 
-    print("STATUS isFirstLogin: ${result.data.user.isFirstLogin}");
+    print("STATUS isFirstLogin: ${data.user.isFirstLogin}");
 
     // Register FCM token with backend (best-effort; never blocks login).
     try {
@@ -81,7 +102,7 @@ Future<void> login() async {
     }
 
     // التوجيه
-    if (result.data.user.isFirstLogin) {
+    if (data.user.isFirstLogin) {
       Get.offAllNamed(AppRoutes.resetPassword);
     } else {
       Get.offAllNamed(AppRoutes.home);

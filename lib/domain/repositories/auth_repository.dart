@@ -29,4 +29,11 @@ abstract class AuthRepository {
     required String password,
     required String passwordConfirmation,
   });
+
+  Future<bool> setTwoFactorEnabled({required bool enabled});
+
+  Future<LoginResponseModel> verifyLoginOtp({
+    required String email,
+    required String otp,
+  });
 }

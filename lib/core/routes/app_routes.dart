@@ -11,6 +11,7 @@ abstract class AppRoutes {
       '/reset-password'; // مسار تعيين كلمة المرور الجديدة
   static const changePassword = '/change-password';
   static const home = '/home';
+  static const settings = '/settings';
 
   // Leaves
   static const leaveDashboard = '/leave-dashboard';
