@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/theme/khubrat_colors.dart';
 
 class AttendanceActionSheet {
   AttendanceActionSheet._();
@@ -10,12 +11,13 @@ class AttendanceActionSheet {
     required VoidCallback onCheckIn,
     required VoidCallback onCheckOut,
   }) {
+    final palette = Get.context!.khubrat;
     Get.bottomSheet(
       Container(
         padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
+        decoration: BoxDecoration(
+          color: palette.surface,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(22)),
         ),
         child: SafeArea(
           top: false,
@@ -26,20 +28,20 @@ class AttendanceActionSheet {
                 width: 42,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE0E0E0),
+                  color: palette.chipBorder,
                   borderRadius: BorderRadius.circular(4),
                 ),
               ),
               const SizedBox(height: 18),
               Text(
                 'attendance_choose_action'.tr,
-                style: AppTextStyles.h2.copyWith(color: AppColors.primary),
+                style: AppTextStyles.h2.copyWith(color: palette.title),
               ),
               const SizedBox(height: 6),
               Text(
                 'attendance_choose_action_hint'.tr,
                 textAlign: TextAlign.center,
-                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                style: AppTextStyles.bodyMedium.copyWith(color: palette.textSecondary),
               ),
               const SizedBox(height: 20),
               _ActionButton(

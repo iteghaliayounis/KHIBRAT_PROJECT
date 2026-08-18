@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/theme/khubrat_colors.dart';
 import '../../controllers/salary_controller.dart';
 import 'salary_ui_helpers.dart';
 
@@ -50,9 +51,9 @@ class _AdvanceApplyBody extends StatelessWidget {
           maxHeight: MediaQuery.of(context).size.height * 0.9,
         ),
         child: Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+          decoration: BoxDecoration(
+            color: context.khubrat.surface,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
           ),
           child: SafeArea(
             top: false,
@@ -69,7 +70,7 @@ class _AdvanceApplyBody extends StatelessWidget {
                         width: 42,
                         height: 4,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFE2E8F0),
+                          color: context.khubrat.chipBorder,
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
@@ -83,19 +84,20 @@ class _AdvanceApplyBody extends StatelessWidget {
                           child: Container(
                             width: 36,
                             height: 36,
-                            decoration: const BoxDecoration(
-                              color: Color(0xFFF1F5F9),
+                            decoration: BoxDecoration(
+                              color: context.khubrat.inputFill,
                               shape: BoxShape.circle,
+                              border: Border.all(color: context.khubrat.chipBorder),
                             ),
-                            child: const Icon(Icons.close_rounded, size: 18),
+                            child: Icon(Icons.close_rounded, size: 18, color: context.khubrat.title),
                           ),
                         ),
                         const Spacer(),
-                        const Icon(Icons.edit_note_rounded, color: AppColors.brandNavy, size: 22),
+                        Icon(Icons.edit_note_rounded, color: context.khubrat.title, size: 22),
                         const SizedBox(width: 6),
                         Text(
                           'salary_apply_title'.tr,
-                          style: AppTextStyles.h3.copyWith(color: AppColors.brandNavy),
+                          style: AppTextStyles.h3.copyWith(color: context.khubrat.title),
                         ),
                       ],
                     ),
@@ -164,7 +166,7 @@ class _AdvanceApplyBody extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    Text('salary_requested_amount'.tr, style: AppTextStyles.label.copyWith(color: AppColors.brandNavy)),
+                    Text('salary_requested_amount'.tr, style: AppTextStyles.label.copyWith(color: context.khubrat.title)),
                     const SizedBox(height: 8),
                     TextFormField(
                       initialValue: controller.requestedAmount.value > 0
@@ -172,12 +174,12 @@ class _AdvanceApplyBody extends StatelessWidget {
                           : '',
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      style: AppTextStyles.bodyLarge,
+                      style: AppTextStyles.bodyLarge.copyWith(color: context.khubrat.textPrimary),
                       decoration: InputDecoration(
                         prefixText: 'SYP  ',
-                        prefixStyle: AppTextStyles.label.copyWith(color: AppColors.textSecondary),
+                        prefixStyle: AppTextStyles.label.copyWith(color: context.khubrat.textSecondary),
                         filled: true,
-                        fillColor: Colors.white,
+                        fillColor: context.khubrat.inputFill,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
@@ -192,15 +194,20 @@ class _AdvanceApplyBody extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 14),
-                    Text('salary_repayment_months'.tr, style: AppTextStyles.label.copyWith(color: AppColors.brandNavy)),
+                    Text('salary_repayment_months'.tr, style: AppTextStyles.label.copyWith(color: context.khubrat.title)),
                     const SizedBox(height: 8),
                     DropdownButtonFormField<int>(
                       value: controller.repaymentMonths.value.clamp(1, maxMonths).toInt(),
+                      dropdownColor: context.khubrat.surface,
+                      style: AppTextStyles.bodyLarge.copyWith(color: context.khubrat.textPrimary),
                       items: List.generate(
                         maxMonths,
                         (i) => DropdownMenuItem(
                           value: i + 1,
-                          child: Text('${i + 1} ${'salary_months_short'.tr}'),
+                          child: Text(
+                            '${i + 1} ${'salary_months_short'.tr}',
+                            style: AppTextStyles.bodyLarge.copyWith(color: context.khubrat.textPrimary),
+                          ),
                         ),
                       ),
                       onChanged: (v) {
@@ -208,14 +215,14 @@ class _AdvanceApplyBody extends StatelessWidget {
                       },
                       decoration: InputDecoration(
                         filled: true,
-                        fillColor: Colors.white,
+                        fillColor: context.khubrat.inputFill,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
+                          borderSide: BorderSide(color: context.khubrat.inputBorder),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
+                          borderSide: BorderSide(color: context.khubrat.inputBorder),
                         ),
                       ),
                     ),
@@ -223,34 +230,34 @@ class _AdvanceApplyBody extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFEFF6FF),
+                        color: context.khubrat.inputFill,
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: const Color(0xFFBFDBFE)),
+                        border: Border.all(color: context.khubrat.chipBorder),
                       ),
                       child: Text(
                         'salary_monthly_installment_preview'.trParams({
                           'amount': SalaryUiHelpers.formatNumber(controller.calculatedInstallment),
                         }),
-                        style: AppTextStyles.label.copyWith(color: AppColors.brandNavy),
+                        style: AppTextStyles.label.copyWith(color: context.khubrat.title),
                       ),
                     ),
                     const SizedBox(height: 14),
-                    Text('salary_advance_reason'.tr, style: AppTextStyles.label.copyWith(color: AppColors.brandNavy)),
+                    Text('salary_advance_reason'.tr, style: AppTextStyles.label.copyWith(color: context.khubrat.title)),
                     const SizedBox(height: 8),
                     TextFormField(
                       initialValue: controller.reason.value,
                       maxLines: 3,
-                      style: AppTextStyles.bodyLarge,
+                      style: AppTextStyles.bodyLarge.copyWith(color: context.khubrat.textPrimary),
                       decoration: InputDecoration(
                         filled: true,
-                        fillColor: Colors.white,
+                        fillColor: context.khubrat.inputFill,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
+                          borderSide: BorderSide(color: context.khubrat.inputBorder),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
+                          borderSide: BorderSide(color: context.khubrat.inputBorder),
                         ),
                       ),
                       onChanged: (v) => controller.reason.value = v,

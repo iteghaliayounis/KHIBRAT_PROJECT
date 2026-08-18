@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_text_styles.dart';
+import '../../core/theme/khubrat_colors.dart';
 import '../controllers/my_evaluations_controller.dart';
 import '../widgets/evaluation/evaluation_progress_card.dart';
 import '../widgets/evaluation/evaluation_review_card.dart';
@@ -12,7 +13,7 @@ class MyEvaluationsView extends GetView<MyEvaluationsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F7FB),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -86,6 +87,7 @@ class MyEvaluationsView extends GetView<MyEvaluationsController> {
   }
 
   Widget _buildHeader(BuildContext context) {
+    final palette = context.khubrat;
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
       child: Row(
@@ -93,17 +95,17 @@ class MyEvaluationsView extends GetView<MyEvaluationsController> {
           InkWell(
             borderRadius: BorderRadius.circular(20),
             onTap: () => Get.back(),
-            child: const Padding(
-              padding: EdgeInsets.all(6),
-              child: Icon(Icons.arrow_back_rounded, color: AppColors.primary),
+            child: Padding(
+              padding: const EdgeInsets.all(6),
+              child: Icon(Icons.arrow_back_rounded, color: palette.title),
             ),
           ),
           const SizedBox(width: 6),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('my_evaluations'.tr, style: AppTextStyles.h1.copyWith(color: AppColors.primary)),
-              Text('my_evaluations_subtitle'.tr, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary)),
+              Text('my_evaluations'.tr, style: AppTextStyles.h1.copyWith(color: palette.title)),
+              Text('my_evaluations_subtitle'.tr, style: AppTextStyles.bodyMedium.copyWith(color: palette.textSecondary)),
             ],
           ),
         ],
@@ -118,7 +120,7 @@ class _SectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(title, style: AppTextStyles.h2.copyWith(color: AppColors.primary));
+    return Text(title, style: AppTextStyles.h2.copyWith(color: context.khubrat.title));
   }
 }
 
@@ -128,16 +130,17 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.khubrat;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 22),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: palette.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFEDEDED)),
+        border: Border.all(color: palette.chipBorder),
       ),
       alignment: Alignment.center,
-      child: Text(text, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary)),
+      child: Text(text, style: AppTextStyles.bodyMedium.copyWith(color: palette.textSecondary)),
     );
   }
 }

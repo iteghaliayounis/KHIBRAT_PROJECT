@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/routes/app_routes.dart';
+import '../../core/theme/khubrat_colors.dart';
+import '../../core/theme/theme_controller.dart';
 import '../controllers/settings_controller.dart';
 import '../widgets/app_bottom_nav.dart';
 
@@ -10,7 +12,6 @@ class SettingsView extends GetView<SettingsController> {
   const SettingsView({super.key});
 
   static const Color _navy = Color(0xFF002166);
-  static const Color _bg = Color(0xFFF4F7FB);
   static const Color _logoutRed = Color(0xFFE25D5D);
   static const Color _lockOrange = Color(0xFFE8A317);
 
@@ -18,11 +19,13 @@ class SettingsView extends GetView<SettingsController> {
   Widget build(BuildContext context) {
     return Obx(() {
       final isArabic = controller.selectedLocale.value.startsWith('ar');
+      ThemeController.to.isDark.value;
+      final palette = context.khubrat;
 
       return Directionality(
         textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
         child: Scaffold(
-          backgroundColor: _bg,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: Column(
             children: [
               _buildAppBar(isArabic),
@@ -31,9 +34,11 @@ class SettingsView extends GetView<SettingsController> {
                   padding: const EdgeInsets.fromLTRB(16, 18, 16, 24),
                   physics: const BouncingScrollPhysics(),
                   children: [
-                    _buildLanguageCard(),
+                    _buildLanguageCard(palette),
                     const SizedBox(height: 14),
-                    _buildTwoFactorCard(),
+                    _buildTwoFactorCard(palette),
+                    const SizedBox(height: 14),
+                    _buildThemeCard(palette),
                     const SizedBox(height: 14),
                     _buildLogoutCard(),
                   ],
@@ -123,8 +128,9 @@ class SettingsView extends GetView<SettingsController> {
     );
   }
 
-  Widget _buildLanguageCard() {
+  Widget _buildLanguageCard(KhubratColors palette) {
     return _card(
+      palette: palette,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -138,7 +144,7 @@ class SettingsView extends GetView<SettingsController> {
                   style: GoogleFonts.cairo(
                     fontSize: 15,
                     fontWeight: FontWeight.w800,
-                    color: _navy,
+                    color: palette.title,
                   ),
                 ),
               ),
@@ -150,7 +156,7 @@ class SettingsView extends GetView<SettingsController> {
             style: GoogleFonts.cairo(
               fontSize: 12,
               fontWeight: FontWeight.w500,
-              color: Colors.grey.shade600,
+              color: palette.textSecondary,
               height: 1.4,
             ),
           ),
@@ -160,7 +166,8 @@ class SettingsView extends GetView<SettingsController> {
             return Row(
               children: [
                 Expanded(
-                  child: _languageChip(
+                  child: _choiceChip(
+                    palette: palette,
                     label: isAr
                         ? 'settings_lang_en'.tr
                         : 'settings_lang_en_active'.tr,
@@ -170,7 +177,8 @@ class SettingsView extends GetView<SettingsController> {
                 ),
                 const SizedBox(width: 10),
                 Expanded(
-                  child: _languageChip(
+                  child: _choiceChip(
+                    palette: palette,
                     label: isAr
                         ? 'settings_lang_ar_active'.tr
                         : 'settings_lang_ar'.tr,
@@ -186,7 +194,80 @@ class SettingsView extends GetView<SettingsController> {
     );
   }
 
-  Widget _languageChip({
+  Widget _buildThemeCard(KhubratColors palette) {
+    return _card(
+      palette: palette,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                ThemeController.to.isDark.value
+                    ? Icons.dark_mode_rounded
+                    : Icons.light_mode_rounded,
+                color: const Color(0xFFE8A317),
+                size: 22,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  'settings_theme_title'.tr,
+                  style: GoogleFonts.cairo(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w800,
+                    color: palette.title,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(
+            'settings_theme_subtitle'.tr,
+            style: GoogleFonts.cairo(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: palette.textSecondary,
+              height: 1.4,
+            ),
+          ),
+          const SizedBox(height: 14),
+          Obx(() {
+            final isDark = ThemeController.to.isDark.value;
+            return Row(
+              children: [
+                Expanded(
+                  child: _choiceChip(
+                    palette: palette,
+                    label: isDark
+                        ? 'settings_theme_light'.tr
+                        : 'settings_theme_light_active'.tr,
+                    selected: !isDark,
+                    onTap: () => controller.changeTheme(false),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: _choiceChip(
+                    palette: palette,
+                    label: isDark
+                        ? 'settings_theme_dark_active'.tr
+                        : 'settings_theme_dark'.tr,
+                    selected: isDark,
+                    onTap: () => controller.changeTheme(true),
+                  ),
+                ),
+              ],
+            );
+          }),
+        ],
+      ),
+    );
+  }
+
+  Widget _choiceChip({
+    required KhubratColors palette,
     required String label,
     required bool selected,
     required VoidCallback onTap,
@@ -199,10 +280,10 @@ class SettingsView extends GetView<SettingsController> {
         height: 46,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: palette.inputFill,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-            color: selected ? _navy : const Color(0xFFE6EAF0),
+            color: selected ? _navy : palette.chipBorder,
             width: selected ? 1.6 : 1.2,
           ),
         ),
@@ -214,15 +295,16 @@ class SettingsView extends GetView<SettingsController> {
           style: GoogleFonts.cairo(
             fontSize: 13,
             fontWeight: selected ? FontWeight.w800 : FontWeight.w600,
-            color: _navy,
+            color: palette.title,
           ),
         ),
       ),
     );
   }
 
-  Widget _buildTwoFactorCard() {
+  Widget _buildTwoFactorCard(KhubratColors palette) {
     return _card(
+      palette: palette,
       child: Obx(() {
         final enabled = controller.twoFactorEnabled.value;
         return Row(
@@ -234,7 +316,9 @@ class SettingsView extends GetView<SettingsController> {
                   width: 40,
                   height: 40,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFEAF2FF),
+                    color: palette.isDark
+                        ? const Color(0x332F6BFF)
+                        : const Color(0xFFEAF2FF),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Icon(
@@ -250,7 +334,9 @@ class SettingsView extends GetView<SettingsController> {
                   decoration: BoxDecoration(
                     color: enabled
                         ? const Color(0xFFE8F5E9)
-                        : const Color(0xFFF1F3F6),
+                        : palette.isDark
+                            ? const Color(0x22FFFFFF)
+                            : const Color(0xFFF1F3F6),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
@@ -260,7 +346,7 @@ class SettingsView extends GetView<SettingsController> {
                       fontWeight: FontWeight.w700,
                       color: enabled
                           ? const Color(0xFF2E7D32)
-                          : Colors.grey.shade600,
+                          : palette.textSecondary,
                     ),
                   ),
                 ),
@@ -276,7 +362,7 @@ class SettingsView extends GetView<SettingsController> {
                     style: GoogleFonts.cairo(
                       fontSize: 15,
                       fontWeight: FontWeight.w800,
-                      color: _navy,
+                      color: palette.title,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -285,7 +371,7 @@ class SettingsView extends GetView<SettingsController> {
                     style: GoogleFonts.cairo(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
-                      color: Colors.grey.shade600,
+                      color: palette.textSecondary,
                       height: 1.45,
                     ),
                   ),
@@ -299,7 +385,6 @@ class SettingsView extends GetView<SettingsController> {
                   ? null
                   : controller.toggleTwoFactor,
               activeTrackColor: _navy,
-              inactiveTrackColor: const Color(0xFFE6E8EE),
             ),
           ],
         );
@@ -308,8 +393,9 @@ class SettingsView extends GetView<SettingsController> {
   }
 
   Widget _buildLogoutCard() {
+    final isDark = ThemeController.to.isDark.value;
     return Material(
-      color: const Color(0xFFFFF1F1),
+      color: isDark ? const Color(0x33E25D5D) : const Color(0xFFFFF1F1),
       borderRadius: BorderRadius.circular(20),
       child: InkWell(
         onTap: _showLogoutDialog,
@@ -321,7 +407,7 @@ class SettingsView extends GetView<SettingsController> {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.03),
+                color: Colors.black.withValues(alpha: isDark ? 0.35 : 0.03),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -351,17 +437,18 @@ class SettingsView extends GetView<SettingsController> {
     );
   }
 
-  Widget _card({required Widget child}) {
+  Widget _card({required KhubratColors palette, required Widget child}) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: palette.surface,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: palette.chipBorder),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 12,
+            color: palette.cardShadow,
+            blurRadius: palette.isDark ? 18 : 12,
             offset: const Offset(0, 4),
           ),
         ],
@@ -371,9 +458,10 @@ class SettingsView extends GetView<SettingsController> {
   }
 
   void _showLogoutDialog() {
+    final palette = Get.context?.khubrat ?? KhubratColors.light;
     Get.dialog(
       Dialog(
-        backgroundColor: Colors.white,
+        backgroundColor: palette.surface,
         insetPadding: const EdgeInsets.symmetric(horizontal: 28),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
         child: Padding(
@@ -384,8 +472,10 @@ class SettingsView extends GetView<SettingsController> {
               Container(
                 width: 64,
                 height: 64,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFFFE8E8),
+                decoration: BoxDecoration(
+                  color: palette.isDark
+                      ? const Color(0x33E25D5D)
+                      : const Color(0xFFFFE8E8),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
@@ -401,7 +491,7 @@ class SettingsView extends GetView<SettingsController> {
                 style: GoogleFonts.cairo(
                   fontSize: 18,
                   fontWeight: FontWeight.w800,
-                  color: _navy,
+                  color: palette.title,
                 ),
               ),
               const SizedBox(height: 8),
@@ -411,7 +501,7 @@ class SettingsView extends GetView<SettingsController> {
                 style: GoogleFonts.cairo(
                   fontSize: 13,
                   fontWeight: FontWeight.w500,
-                  color: Colors.grey.shade600,
+                  color: palette.textSecondary,
                   height: 1.5,
                 ),
               ),
@@ -424,9 +514,10 @@ class SettingsView extends GetView<SettingsController> {
                       child: TextButton(
                         onPressed: () => Get.back(),
                         style: TextButton.styleFrom(
-                          backgroundColor: const Color(0xFFF3F4F6),
+                          backgroundColor: palette.inputFill,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
+                            side: BorderSide(color: palette.chipBorder),
                           ),
                         ),
                         child: Text(
@@ -434,7 +525,7 @@ class SettingsView extends GetView<SettingsController> {
                           style: GoogleFonts.cairo(
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
-                            color: _navy,
+                            color: palette.title,
                           ),
                         ),
                       ),
@@ -473,7 +564,7 @@ class SettingsView extends GetView<SettingsController> {
           ),
         ),
       ),
-      barrierColor: Colors.black.withOpacity(0.45),
+      barrierColor: Colors.black.withValues(alpha: 0.45),
     );
   }
 }

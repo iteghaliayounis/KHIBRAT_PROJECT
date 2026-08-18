@@ -15,7 +15,7 @@ class AssistantView extends GetView<AssistantController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final dark = controller.isDarkMode.value;
+      final dark = Theme.of(context).brightness == Brightness.dark;
       return Scaffold(
         backgroundColor: AssistantPalette.background(dark),
         resizeToAvoidBottomInset: true,
@@ -119,12 +119,7 @@ class _AssistantHeader extends StatelessWidget {
               ],
             ),
           ),
-          _roundIcon(
-            icon: isDark ? Icons.wb_sunny_rounded : Icons.dark_mode_rounded,
-            onTap: controller.toggleDarkMode,
-            isDark: isDark,
-            color: const Color(0xFFB8860B),
-          ),
+          const SizedBox(width: 40),
         ],
       ),
     );
@@ -257,7 +252,7 @@ class _SuggestionChips extends StatelessWidget {
   Widget build(BuildContext context) {
     final items = [
       ('ai_suggestion_leave'.tr, Icons.bar_chart_rounded, const Color(0xFF42A5F5)),
-      ('ai_suggestion_exit'.tr, Icons.badge_outlined, const Color(0xFF8D6E63)),
+      ('ai_suggestion_policies'.tr, Icons.policy_outlined, const Color(0xFFCBA158)),
       ('ai_suggestion_salary'.tr, Icons.payments_rounded, const Color(0xFF43A047)),
     ];
 
@@ -473,7 +468,7 @@ class _TypingRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dark = Get.find<AssistantController>().isDarkMode.value;
+    final dark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Align(

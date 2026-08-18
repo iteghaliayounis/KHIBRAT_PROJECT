@@ -19,7 +19,6 @@ class AssistantController extends GetxController {
   final ScrollController sessionsScrollController = ScrollController();
   final FocusNode inputFocusNode = FocusNode();
 
-  final RxBool isDarkMode = false.obs;
   final RxBool isDrawerOpen = false.obs;
   final RxBool isLoadingSessions = false.obs;
   final RxBool isLoadingMoreSessions = false.obs;
@@ -84,8 +83,6 @@ class AssistantController extends GetxController {
     inputFocusNode.dispose();
     super.onClose();
   }
-
-  void toggleDarkMode() => isDarkMode.value = !isDarkMode.value;
 
   void openDrawer() {
     isDrawerOpen.value = true;

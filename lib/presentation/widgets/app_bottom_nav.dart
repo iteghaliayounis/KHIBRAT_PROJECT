@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../core/theme/khubrat_colors.dart';
+
 class AppBottomNavBar extends StatelessWidget {
   const AppBottomNavBar({
     super.key,
@@ -16,6 +18,7 @@ class AppBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.khubrat;
     final navItems = [
       {'icon': Icons.home_rounded, 'label': 'nav_home'.tr},
       {'icon': Icons.person_rounded, 'label': 'nav_account'.tr},
@@ -28,11 +31,11 @@ class AppBottomNavBar extends StatelessWidget {
       margin: const EdgeInsets.only(left: 12, right: 12, bottom: 8),
       padding: const EdgeInsets.symmetric(horizontal: 6),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: palette.navBar,
         borderRadius: BorderRadius.circular(35),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: palette.cardShadow,
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -71,7 +74,7 @@ class AppBottomNavBar extends StatelessWidget {
                 children: [
                   Icon(
                     navItems[index]['icon'] as IconData,
-                    color: isSelected ? Colors.white : Colors.grey.shade500,
+                    color: isSelected ? Colors.white : palette.textSecondary,
                     size: isSelected ? 22 : 20,
                   ),
                   if (isSelected) ...[

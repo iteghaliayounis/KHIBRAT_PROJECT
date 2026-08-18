@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_text_styles.dart';
+import '../../core/theme/khubrat_colors.dart';
 import '../../data/models/evaluation_models.dart';
 import '../controllers/evaluation_controller.dart';
 import '../widgets/evaluation/evaluation_ui_helpers.dart';
@@ -106,6 +107,7 @@ class _IntroScaffold extends GetView<EvaluationController> {
     final hasPersonName = personName.isNotEmpty;
     final questionsCount = review.questionsCount ?? controller.totalQuestions;
     final canStart = controller.totalQuestions > 0;
+    final palette = context.khubrat;
 
     return Scaffold(
       appBar: _evaluationAppBar(title: 'evaluation'.tr, onBack: () => Get.back()),
@@ -125,7 +127,7 @@ class _IntroScaffold extends GetView<EvaluationController> {
               Text(
                 EvaluationUiHelpers.titleFor(review.reviewType, fallback: 'evaluation_default_title'.tr).toUpperCase(),
                 textAlign: TextAlign.center,
-                style: AppTextStyles.h1.copyWith(color: AppColors.primary),
+                style: AppTextStyles.h1.copyWith(color: palette.title),
               ),
               const SizedBox(height: 6),
               Text(
@@ -133,7 +135,7 @@ class _IntroScaffold extends GetView<EvaluationController> {
                     ? 'self_reflection_subtitle'.tr
                     : 'evaluating_someone_subtitle'.trParams({'name': personName}),
                 textAlign: TextAlign.center,
-                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                style: AppTextStyles.bodyMedium.copyWith(color: palette.textSecondary),
               ),
               const SizedBox(height: 24),
               if (hasPersonName)
@@ -141,19 +143,19 @@ class _IntroScaffold extends GetView<EvaluationController> {
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: palette.surface,
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: const Color(0xFFEDEDED)),
+                    border: Border.all(color: palette.chipBorder),
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.person_rounded, color: AppColors.primary, size: 20),
+                      Icon(Icons.person_rounded, color: palette.title, size: 20),
                       const SizedBox(width: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('for_label'.tr, style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary)),
-                          Text(personName, style: AppTextStyles.h3.copyWith(color: AppColors.primary)),
+                          Text('for_label'.tr, style: AppTextStyles.bodySmall.copyWith(color: palette.textSecondary)),
+                          Text(personName, style: AppTextStyles.h3.copyWith(color: palette.title)),
                         ],
                       ),
                     ],
@@ -220,12 +222,13 @@ class _InfoChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.khubrat;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: palette.surface,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFFEDEDED)),
+        border: Border.all(color: palette.chipBorder),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -442,9 +445,10 @@ class _ReadOnlySummaryScaffold extends GetView<EvaluationController> {
     final personName = review.employee?.displayName ?? '';
     final hasPersonName = personName.isNotEmpty;
     final questions = controller.questions;
+    final palette = context.khubrat;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F7FB),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: _evaluationAppBar(title: 'evaluation'.tr, onBack: () => Get.back()),
       body: SafeArea(
         top: false,
@@ -456,7 +460,7 @@ class _ReadOnlySummaryScaffold extends GetView<EvaluationController> {
                 children: [
                   Text(
                     EvaluationUiHelpers.titleFor(review.reviewType, fallback: 'evaluation_default_title'.tr),
-                    style: AppTextStyles.h1.copyWith(color: AppColors.primary),
+                    style: AppTextStyles.h1.copyWith(color: palette.title),
                   ),
                   const SizedBox(height: 4),
                   Text(
@@ -469,18 +473,18 @@ class _ReadOnlySummaryScaffold extends GetView<EvaluationController> {
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: palette.surface,
                         borderRadius: BorderRadius.circular(14),
-                        border: Border.all(color: const Color(0xFFEDEDED)),
+                        border: Border.all(color: palette.chipBorder),
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.person_rounded, color: AppColors.primary, size: 20),
+                          Icon(Icons.person_rounded, color: palette.title, size: 20),
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
                               '${'for_label'.tr} $personName',
-                              style: AppTextStyles.bodyLarge.copyWith(color: AppColors.primary),
+                              style: AppTextStyles.bodyLarge.copyWith(color: palette.title),
                             ),
                           ),
                         ],
@@ -548,17 +552,17 @@ class _ReadOnlyQuestionCard extends GetView<EvaluationController> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.khubrat.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFEDEDED)),
+        border: Border.all(color: context.khubrat.chipBorder),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 10, offset: const Offset(0, 4)),
+          BoxShadow(color: context.khubrat.cardShadow, blurRadius: 10, offset: const Offset(0, 4)),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(question.question, style: AppTextStyles.h3.copyWith(color: AppColors.primary)),
+          Text(question.question, style: AppTextStyles.h3.copyWith(color: context.khubrat.title)),
           if (question.helpText != null) ...[
             const SizedBox(height: 4),
             Text(question.helpText!, style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary)),

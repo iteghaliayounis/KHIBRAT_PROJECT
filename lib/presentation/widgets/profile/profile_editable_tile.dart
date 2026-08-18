@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../core/theme/khubrat_colors.dart';
 
 /// حقل قابل للتعديل (رقم الهاتف / العنوان) — زر تعديل بجانبو كيفتح
 /// ورقة سفلية (Bottom Sheet) فيها input.
@@ -33,22 +34,21 @@ class ProfileEditableTile extends StatelessWidget {
   });
 
   static const Color _navy = Color(0xFF002173);
-  static const Color _slate50 = Color(0xFFF8FAFC);
-  static const Color _slate100 = Color(0xFFF1F5F9);
-  static const Color _slate400 = Color(0xFF94A3B8);
+  static const Color _goldDark = Color(0xFF835C21);
 
   bool get _isArabic => Get.locale?.languageCode == 'ar';
 
   void _openEditSheet(BuildContext context) {
+    final palette = context.khubrat;
     final textController = TextEditingController(text: value);
     Get.bottomSheet(
       Directionality(
         textDirection: Directionality.of(context),
         child: Container(
           padding: const EdgeInsets.all(20),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+          decoration: BoxDecoration(
+            color: palette.surface,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -57,7 +57,7 @@ class ProfileEditableTile extends StatelessWidget {
                 width: 40,
                 height: 6,
                 decoration: BoxDecoration(
-                  color: _slate100,
+                  color: palette.chipBorder,
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
@@ -67,6 +67,7 @@ class ProfileEditableTile extends StatelessWidget {
                 style: GoogleFonts.cairo(
                   fontSize: 16,
                   fontWeight: FontWeight.w900,
+                  color: palette.title,
                 ),
               ),
               const SizedBox(height: 16),
@@ -78,13 +79,14 @@ class ProfileEditableTile extends StatelessWidget {
                   style: GoogleFonts.cairo(
                     fontSize: 15,
                     fontWeight: FontWeight.w900,
+                    color: palette.textPrimary,
                   ),
                   decoration: InputDecoration(
                     filled: true,
-                    fillColor: _slate50,
+                    fillColor: palette.inputFill,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide(color: Colors.grey.shade200),
+                      borderSide: BorderSide(color: palette.inputBorder),
                     ),
                   ),
                 ),
@@ -96,7 +98,7 @@ class ProfileEditableTile extends StatelessWidget {
                     child: TextButton(
                       onPressed: () => Get.back(),
                       style: TextButton.styleFrom(
-                        backgroundColor: _slate100,
+                        backgroundColor: palette.inputFill,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
@@ -105,7 +107,7 @@ class ProfileEditableTile extends StatelessWidget {
                       child: Text(
                         'profile_cancel'.tr,
                         style: GoogleFonts.cairo(
-                          color: _slate400,
+                          color: palette.textSecondary,
                           fontWeight: FontWeight.w900,
                           fontSize: 13,
                         ),
@@ -161,10 +163,10 @@ class ProfileEditableTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.khubrat;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // ⬅️ إصلاح #4: هاد الصف بعكس اتجاه اللغة الحالية عن قصد.
         Row(
           textDirection: _isArabic ? TextDirection.ltr : TextDirection.rtl,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -174,20 +176,22 @@ class ProfileEditableTile extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEEF2FF),
+                  color: palette.isDark
+                      ? const Color(0xFF0F1B4C).withValues(alpha: 0.45)
+                      : const Color(0xFFEEF2FF),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.edit, size: 11, color: _navy),
+                    Icon(Icons.edit, size: 11, color: palette.title),
                     const SizedBox(width: 3),
                     Text(
                       'profile_edit'.tr,
                       style: GoogleFonts.cairo(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
-                        color: _navy,
+                        color: palette.title,
                       ),
                     ),
                   ],
@@ -199,7 +203,7 @@ class ProfileEditableTile extends StatelessWidget {
               style: GoogleFonts.cairo(
                 fontSize: 10,
                 fontWeight: FontWeight.bold,
-                color: _slate400,
+                color: _goldDark,
               ),
             ),
           ],
@@ -209,9 +213,9 @@ class ProfileEditableTile extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           decoration: BoxDecoration(
-            color: _slate50,
+            color: palette.inputFill,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: const Color(0xFFF1F5F9)),
+            border: Border.all(color: palette.chipBorder),
           ),
           child: Directionality(
             textDirection: valueDirection ?? Directionality.of(context),
@@ -221,7 +225,7 @@ class ProfileEditableTile extends StatelessWidget {
               style: GoogleFonts.cairo(
                 fontSize: 13,
                 fontWeight: FontWeight.w900,
-                color: const Color(0xFF334155),
+                color: palette.textPrimary,
               ),
             ),
           ),

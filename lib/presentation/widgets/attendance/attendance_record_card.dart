@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/theme/khubrat_colors.dart';
+import '../../../core/theme/khubrat_colors.dart';
 import '../../../data/models/attendance_models.dart';
 import 'attendance_ui_helpers.dart';
 
@@ -16,12 +17,13 @@ class AttendanceRecordCard extends StatelessWidget {
     final statusText = AttendanceUiHelpers.statusLabelKey(record.status).tr;
     final typeText = AttendanceUiHelpers.typeLabelKey(record.attendanceType).tr;
 
+    final palette = context.khubrat;
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: palette.surface,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFFEDEDED)),
+        border: Border.all(color: palette.chipBorder),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,7 +33,7 @@ class AttendanceRecordCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   AttendanceUiHelpers.formatDate(record.workDate),
-                  style: AppTextStyles.h2.copyWith(color: AppColors.primary, fontSize: 15),
+                  style: AppTextStyles.h2.copyWith(color: palette.title, fontSize: 15),
                 ),
               ),
               Container(
@@ -50,7 +52,7 @@ class AttendanceRecordCard extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             typeText,
-            style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+            style: AppTextStyles.bodySmall.copyWith(color: palette.textSecondary),
           ),
           const SizedBox(height: 12),
           Row(
@@ -92,9 +94,9 @@ class _TimeCell extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary, fontSize: 11)),
+        Text(label, style: AppTextStyles.bodySmall.copyWith(color: context.khubrat.textSecondary, fontSize: 11)),
         const SizedBox(height: 2),
-        Text(value, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary, fontWeight: FontWeight.w600)),
+        Text(value, style: AppTextStyles.bodyMedium.copyWith(color: context.khubrat.textPrimary, fontWeight: FontWeight.w600)),
       ],
     );
   }

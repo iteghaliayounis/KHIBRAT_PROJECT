@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/theme/khubrat_colors.dart';
 import '../../../data/models/attendance_models.dart';
 import 'attendance_ui_helpers.dart';
 
@@ -75,14 +76,15 @@ class _SummaryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.khubrat;
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 12, 12, 10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: palette.surface,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFFEDEDED)),
-        boxShadow: const [
-          BoxShadow(color: AppColors.cardShadow, blurRadius: 8, offset: Offset(0, 2)),
+        border: Border.all(color: palette.chipBorder),
+        boxShadow: [
+          BoxShadow(color: palette.cardShadow, blurRadius: 8, offset: const Offset(0, 2)),
         ],
       ),
       child: Column(
@@ -92,14 +94,14 @@ class _SummaryItem extends StatelessWidget {
           const Spacer(),
           Text(
             value,
-            style: AppTextStyles.h2.copyWith(color: AppColors.primary, fontSize: 20),
+            style: AppTextStyles.h2.copyWith(color: palette.title, fontSize: 20),
           ),
           const SizedBox(height: 2),
           Text(
             label,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+            style: AppTextStyles.bodySmall.copyWith(color: palette.textSecondary),
           ),
         ],
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import '../../../core/theme/khubrat_colors.dart';
 import '../../../data/models/overtime_model.dart';
 import 'overtime_status_badge.dart';
 
@@ -52,13 +53,14 @@ class OvertimeHistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.khubrat;
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: palette.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFEFEFF4)),
+        border: Border.all(color: palette.chipBorder),
       ),
       child: Row(
         children: [
@@ -81,6 +83,7 @@ class OvertimeHistoryCard extends StatelessWidget {
                   style: GoogleFonts.cairo(
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
+                    color: palette.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -88,7 +91,7 @@ class OvertimeHistoryCard extends StatelessWidget {
                   _subtitle,
                   style: GoogleFonts.cairo(
                     fontSize: 11,
-                    color: Colors.grey.shade600,
+                    color: palette.textSecondary,
                   ),
                 ),
               ],

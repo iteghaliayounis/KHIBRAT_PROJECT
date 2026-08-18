@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/theme/khubrat_colors.dart';
 import '../../../data/models/salary_models.dart';
 import '../../controllers/salary_controller.dart';
 import 'salary_ui_helpers.dart';
@@ -31,9 +32,9 @@ class _SalaryDetailBody extends StatelessWidget {
 
     return Container(
       constraints: BoxConstraints(maxHeight: maxH),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      decoration: BoxDecoration(
+        color: context.khubrat.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
       ),
       child: SafeArea(
         top: false,
@@ -55,7 +56,7 @@ class _SalaryDetailBody extends StatelessWidget {
                     width: 42,
                     height: 4,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFE2E8F0),
+                      color: context.khubrat.chipBorder,
                       borderRadius: BorderRadius.circular(4),
                     ),
                   ),
@@ -69,18 +70,19 @@ class _SalaryDetailBody extends StatelessWidget {
                       child: Container(
                         width: 36,
                         height: 36,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFFF1F5F9),
+                        decoration: BoxDecoration(
+                          color: context.khubrat.inputFill,
                           shape: BoxShape.circle,
+                          border: Border.all(color: context.khubrat.chipBorder),
                         ),
-                        child: const Icon(Icons.close_rounded, size: 18, color: AppColors.textSecondary),
+                        child: Icon(Icons.close_rounded, size: 18, color: context.khubrat.textSecondary),
                       ),
                     ),
                     Expanded(
                       child: Text(
                         'salary_detail_title'.tr,
                         textAlign: TextAlign.center,
-                        style: AppTextStyles.h2.copyWith(color: AppColors.brandNavy),
+                        style: AppTextStyles.h2.copyWith(color: context.khubrat.title),
                       ),
                     ),
                     Container(
@@ -162,12 +164,13 @@ class _MetaCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.khubrat;
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: palette.inputFill,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFE8EDF5)),
+        border: Border.all(color: palette.chipBorder),
       ),
       child: Row(
         children: [
@@ -175,9 +178,9 @@ class _MetaCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('salary_currency'.tr, style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary)),
+                Text('salary_currency'.tr, style: AppTextStyles.bodySmall.copyWith(color: palette.textSecondary)),
                 const SizedBox(height: 4),
-                Text('salary_currency_syp'.tr, style: AppTextStyles.label.copyWith(color: AppColors.brandNavy)),
+                Text('salary_currency_syp'.tr, style: AppTextStyles.label.copyWith(color: palette.title)),
               ],
             ),
           ),
@@ -185,11 +188,11 @@ class _MetaCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('salary_period_label'.tr, style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary)),
+                Text('salary_period_label'.tr, style: AppTextStyles.bodySmall.copyWith(color: palette.textSecondary)),
                 const SizedBox(height: 4),
                 Text(
                   SalaryUiHelpers.monthYearLabel(detail.month, detail.year),
-                  style: AppTextStyles.label.copyWith(color: AppColors.brandNavy),
+                  style: AppTextStyles.label.copyWith(color: palette.title),
                 ),
               ],
             ),
@@ -223,7 +226,10 @@ class _LinesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bg = positive ? const Color(0xFFF0FDF4) : const Color(0xFFFFF1F2);
+    final palette = context.khubrat;
+    final bg = palette.isDark
+        ? (positive ? const Color(0xFF163A2A) : const Color(0xFF3A1A1E))
+        : (positive ? const Color(0xFFF0FDF4) : const Color(0xFFFFF1F2));
     final border = positive ? const Color(0xFFBBF7D0) : const Color(0xFFFECDD3);
     final accent = positive ? AppColors.success : AppColors.error;
 
@@ -245,7 +251,7 @@ class _LinesSection extends StatelessWidget {
                 decoration: BoxDecoration(color: accent, shape: BoxShape.circle),
               ),
               const SizedBox(width: 8),
-              Text(title, style: AppTextStyles.label.copyWith(color: AppColors.brandNavy)),
+              Text(title, style: AppTextStyles.label.copyWith(color: palette.title)),
             ],
           ),
           const SizedBox(height: 12),
@@ -254,7 +260,7 @@ class _LinesSection extends StatelessWidget {
           if (items.isEmpty && baseLabel == null)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Text(emptyText, style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary)),
+              child: Text(emptyText, style: AppTextStyles.bodySmall.copyWith(color: palette.textSecondary)),
             )
           else if (items.isEmpty && baseLabel != null)
             const SizedBox.shrink()
@@ -272,16 +278,16 @@ class _LinesSection extends StatelessWidget {
               padding: const EdgeInsets.only(top: 4),
               child: Text(
                 emptyText,
-                style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+                style: AppTextStyles.bodySmall.copyWith(color: palette.textSecondary),
               ),
             ),
           const Divider(height: 20),
           Row(
             children: [
-              Expanded(child: Text(totalLabel, style: AppTextStyles.label.copyWith(color: AppColors.brandNavy))),
+              Expanded(child: Text(totalLabel, style: AppTextStyles.label.copyWith(color: palette.title))),
               Text(
                 SalaryUiHelpers.formatMoney(total),
-                style: AppTextStyles.label.copyWith(color: AppColors.brandNavy, fontWeight: FontWeight.w800),
+                style: AppTextStyles.label.copyWith(color: palette.title, fontWeight: FontWeight.w800),
               ),
             ],
           ),
@@ -306,9 +312,10 @@ class _LineRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.khubrat;
     final prefix = !signed ? '' : (positive ? '+ ' : '- ');
     final color = !signed
-        ? AppColors.textPrimary
+        ? palette.textPrimary
         : (positive ? AppColors.success : AppColors.error);
 
     return Padding(
@@ -318,11 +325,11 @@ class _LineRow extends StatelessWidget {
           Icon(
             positive ? Icons.card_giftcard_rounded : Icons.shield_outlined,
             size: 16,
-            color: AppColors.textSecondary,
+            color: palette.textSecondary,
           ),
           const SizedBox(width: 8),
           Expanded(
-            child: Text(label, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary)),
+            child: Text(label, style: AppTextStyles.bodyMedium.copyWith(color: palette.textPrimary)),
           ),
           Text(
             '$prefix${SalaryUiHelpers.formatMoney(amount)}',

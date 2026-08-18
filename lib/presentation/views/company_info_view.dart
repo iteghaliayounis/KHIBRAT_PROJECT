@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../core/theme/khubrat_colors.dart';
 import '../../data/models/company_profile_model.dart';
 import '../controllers/company_info_controller.dart';
 
@@ -17,7 +18,7 @@ class CompanyInfoView extends GetView<CompanyInfoController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _bg,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Column(
         children: [
           _buildHeader(context),
@@ -118,6 +119,7 @@ class CompanyInfoView extends GetView<CompanyInfoController> {
   }
 
   Widget _buildIdentityCard(CompanyProfileModel data) {
+    final palette = Get.context!.khubrat;
     return _card(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -133,7 +135,7 @@ class CompanyInfoView extends GetView<CompanyInfoController> {
                   style: GoogleFonts.cairo(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
-                    color: _navy,
+                    color: palette.title,
                     height: 1.35,
                   ),
                 ),
@@ -144,7 +146,7 @@ class CompanyInfoView extends GetView<CompanyInfoController> {
                     style: GoogleFonts.cairo(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
-                      color: Colors.grey.shade600,
+                      color: palette.textSecondary,
                       height: 1.35,
                     ),
                   ),
@@ -183,6 +185,7 @@ class CompanyInfoView extends GetView<CompanyInfoController> {
 
   Widget _buildAboutCard(CompanyProfileModel data) {
     final about = (data.about ?? '').trim();
+    final palette = Get.context!.khubrat;
     return _card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -192,7 +195,7 @@ class CompanyInfoView extends GetView<CompanyInfoController> {
             style: GoogleFonts.cairo(
               fontSize: 15,
               fontWeight: FontWeight.w700,
-              color: _navy,
+              color: palette.title,
             ),
           ),
           const SizedBox(height: 8),
@@ -214,16 +217,17 @@ class CompanyInfoView extends GetView<CompanyInfoController> {
   }
 
   Widget _buildAboutText(String about, String companyName) {
+    final palette = Get.context!.khubrat;
     final baseStyle = GoogleFonts.cairo(
       fontSize: 13,
       fontWeight: FontWeight.w500,
-      color: Colors.grey.shade700,
+      color: palette.textSecondary,
       height: 1.7,
     );
     final boldStyle = GoogleFonts.cairo(
       fontSize: 13,
       fontWeight: FontWeight.w700,
-      color: _navy,
+      color: palette.textPrimary,
       height: 1.7,
     );
 
@@ -262,6 +266,7 @@ class CompanyInfoView extends GetView<CompanyInfoController> {
   }
 
   Widget _buildContactCard(CompanyProfileModel data) {
+    final palette = Get.context!.khubrat;
     return _card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -271,7 +276,7 @@ class CompanyInfoView extends GetView<CompanyInfoController> {
             style: GoogleFonts.cairo(
               fontSize: 15,
               fontWeight: FontWeight.w700,
-              color: _navy,
+              color: palette.title,
             ),
           ),
           const SizedBox(height: 8),
@@ -298,12 +303,14 @@ class CompanyInfoView extends GetView<CompanyInfoController> {
 
   Widget _contactRow({required IconData icon, required String? text}) {
     final value = (text ?? '').trim().isEmpty ? '—' : text!.trim();
+    final palette = Get.context!.khubrat;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       decoration: BoxDecoration(
-        color: _fieldBg,
+        color: palette.inputFill,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: palette.chipBorder),
       ),
       child: Row(
         children: [
@@ -315,7 +322,7 @@ class CompanyInfoView extends GetView<CompanyInfoController> {
               style: GoogleFonts.cairo(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
-                color: _navy,
+                color: palette.textPrimary,
                 height: 1.4,
               ),
             ),
@@ -326,15 +333,17 @@ class CompanyInfoView extends GetView<CompanyInfoController> {
   }
 
   Widget _card({required Widget child}) {
+    final palette = Get.context!.khubrat;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: palette.surface,
         borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: palette.chipBorder),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: palette.cardShadow,
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),

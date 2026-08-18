@@ -47,4 +47,14 @@ class AppColors {
     Color(0xFF041B5C),
     primary,
   ];
+
+  // Night-mode surfaces only. Brand primary / secondary / accent never change.
+  /// RGB(22, 64, 124) — glow at the top of the night background.
+  static const Color nightGlow = Color.fromRGBO(22, 64, 124, 1);
+
+  /// RGB(3, 7, 17) — deep edges of the night background.
+  static const Color nightDeep = Color.fromRGBO(3, 7, 17, 1);
+
+  /// Independent card color for dark mode (elevation vs the page background).
+  static const Color nightSurface = Color.fromRGBO(14, 32, 68, 1);
 }

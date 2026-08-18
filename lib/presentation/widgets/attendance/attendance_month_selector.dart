@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/theme/khubrat_colors.dart';
+import '../../../core/theme/khubrat_colors.dart';
 import 'attendance_ui_helpers.dart';
 
 class AttendanceMonthSelector extends StatelessWidget {
@@ -46,18 +47,19 @@ class AttendanceMonthSelector extends StatelessWidget {
       isArabic: isArabic,
     );
 
+    final palette = context.khubrat;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: palette.surface,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFFEDEDED)),
+        border: Border.all(color: palette.chipBorder),
       ),
       child: Row(
         children: [
           IconButton(
             onPressed: onPrevious,
-            icon: const Icon(Icons.chevron_left_rounded, color: AppColors.primary),
+            icon: Icon(Icons.chevron_left_rounded, color: palette.title),
             tooltip: 'attendance_previous_month'.tr,
           ),
           Expanded(
@@ -69,14 +71,14 @@ class AttendanceMonthSelector extends StatelessWidget {
                 child: Text(
                   label,
                   textAlign: TextAlign.center,
-                  style: AppTextStyles.h2.copyWith(color: AppColors.primary),
+                  style: AppTextStyles.h2.copyWith(color: palette.title),
                 ),
               ),
             ),
           ),
           IconButton(
             onPressed: onNext,
-            icon: const Icon(Icons.chevron_right_rounded, color: AppColors.primary),
+            icon: Icon(Icons.chevron_right_rounded, color: palette.title),
             tooltip: 'attendance_next_month'.tr,
           ),
         ],

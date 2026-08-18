@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../core/theme/khubrat_colors.dart';
 
 class ProfileUploadBox extends StatelessWidget {
   final String label;
@@ -24,6 +25,7 @@ class ProfileUploadBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final filled = file != null;
+    final palette = context.khubrat;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -31,7 +33,11 @@ class ProfileUploadBox extends StatelessWidget {
           alignment: _isArabic ? Alignment.centerRight : Alignment.centerLeft,
           child: Text(
             required ? '$label *' : '$label (${'profile_optional'.tr})',
-            style: GoogleFonts.cairo(fontSize: 11, fontWeight: FontWeight.w900),
+            style: GoogleFonts.cairo(
+              fontSize: 11,
+              fontWeight: FontWeight.w900,
+              color: palette.textPrimary,
+            ),
           ),
         ),
         const SizedBox(height: 6),
@@ -42,14 +48,17 @@ class ProfileUploadBox extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 26),
             decoration: BoxDecoration(
-              color: filled ? const Color(0xFFECFDF5) : Colors.white,
+              color: filled
+                  ? (palette.isDark
+                      ? const Color(0xFF10B981).withValues(alpha: 0.18)
+                      : const Color(0xFFECFDF5))
+                  : palette.inputFill,
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
                 color: filled
                     ? const Color(0xFF34D399)
-                    : const Color(0xFFCBD5E1),
+                    : palette.chipBorder,
                 width: 1.6,
-                style: filled ? BorderStyle.solid : BorderStyle.solid,
               ),
             ),
             child: Column(
@@ -75,8 +84,8 @@ class ProfileUploadBox extends StatelessWidget {
                     fontSize: 12,
                     fontWeight: FontWeight.w900,
                     color: filled
-                        ? const Color(0xFF059669)
-                        : const Color(0xFF475569),
+                        ? const Color(0xFF10B981)
+                        : palette.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -85,7 +94,7 @@ class ProfileUploadBox extends StatelessWidget {
                     'profile_file_formats_hint'.tr,
                     style: GoogleFonts.cairo(
                       fontSize: 10,
-                      color: Colors.grey.shade400,
+                      color: palette.hint,
                     ),
                   ),
               ],

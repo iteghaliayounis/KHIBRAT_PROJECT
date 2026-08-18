@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/constants/app_colors.dart';
+
 class AssistantPalette {
   AssistantPalette._();
 
@@ -14,27 +16,27 @@ class AssistantPalette {
   static const Color dust = Color(0xFF90CAF9);
 
   static Color background(bool dark) =>
-      dark ? const Color(0xFF0B1220) : const Color(0xFFF8F9FB);
+      dark ? Colors.transparent : const Color(0xFFF8F9FB);
 
   static Color surface(bool dark) =>
-      dark ? const Color(0xFF152238) : Colors.white;
+      dark ? AppColors.nightSurface : Colors.white;
 
   static Color text(bool dark) =>
-      dark ? Colors.white : navy;
+      dark ? const Color(0xFFF4F7FB) : navy;
 
   static Color muted(bool dark) =>
-      dark ? const Color(0xFF9AA6C1) : subtitle;
+      dark ? const Color(0xFFB8C2D6) : subtitle;
 
   static Color headerButton(bool dark) =>
-      dark ? const Color(0xFF1C2B45) : Colors.white;
+      dark ? AppColors.nightSurface : Colors.white;
 
   static Color inputFill(bool dark) =>
-      dark ? const Color(0xFF1A2740) : Colors.white;
+      dark ? const Color(0x14FFFFFF) : Colors.white;
 
   static Color bubbleUser = navy;
 
   static Color bubbleAssistant(bool dark) =>
-      dark ? const Color(0xFF1A2740) : Colors.white;
+      dark ? AppColors.nightSurface : Colors.white;
 
   static Color drawerScrim = const Color(0x99000C24);
 

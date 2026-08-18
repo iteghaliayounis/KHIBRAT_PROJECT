@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/theme/khubrat_colors.dart';
 import '../../../data/models/salary_models.dart';
 import 'salary_ui_helpers.dart';
 
@@ -18,6 +19,7 @@ class AdvanceEligibilityCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final eligible = !data.hasActiveAdvance;
+    final palette = context.khubrat;
 
     return Column(
       children: [
@@ -25,11 +27,11 @@ class AdvanceEligibilityCard extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: palette.surface,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: const Color(0xFFE8EDF5)),
-            boxShadow: const [
-              BoxShadow(color: AppColors.cardShadow, blurRadius: 12, offset: Offset(0, 4)),
+            border: Border.all(color: palette.chipBorder),
+            boxShadow: [
+              BoxShadow(color: palette.cardShadow, blurRadius: 12, offset: const Offset(0, 4)),
             ],
           ),
           child: Column(
@@ -42,7 +44,7 @@ class AdvanceEligibilityCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       'salary_advance_eligibility'.tr,
-                      style: AppTextStyles.h3.copyWith(color: AppColors.brandNavy),
+                      style: AppTextStyles.h3.copyWith(color: palette.title),
                     ),
                   ),
                   Container(
@@ -96,19 +98,28 @@ class AdvanceEligibilityCard extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFFFFFBEB),
+              color: palette.isDark
+                  ? const Color(0xFF3A2A12)
+                  : const Color(0xFFFFFBEB),
               borderRadius: BorderRadius.circular(14),
               border: Border.all(color: const Color(0xFFFDE68A)),
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(Icons.info_outline_rounded, color: Color(0xFF92400E), size: 18),
+                Icon(
+                  Icons.info_outline_rounded,
+                  color: palette.isDark ? AppColors.brandGold : const Color(0xFF92400E),
+                  size: 18,
+                ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     'salary_active_advance_hint'.tr,
-                    style: AppTextStyles.bodySmall.copyWith(color: const Color(0xFF92400E), height: 1.35),
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: palette.isDark ? AppColors.brandGold : const Color(0xFF92400E),
+                      height: 1.35,
+                    ),
                   ),
                 ),
               ],
@@ -147,11 +158,15 @@ class _MiniStat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.khubrat;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       decoration: BoxDecoration(
-        color: highlight ? AppColors.brandGold.withValues(alpha: 0.2) : const Color(0xFFF8FAFC),
+        color: highlight
+            ? AppColors.brandGold.withValues(alpha: palette.isDark ? 0.22 : 0.2)
+            : palette.inputFill,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: palette.chipBorder),
       ),
       child: Column(
         children: [
@@ -160,7 +175,7 @@ class _MiniStat extends StatelessWidget {
             textAlign: TextAlign.center,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary, fontSize: 10),
+            style: AppTextStyles.bodySmall.copyWith(color: palette.textSecondary, fontSize: 10),
           ),
           const SizedBox(height: 6),
           Text(
@@ -169,7 +184,7 @@ class _MiniStat extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: AppTextStyles.label.copyWith(
-              color: highlight ? AppColors.brandBrown : AppColors.brandNavy,
+              color: highlight ? AppColors.brandGold : palette.title,
               fontSize: 12,
               fontWeight: FontWeight.w800,
             ),

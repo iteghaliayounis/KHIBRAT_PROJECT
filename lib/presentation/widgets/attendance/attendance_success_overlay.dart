@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/theme/khubrat_colors.dart';
 import '../../../data/models/attendance_models.dart';
 import 'attendance_ui_helpers.dart';
 
@@ -52,7 +53,7 @@ class _AttendanceSuccessOverlayState extends State<AttendanceSuccessOverlay>
         : 'attendance_check_out_success'.tr;
 
     return Container(
-      color: Colors.white,
+      color: context.khubrat.isDark ? Colors.transparent : Colors.white,
       width: double.infinity,
       height: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 28),
@@ -76,14 +77,14 @@ class _AttendanceSuccessOverlayState extends State<AttendanceSuccessOverlay>
             Text(
               title,
               textAlign: TextAlign.center,
-              style: AppTextStyles.h1.copyWith(color: AppColors.primary),
+              style: AppTextStyles.h1.copyWith(color: context.khubrat.title),
             ),
             if (widget.result.message.isNotEmpty) ...[
               const SizedBox(height: 8),
               Text(
                 widget.result.message,
                 textAlign: TextAlign.center,
-                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                style: AppTextStyles.bodyMedium.copyWith(color: context.khubrat.textSecondary),
               ),
             ],
             const SizedBox(height: 28),
@@ -144,12 +145,12 @@ class _InfoRow extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: Text(label, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary)),
+            child: Text(label, style: AppTextStyles.bodyMedium.copyWith(color: context.khubrat.textSecondary)),
           ),
           Text(
             value,
             style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.primary,
+              color: context.khubrat.title,
               fontWeight: FontWeight.w700,
             ),
           ),

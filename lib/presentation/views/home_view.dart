@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../core/routes/app_routes.dart';
+import '../../core/theme/khubrat_colors.dart';
 import '../../core/services/push_notification_service.dart';
 import '../../core/utils/storage_service.dart';
 import '../../data/providers/auth_provider.dart';
@@ -104,8 +105,10 @@ class _HomeViewState extends State<HomeView> {
       },
     ];
 
+    final palette = context.khubrat;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F7FB),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -150,21 +153,21 @@ class _HomeViewState extends State<HomeView> {
                           duration: const Duration(milliseconds: 200),
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: palette.surface,
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
                               color: isSelected
                                   ? service['color'] as Color
-                                  : Colors.transparent,
-                              width: 2,
+                                  : palette.chipBorder,
+                              width: isSelected ? 2 : 1,
                             ),
                             boxShadow: [
                               BoxShadow(
                                 color: isSelected
-                                    ? (service['color'] as Color).withOpacity(
-                                        0.2,
+                                    ? (service['color'] as Color).withValues(
+                                        alpha: 0.2,
                                       )
-                                    : Colors.black.withOpacity(0.04),
+                                    : palette.cardShadow,
                                 blurRadius: isSelected ? 12 : 8,
                                 offset: const Offset(0, 4),
                               ),
@@ -211,7 +214,7 @@ class _HomeViewState extends State<HomeView> {
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: 11,
-                                      color: Colors.grey.shade600,
+                                      color: palette.textSecondary,
                                       height: 1.1,
                                     ),
                                   ),

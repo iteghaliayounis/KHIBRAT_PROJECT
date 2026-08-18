@@ -13,7 +13,7 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
     return PopScope(
       canPop: !StorageService.instance.isFirstLogin,
       child: Scaffold(
-      backgroundColor: const Color(0xFFFAFBFD),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24),

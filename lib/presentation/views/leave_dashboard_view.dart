@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import '../../core/routes/app_routes.dart';
+import '../../core/theme/khubrat_colors.dart';
 import '../../data/models/leave_dashboard_model.dart';
 import '../controllers/leave_dashboard_controller.dart';
 
@@ -17,11 +18,11 @@ class LeaveDashboardView extends GetView<LeaveDashboardController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _bg,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
-            _buildAppBar(),
+            _buildAppBar(context),
             Expanded(
               child: Obx(() {
                 if (controller.isLoading.value &&
@@ -45,12 +46,12 @@ class LeaveDashboardView extends GetView<LeaveDashboardController> {
                       const SizedBox(height: 16),
                       _buildNewRequestButton(),
                       const SizedBox(height: 28),
-                      _buildHistoryHeader(),
+                      _buildHistoryHeader(context),
                       const SizedBox(height: 12),
                       if (data == null || data.leaveHistory.isEmpty)
-                        _buildEmptyHistory()
+                        _buildEmptyHistory(context)
                       else
-                        ...data.leaveHistory.map(_buildHistoryCard),
+                        ...data.leaveHistory.map((item) => _buildHistoryCard(context, item)),
                     ],
                   ),
                 );
@@ -62,7 +63,8 @@ class LeaveDashboardView extends GetView<LeaveDashboardController> {
     );
   }
 
-  Widget _buildAppBar() {
+  Widget _buildAppBar(BuildContext context) {
+    final palette = context.khubrat;
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
       child: Row(
@@ -70,6 +72,7 @@ class LeaveDashboardView extends GetView<LeaveDashboardController> {
           _circleIconButton(
             icon: Icons.arrow_forward_ios_rounded,
             onTap: () => Get.back(),
+            palette: palette,
           ),
           Expanded(
             child: Text(
@@ -78,11 +81,10 @@ class LeaveDashboardView extends GetView<LeaveDashboardController> {
               style: GoogleFonts.cairo(
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
-                color: _navy,
+                color: palette.title,
               ),
             ),
           ),
-          // مساحة فارغة لموازنة العنوان مع زر الرجوع
           const SizedBox(width: 40),
         ],
       ),
@@ -92,6 +94,7 @@ class LeaveDashboardView extends GetView<LeaveDashboardController> {
   Widget _circleIconButton({
     required IconData icon,
     required VoidCallback onTap,
+    required KhubratColors palette,
   }) {
     return InkWell(
       onTap: onTap,
@@ -100,17 +103,18 @@ class LeaveDashboardView extends GetView<LeaveDashboardController> {
         width: 40,
         height: 40,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: palette.surface,
           shape: BoxShape.circle,
+          border: Border.all(color: palette.chipBorder),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: palette.cardShadow,
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
           ],
         ),
-        child: Icon(icon, color: _navy, size: 16),
+        child: Icon(icon, color: palette.title, size: 16),
       ),
     );
   }
@@ -281,10 +285,11 @@ class LeaveDashboardView extends GetView<LeaveDashboardController> {
     );
   }
 
-  Widget _buildHistoryHeader() {
+  Widget _buildHistoryHeader(BuildContext context) {
+    final palette = context.khubrat;
     return Row(
       children: [
-        Icon(Icons.history_rounded, color: _navy.withOpacity(0.7), size: 18),
+        Icon(Icons.history_rounded, color: palette.title, size: 18),
         const SizedBox(width: 6),
         Expanded(
           child: Text(
@@ -292,21 +297,22 @@ class LeaveDashboardView extends GetView<LeaveDashboardController> {
             style: GoogleFonts.cairo(
               fontSize: 15,
               fontWeight: FontWeight.w700,
-              color: _navy,
+              color: palette.title,
             ),
           ),
         ),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           decoration: BoxDecoration(
-            color: Colors.grey.shade100,
+            color: palette.inputFill,
             borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: palette.chipBorder),
           ),
           child: Text(
             'sorted_descending'.tr,
             style: GoogleFonts.cairo(
               fontSize: 10,
-              color: Colors.grey.shade600,
+              color: palette.textSecondary,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -315,18 +321,19 @@ class LeaveDashboardView extends GetView<LeaveDashboardController> {
     );
   }
 
-  Widget _buildEmptyHistory() {
+  Widget _buildEmptyHistory(BuildContext context) {
+    final palette = context.khubrat;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 40),
       child: Column(
         children: [
-          Icon(Icons.event_busy_rounded, size: 48, color: Colors.grey.shade300),
+          Icon(Icons.event_busy_rounded, size: 48, color: palette.hint),
           const SizedBox(height: 12),
           Text(
             'no_leave_history'.tr,
             style: GoogleFonts.cairo(
               fontSize: 13,
-              color: Colors.grey.shade500,
+              color: palette.textSecondary,
             ),
           ),
         ],
@@ -334,7 +341,8 @@ class LeaveDashboardView extends GetView<LeaveDashboardController> {
     );
   }
 
-  Widget _buildHistoryCard(LeaveHistoryModel item) {
+  Widget _buildHistoryCard(BuildContext context, LeaveHistoryModel item) {
+    final palette = context.khubrat;
     final statusMeta = _statusMeta(item.status);
     final dateText = _formatDisplayDate(item.startDate);
     final daysLabel = item.durationDays == 1
@@ -345,9 +353,9 @@ class LeaveDashboardView extends GetView<LeaveDashboardController> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: palette.surface,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: Colors.grey.shade200),
+        border: Border.all(color: palette.chipBorder),
       ),
       child: Row(
         children: [
@@ -370,7 +378,7 @@ class LeaveDashboardView extends GetView<LeaveDashboardController> {
                   style: GoogleFonts.cairo(
                     fontSize: 13.5,
                     fontWeight: FontWeight.w700,
-                    color: _navy,
+                    color: palette.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -378,7 +386,7 @@ class LeaveDashboardView extends GetView<LeaveDashboardController> {
                   '$dateText | ${statusMeta.label}',
                   style: GoogleFonts.cairo(
                     fontSize: 11,
-                    color: Colors.grey.shade600,
+                    color: palette.textSecondary,
                   ),
                 ),
               ],

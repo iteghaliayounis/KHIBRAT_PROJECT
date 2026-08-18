@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
+import '../../core/theme/khubrat_colors.dart';
 import '../../data/models/leave_type_model.dart';
 import '../controllers/apply_leave_controller.dart';
 
@@ -12,12 +13,12 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
   static const _navy = Color(0xFF002166);
   static const _accent = Color(0xFF835C21);
   static const _gold = Color(0xFFCBA158);
-  static const _fieldFill = Color(0xFFF7F8FA);
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.khubrat;
     return Scaffold(
-      backgroundColor: _navy,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -25,19 +26,19 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
             Expanded(
               child: Container(
                 width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+                decoration: BoxDecoration(
+                  color: palette.isDark ? Colors.transparent : palette.surface,
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
                 ),
                 child: Column(
                   children: [
-                    _buildHeader(),
+                    _buildHeader(palette),
                     Expanded(
                       child: Obx(() {
                         if (controller.isLoadingTypes.value &&
                             controller.leaveTypes.isEmpty) {
-                          return const Center(
-                            child: CircularProgressIndicator(color: _navy),
+                          return Center(
+                            child: CircularProgressIndicator(color: palette.title),
                           );
                         }
                         return SingleChildScrollView(
@@ -51,14 +52,14 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
                                 text: 'requested_leave_type'.tr,
                               ),
                               const SizedBox(height: 8),
-                              _buildLeaveTypeDropdown(),
+                              _buildLeaveTypeDropdown(palette),
                               const SizedBox(height: 22),
                               _sectionLabel(
                                 icon: Icons.access_time_rounded,
                                 text: 'leave_duration'.tr,
                               ),
                               const SizedBox(height: 10),
-                              _buildDurationChips(),
+                              _buildDurationChips(palette),
                               const SizedBox(height: 22),
                               ..._buildDateTimeFields(context),
                               const SizedBox(height: 22),
@@ -67,14 +68,14 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
                                 text: 'upload_proof_file'.tr,
                               ),
                               const SizedBox(height: 10),
-                              _buildAttachmentBox(),
+                              _buildAttachmentBox(palette),
                               const SizedBox(height: 22),
                               _sectionLabel(
                                 icon: Icons.notes_rounded,
                                 text: 'leave_reason_detail'.tr,
                               ),
                               const SizedBox(height: 8),
-                              _buildReasonField(),
+                              _buildReasonField(palette),
                               const SizedBox(height: 28),
                               _buildSubmitButton(),
                             ],
@@ -92,7 +93,7 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(KhubratColors palette) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
       child: Row(
@@ -105,7 +106,7 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
               style: GoogleFonts.cairo(
                 fontSize: 17,
                 fontWeight: FontWeight.w700,
-                color: _navy,
+                color: palette.title,
               ),
             ),
           ),
@@ -116,10 +117,11 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: Colors.grey.shade100,
+                color: palette.inputFill,
                 shape: BoxShape.circle,
+                border: Border.all(color: palette.chipBorder),
               ),
-              child: const Icon(Icons.close_rounded, color: _navy, size: 20),
+              child: Icon(Icons.close_rounded, color: palette.title, size: 20),
             ),
           ),
         ],
@@ -146,31 +148,32 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
     );
   }
 
-  Widget _buildLeaveTypeDropdown() {
+  Widget _buildLeaveTypeDropdown(KhubratColors palette) {
     return Obx(() {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 14),
         decoration: BoxDecoration(
-          color: _fieldFill,
+          color: palette.inputFill,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: const Color(0xFFF1E6D3)),
+          border: Border.all(color: palette.inputBorder),
         ),
         child: DropdownButtonHideUnderline(
           child: DropdownButton<LeaveTypeModel>(
             isExpanded: true,
             value: controller.selectedType.value,
+            dropdownColor: palette.surface,
             hint: Text(
               'select_leave_type'.tr,
               style: GoogleFonts.cairo(
                 fontSize: 13,
-                color: Colors.grey.shade500,
+                color: palette.hint,
               ),
             ),
-            icon: const Icon(Icons.keyboard_arrow_down_rounded, color: _navy),
+            icon: Icon(Icons.keyboard_arrow_down_rounded, color: palette.title),
             style: GoogleFonts.cairo(
               fontSize: 13.5,
               fontWeight: FontWeight.w600,
-              color: _navy,
+              color: palette.textPrimary,
             ),
             items: controller.leaveTypes
                 .map(
@@ -181,6 +184,11 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
                           ? '${type.name} (${'requires_proof_hint'.tr})'
                           : type.name,
                       overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.cairo(
+                        fontSize: 13.5,
+                        fontWeight: FontWeight.w600,
+                        color: palette.textPrimary,
+                      ),
                     ),
                   ),
                 )
@@ -192,7 +200,7 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
     });
   }
 
-  Widget _buildDurationChips() {
+  Widget _buildDurationChips(KhubratColors palette) {
     return Obx(() {
       final options = controller.availableDurations;
       return Wrap(
@@ -206,10 +214,14 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
               duration: const Duration(milliseconds: 180),
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               decoration: BoxDecoration(
-                color: selected ? _navy.withOpacity(0.06) : _fieldFill,
+                color: selected
+                    ? (palette.isDark
+                        ? _navy.withValues(alpha: 0.28)
+                        : _navy.withValues(alpha: 0.06))
+                    : palette.inputFill,
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
-                  color: selected ? _navy : Colors.grey.shade200,
+                  color: selected ? _navy : palette.chipBorder,
                   width: selected ? 1.5 : 1,
                 ),
               ),
@@ -219,7 +231,7 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
                   Icon(
                     _durationIcon(option),
                     size: 16,
-                    color: selected ? _navy : Colors.grey.shade600,
+                    color: selected ? palette.title : palette.textSecondary,
                   ),
                   const SizedBox(width: 6),
                   Text(
@@ -227,7 +239,7 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
                     style: GoogleFonts.cairo(
                       fontSize: 12.5,
                       fontWeight: FontWeight.w600,
-                      color: selected ? _navy : Colors.grey.shade700,
+                      color: selected ? palette.title : palette.textPrimary,
                     ),
                   ),
                 ],
@@ -354,6 +366,7 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
     required ValueChanged<DateTime> onPicked,
     DateTime? firstDate,
   }) {
+    final palette = context.khubrat;
     final locale = Get.locale?.languageCode == 'ar' ? 'ar' : 'en';
     final text = value == null
         ? 'select_date'.tr
@@ -373,17 +386,6 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
           initialDate: initial,
           firstDate: first,
           lastDate: last,
-          builder: (context, child) {
-            return Theme(
-              data: Theme.of(context).copyWith(
-                colorScheme: const ColorScheme.light(
-                  primary: _navy,
-                  onPrimary: Colors.white,
-                ),
-              ),
-              child: child!,
-            );
-          },
         );
         if (picked != null) onPicked(picked);
       },
@@ -391,9 +393,9 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
         decoration: BoxDecoration(
-          color: _fieldFill,
+          color: palette.inputFill,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: const Color(0xFFF1E6D3)),
+          border: Border.all(color: palette.inputBorder),
         ),
         child: Row(
           children: [
@@ -405,7 +407,7 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
                 style: GoogleFonts.cairo(
                   fontSize: 13.5,
                   fontWeight: value == null ? FontWeight.w400 : FontWeight.w600,
-                  color: value == null ? Colors.grey.shade500 : _navy,
+                  color: value == null ? palette.hint : palette.textPrimary,
                 ),
               ),
             ),
@@ -422,6 +424,7 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
     required TimeOfDay? value,
     required ValueChanged<TimeOfDay> onPicked,
   }) {
+    final palette = context.khubrat;
     final text = value == null
         ? 'select_time'.tr
         : '${value.hour.toString().padLeft(2, '0')}:${value.minute.toString().padLeft(2, '0')}';
@@ -431,17 +434,6 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
         final picked = await showTimePicker(
           context: context,
           initialTime: value ?? TimeOfDay.now(),
-          builder: (context, child) {
-            return Theme(
-              data: Theme.of(context).copyWith(
-                colorScheme: const ColorScheme.light(
-                  primary: _navy,
-                  onPrimary: Colors.white,
-                ),
-              ),
-              child: child!,
-            );
-          },
         );
         if (picked != null) onPicked(picked);
       },
@@ -449,9 +441,9 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
         decoration: BoxDecoration(
-          color: _fieldFill,
+          color: palette.inputFill,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: const Color(0xFFF1E6D3)),
+          border: Border.all(color: palette.inputBorder),
         ),
         child: Row(
           children: [
@@ -463,7 +455,7 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
                 style: GoogleFonts.cairo(
                   fontSize: 13,
                   fontWeight: value == null ? FontWeight.w400 : FontWeight.w600,
-                  color: value == null ? Colors.grey.shade500 : _navy,
+                  color: value == null ? palette.hint : palette.textPrimary,
                 ),
               ),
             ),
@@ -473,24 +465,28 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
     );
   }
 
-  Widget _buildAttachmentBox() {
+  Widget _buildAttachmentBox(KhubratColors palette) {
     return Obx(() {
       final hasFile = controller.attachmentPath.value != null;
       return GestureDetector(
         onTap: controller.pickAttachment,
         child: CustomPaint(
           painter: _DashedBorderPainter(
-            color: Colors.grey.shade300,
+            color: palette.chipBorder,
             radius: 16,
           ),
           child: Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 16),
+            decoration: BoxDecoration(
+              color: palette.inputFill,
+              borderRadius: BorderRadius.circular(16),
+            ),
             child: hasFile
                 ? Column(
                     children: [
-                      const Icon(Icons.insert_drive_file_rounded,
-                          color: _navy, size: 36),
+                      Icon(Icons.insert_drive_file_rounded,
+                          color: palette.title, size: 36),
                       const SizedBox(height: 8),
                       Text(
                         controller.attachmentName.value ?? '',
@@ -498,7 +494,7 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
                         style: GoogleFonts.cairo(
                           fontSize: 13,
                           fontWeight: FontWeight.w600,
-                          color: _navy,
+                          color: palette.textPrimary,
                         ),
                       ),
                       TextButton(
@@ -515,8 +511,8 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
                   )
                 : Column(
                     children: [
-                      const Icon(Icons.cloud_upload_rounded,
-                          color: _navy, size: 36),
+                      Icon(Icons.cloud_upload_rounded,
+                          color: palette.title, size: 36),
                       const SizedBox(height: 10),
                       Text(
                         'tap_or_drag_file'.tr,
@@ -524,7 +520,7 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
                         style: GoogleFonts.cairo(
                           fontSize: 13,
                           fontWeight: FontWeight.w600,
-                          color: _navy,
+                          color: palette.textPrimary,
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -533,7 +529,7 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
                         textAlign: TextAlign.center,
                         style: GoogleFonts.cairo(
                           fontSize: 11,
-                          color: Colors.grey.shade500,
+                          color: palette.hint,
                         ),
                       ),
                     ],
@@ -544,27 +540,27 @@ class ApplyLeaveView extends GetView<ApplyLeaveController> {
     });
   }
 
-  Widget _buildReasonField() {
+  Widget _buildReasonField(KhubratColors palette) {
     return TextField(
       controller: controller.reasonController,
       maxLines: 4,
-      style: GoogleFonts.cairo(fontSize: 13.5, color: _navy),
+      style: GoogleFonts.cairo(fontSize: 13.5, color: palette.textPrimary),
       decoration: InputDecoration(
         hintText: 'leave_reason_hint'.tr,
         hintStyle: GoogleFonts.cairo(
           fontSize: 13,
-          color: Colors.grey.shade400,
+          color: palette.hint,
         ),
         filled: true,
-        fillColor: _fieldFill,
+        fillColor: palette.inputFill,
         contentPadding: const EdgeInsets.all(14),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: Color(0xFFF1E6D3)),
+          borderSide: BorderSide(color: palette.inputBorder),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: Color(0xFFF1E6D3)),
+          borderSide: BorderSide(color: palette.inputBorder),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),

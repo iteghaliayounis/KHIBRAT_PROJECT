@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/theme/khubrat_colors.dart';
 import '../../../data/models/evaluation_models.dart';
 import 'evaluation_ui_helpers.dart';
 
@@ -24,8 +25,9 @@ class EvaluationReviewCard extends StatelessWidget {
     final personName = review.employee?.displayName;
     final hasPersonName = personName != null && personName.isNotEmpty;
 
+    final palette = context.khubrat;
     return Material(
-      color: Colors.white,
+      color: palette.surface,
       borderRadius: BorderRadius.circular(18),
       child: InkWell(
         borderRadius: BorderRadius.circular(18),
@@ -34,9 +36,9 @@ class EvaluationReviewCard extends StatelessWidget {
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: const Color(0xFFEDEDED)),
+            border: Border.all(color: palette.chipBorder),
             boxShadow: [
-              BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 10, offset: const Offset(0, 4)),
+              BoxShadow(color: palette.cardShadow, blurRadius: 10, offset: const Offset(0, 4)),
             ],
           ),
           child: Row(
@@ -56,7 +58,7 @@ class EvaluationReviewCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title, style: AppTextStyles.h3.copyWith(color: AppColors.primary)),
+                    Text(title, style: AppTextStyles.h3.copyWith(color: palette.title)),
                     const SizedBox(height: 2),
                     if (hasPersonName)
                       Text('$personLabel $personName', style: AppTextStyles.bodyMedium),

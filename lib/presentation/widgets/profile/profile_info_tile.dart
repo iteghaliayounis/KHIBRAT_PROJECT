@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../core/theme/khubrat_colors.dart';
 
 /// حقل عرض فقط (بحال "الاسم الكامل" / "البريد الإلكتروني" / ...)
 ///
@@ -23,13 +24,12 @@ class ProfileInfoTile extends StatelessWidget {
   });
 
   static const Color _goldDark = Color(0xFF835C21);
-  static const Color _slate100 = Color(0xFFF1F5F9);
-  static const Color _slate500 = Color(0xFF64748B);
 
   bool get _isArabic => Get.locale?.languageCode == 'ar';
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.khubrat;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -49,8 +49,9 @@ class ProfileInfoTile extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           decoration: BoxDecoration(
-            color: _slate100,
+            color: palette.inputFill,
             borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: palette.chipBorder),
           ),
           child: Directionality(
             textDirection:
@@ -62,7 +63,7 @@ class ProfileInfoTile extends StatelessWidget {
               style: GoogleFonts.cairo(
                 fontSize: 13,
                 fontWeight: FontWeight.w900,
-                color: _slate500,
+                color: palette.textPrimary,
               ),
             ),
           ),

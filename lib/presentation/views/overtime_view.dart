@@ -6,6 +6,7 @@ import '../controllers/overtime_controller.dart';
 import '../widgets/overtime/overtime_hours_stepper.dart';
 import '../widgets/overtime/overtime_preview_card.dart';
 import '../widgets/overtime/overtime_history_card.dart';
+import '../../core/theme/khubrat_colors.dart';
 
 /// واجهة طلب العمل الإضافي
 /// كل النصوص تستخدم مفاتيح الترجمة 'key'.tr لتدعم العربية والإنجليزية
@@ -29,11 +30,11 @@ class OvertimeView extends GetView<OvertimeController> {
     return Directionality(
       textDirection: _isArabic ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
-        backgroundColor: const Color(0xFFF5F6FA),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: SafeArea(
           child: Column(
             children: [
-              _buildAppBar(),
+              _buildAppBar(context),
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(16),
@@ -42,21 +43,21 @@ class OvertimeView extends GetView<OvertimeController> {
                     children: [
                       _buildDateField(context),
                       const SizedBox(height: 18),
-                      _buildDurationTypeToggle(),
+                      _buildDurationTypeToggle(context),
                       const SizedBox(height: 18),
                       Obx(
                         () => controller.durationType.value == 'day'
-                            ? _buildFullDayBox()
-                            : _buildHourStepperSection(),
+                            ? _buildFullDayBox(context)
+                            : _buildHourStepperSection(context),
                       ),
                       const SizedBox(height: 16),
                       _buildPreviewCardsRow(),
                       const SizedBox(height: 18),
-                      _buildReasonField(),
+                      _buildReasonField(context),
                       const SizedBox(height: 20),
                       _buildSubmitButton(),
                       const SizedBox(height: 28),
-                      _buildHistorySection(),
+                      _buildHistorySection(context),
                     ],
                   ),
                 ),
@@ -68,26 +69,26 @@ class OvertimeView extends GetView<OvertimeController> {
     );
   }
 
-  Widget _buildAppBar() {
+  Widget _buildAppBar(BuildContext context) {
+    final palette = context.khubrat;
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // زر الرجوع — يظهر عاليمين بالعربي وعاليسار بالإنجليزي
           InkWell(
             onTap: () => Get.back(),
             child: Container(
               width: 40,
               height: 40,
-              decoration: const BoxDecoration(
-                color: Color(0xFFF1F2F6),
+              decoration: BoxDecoration(
+                color: palette.inputFill,
                 shape: BoxShape.circle,
+                border: Border.all(color: palette.chipBorder),
               ),
               child: Icon(
-                // السهم بيشير لليمين بالعربي ولليسار بالإنجليزي
                 _isArabic ? Icons.chevron_right : Icons.chevron_left,
-                color: _navy,
+                color: palette.title,
               ),
             ),
           ),
@@ -96,7 +97,7 @@ class OvertimeView extends GetView<OvertimeController> {
             style: GoogleFonts.cairo(
               fontSize: 17,
               fontWeight: FontWeight.w700,
-              color: _navy,
+              color: palette.title,
             ),
           ),
           const SizedBox(width: 40),
@@ -106,12 +107,17 @@ class OvertimeView extends GetView<OvertimeController> {
   }
 
   Widget _buildDateField(BuildContext context) {
+    final palette = context.khubrat;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'overtime_date_label'.tr,
-          style: GoogleFonts.cairo(fontSize: 12, fontWeight: FontWeight.w700),
+          style: GoogleFonts.cairo(
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: palette.textPrimary,
+          ),
         ),
         const SizedBox(height: 6),
         Obx(() {
@@ -122,27 +128,24 @@ class OvertimeView extends GetView<OvertimeController> {
               height: 48,
               padding: const EdgeInsets.symmetric(horizontal: 14),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: palette.inputFill,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: const Color(0xFFE2E4EC)),
+                border: Border.all(color: palette.inputBorder),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // النص أولاً → يظهر عاليمين بالعربي وعاليسار بالإنجليزي
                   Text(
                     date == null ? 'select_date'.tr : controller.formattedDate,
                     style: GoogleFonts.cairo(
                       fontSize: 12,
-                      color: date == null
-                          ? Colors.grey.shade400
-                          : Colors.black87,
+                      color: date == null ? palette.hint : palette.textPrimary,
                     ),
                   ),
                   Icon(
                     Icons.calendar_today_outlined,
                     size: 16,
-                    color: Colors.grey.shade500,
+                    color: palette.textSecondary,
                   ),
                 ],
               ),
@@ -153,13 +156,18 @@ class OvertimeView extends GetView<OvertimeController> {
     );
   }
 
-  Widget _buildDurationTypeToggle() {
+  Widget _buildDurationTypeToggle(BuildContext context) {
+    final palette = context.khubrat;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'overtime_duration_type_label'.tr,
-          style: GoogleFonts.cairo(fontSize: 12, fontWeight: FontWeight.w700),
+          style: GoogleFonts.cairo(
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: palette.textPrimary,
+          ),
         ),
         const SizedBox(height: 8),
         Obx(() {
@@ -190,26 +198,30 @@ class OvertimeView extends GetView<OvertimeController> {
     );
   }
 
-  Widget _buildFullDayBox() {
+  Widget _buildFullDayBox(BuildContext context) {
+    final palette = context.khubrat;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'overtime_hours_required_label'.tr,
-          style: GoogleFonts.cairo(fontSize: 12, fontWeight: FontWeight.w700),
+          style: GoogleFonts.cairo(
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: palette.textPrimary,
+          ),
         ),
         const SizedBox(height: 8),
         Container(
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 14),
           decoration: BoxDecoration(
-            color: const Color(0xFFFBF6EC),
+            color: palette.inputFill,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: const Color(0xFFE9DCB8)),
+            border: Border.all(color: palette.inputBorder),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // النص أولاً → عاليمين بالعربي، عاليسار بالإنجليزي
               Flexible(
                 child: Text(
                   'overtime_full_day_info'.tr,
@@ -217,6 +229,7 @@ class OvertimeView extends GetView<OvertimeController> {
                   style: GoogleFonts.cairo(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
+                    color: palette.textPrimary,
                   ),
                 ),
               ),
@@ -232,13 +245,17 @@ class OvertimeView extends GetView<OvertimeController> {
     );
   }
 
-  Widget _buildHourStepperSection() {
+  Widget _buildHourStepperSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'overtime_hours_required_label'.tr,
-          style: GoogleFonts.cairo(fontSize: 12, fontWeight: FontWeight.w700),
+          style: GoogleFonts.cairo(
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: context.khubrat.textPrimary,
+          ),
         ),
         const SizedBox(height: 8),
         Obx(
@@ -285,29 +302,34 @@ class OvertimeView extends GetView<OvertimeController> {
     });
   }
 
-  Widget _buildReasonField() {
+  Widget _buildReasonField(BuildContext context) {
+    final palette = context.khubrat;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'overtime_reason_label'.tr,
-          style: GoogleFonts.cairo(fontSize: 12, fontWeight: FontWeight.w700),
+          style: GoogleFonts.cairo(
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: palette.textPrimary,
+          ),
         ),
         const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: palette.inputFill,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: const Color(0xFFE2E4EC)),
+            border: Border.all(color: palette.inputBorder),
           ),
           child: TextField(
             controller: controller.reasonController,
             maxLines: 4,
             textAlign: TextAlign.start,
-            style: GoogleFonts.cairo(fontSize: 12),
+            style: GoogleFonts.cairo(fontSize: 12, color: palette.textPrimary),
             decoration: InputDecoration(
               hintText: 'overtime_reason_hint'.tr,
-              hintStyle: GoogleFonts.cairo(fontSize: 11, color: Colors.grey),
+              hintStyle: GoogleFonts.cairo(fontSize: 11, color: palette.hint),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.all(14),
             ),
@@ -351,32 +373,35 @@ class OvertimeView extends GetView<OvertimeController> {
     });
   }
 
-  Widget _buildHistorySection() {
+  Widget _buildHistorySection(BuildContext context) {
+    final palette = context.khubrat;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // العنوان أولاً → عاليمين بالعربي، عاليسار بالإنجليزي
             Text(
               'overtime_history_title'.tr,
               style: GoogleFonts.cairo(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
+                color: palette.title,
               ),
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               decoration: BoxDecoration(
-                color: const Color(0xFFF1F2F6),
+                color: palette.inputFill,
                 borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: palette.chipBorder),
               ),
               child: Text(
                 'sorted_descending'.tr,
                 style: GoogleFonts.cairo(
                   fontSize: 9,
                   fontWeight: FontWeight.w500,
+                  color: palette.textSecondary,
                 ),
               ),
             ),
@@ -396,7 +421,10 @@ class OvertimeView extends GetView<OvertimeController> {
               child: Center(
                 child: Text(
                   'overtime_no_history'.tr,
-                  style: GoogleFonts.cairo(fontSize: 11, color: Colors.grey),
+                  style: GoogleFonts.cairo(
+                    fontSize: 11,
+                    color: palette.textSecondary,
+                  ),
                 ),
               ),
             );
@@ -427,16 +455,17 @@ class _ToggleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.khubrat;
     return InkWell(
       onTap: onTap,
       child: Container(
         height: 46,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: palette.inputFill,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: selected ? const Color(0xFF0F1B4C) : const Color(0xFFE2E4EC),
+            color: selected ? const Color(0xFF0F1B4C) : palette.chipBorder,
             width: selected ? 1.6 : 1,
           ),
         ),
@@ -446,7 +475,7 @@ class _ToggleButton extends StatelessWidget {
             Icon(
               icon,
               size: 14,
-              color: selected ? const Color(0xFF0F1B4C) : Colors.grey.shade500,
+              color: selected ? palette.title : palette.textSecondary,
             ),
             const SizedBox(width: 6),
             Text(
@@ -454,9 +483,7 @@ class _ToggleButton extends StatelessWidget {
               style: GoogleFonts.cairo(
                 fontSize: 12,
                 fontWeight: FontWeight.w700,
-                color: selected
-                    ? const Color(0xFF0F1B4C)
-                    : Colors.grey.shade600,
+                color: selected ? palette.title : palette.textSecondary,
               ),
             ),
           ],

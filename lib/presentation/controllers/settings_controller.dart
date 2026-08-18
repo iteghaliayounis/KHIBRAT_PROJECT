@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../core/errors/api_exception.dart';
 import '../../core/routes/app_routes.dart';
 import '../../core/services/push_notification_service.dart';
+import '../../core/theme/theme_controller.dart';
 import '../../core/utils/storage_service.dart';
 import '../../data/providers/auth_provider.dart';
 import '../../domain/repositories/auth_repository.dart';
@@ -31,6 +32,8 @@ class SettingsController extends GetxController {
         (Get.locale?.languageCode == 'en' ? 'en_US' : 'ar_SY');
     twoFactorEnabled.value = StorageService.instance.twoFactorEnabled;
   }
+
+  Future<void> changeTheme(bool dark) => ThemeController.to.setDark(dark);
 
   Future<void> changeLanguage(String code) async {
     if (selectedLocale.value == code) return;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/theme/khubrat_colors.dart';
 import '../../controllers/attendance_controller.dart';
 import '../../widgets/attendance/attendance_action_area.dart';
 import '../../widgets/attendance/attendance_month_selector.dart';
@@ -15,12 +16,12 @@ class AttendanceDashboardView extends GetView<AttendanceController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F7FB),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         bottom: false,
         child: Column(
           children: [
-            _buildHeader(),
+            _buildHeader(context),
             Expanded(
               child: Obx(() {
                 if (controller.isLoading.value) {
@@ -68,7 +69,7 @@ class AttendanceDashboardView extends GetView<AttendanceController> {
                         const SizedBox(height: 20),
                         Text(
                           'attendance_records'.tr,
-                          style: AppTextStyles.h2.copyWith(color: AppColors.primary),
+                          style: AppTextStyles.h2.copyWith(color: context.khubrat.title),
                         ),
                         const SizedBox(height: 10),
                         if (data.records.isEmpty)
@@ -95,7 +96,8 @@ class AttendanceDashboardView extends GetView<AttendanceController> {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
+    final palette = context.khubrat;
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
       child: Row(
@@ -103,15 +105,15 @@ class AttendanceDashboardView extends GetView<AttendanceController> {
           InkWell(
             borderRadius: BorderRadius.circular(20),
             onTap: () => Get.back(),
-            child: const Padding(
-              padding: EdgeInsets.all(6),
-              child: Icon(Icons.arrow_back_rounded, color: AppColors.primary),
+            child: Padding(
+              padding: const EdgeInsets.all(6),
+              child: Icon(Icons.arrow_back_rounded, color: palette.title),
             ),
           ),
           const SizedBox(width: 6),
           Text(
             'attendance'.tr,
-            style: AppTextStyles.h1.copyWith(color: AppColors.primary),
+            style: AppTextStyles.h1.copyWith(color: palette.title),
           ),
         ],
       ),
@@ -126,23 +128,24 @@ class _CheckedInBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.khubrat;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
-        color: AppColors.primary.withValues(alpha: 0.08),
+        color: AppColors.primary.withValues(alpha: palette.isDark ? 0.22 : 0.08),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
       ),
       child: Row(
         children: [
-          const Icon(Icons.verified_user_rounded, color: AppColors.primary, size: 22),
+          Icon(Icons.verified_user_rounded, color: palette.title, size: 22),
           const SizedBox(width: 10),
           Expanded(
             child: Text(
               'attendance_currently_checked_in'.trParams({'time': checkInTime}),
               style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.primary,
+                color: palette.title,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -159,16 +162,17 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.khubrat;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 22),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: palette.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFEDEDED)),
+        border: Border.all(color: palette.chipBorder),
       ),
       alignment: Alignment.center,
-      child: Text(text, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary)),
+      child: Text(text, style: AppTextStyles.bodyMedium.copyWith(color: palette.textSecondary)),
     );
   }
 }
@@ -189,12 +193,12 @@ class _ErrorState extends StatelessWidget {
             Text(
               message,
               textAlign: TextAlign.center,
-              style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+              style: AppTextStyles.bodyMedium.copyWith(color: context.khubrat.textSecondary),
             ),
             const SizedBox(height: 16),
             TextButton(
               onPressed: onRetry,
-              child: Text('retry'.tr, style: AppTextStyles.button.copyWith(color: AppColors.primary)),
+              child: Text('retry'.tr, style: AppTextStyles.button.copyWith(color: context.khubrat.title)),
             ),
           ],
         ),

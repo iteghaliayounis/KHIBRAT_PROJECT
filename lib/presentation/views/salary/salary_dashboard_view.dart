@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/theme/khubrat_colors.dart';
 import '../../controllers/salary_controller.dart';
 import '../../widgets/salary/advance_eligibility_card.dart';
 import '../../widgets/salary/advance_record_card.dart';
@@ -16,7 +17,7 @@ class SalaryDashboardView extends GetView<SalaryController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F6FC),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Column(
         children: [
           _Header(controller: controller),
@@ -130,7 +131,7 @@ class _SalariesTab extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(controller.salariesError.value!.tr, style: AppTextStyles.bodyMedium),
+              Text(controller.salariesError.value!.tr, style: AppTextStyles.bodyMedium.copyWith(color: context.khubrat.textSecondary)),
               TextButton(onPressed: controller.fetchSalaries, child: Text('retry'.tr)),
             ],
           ),

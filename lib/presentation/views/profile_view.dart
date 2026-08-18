@@ -6,6 +6,7 @@ import 'package:intl/intl.dart' as intl;
 import 'package:file_picker/file_picker.dart';
 
 import '../../core/routes/app_routes.dart';
+import '../../core/theme/khubrat_colors.dart';
 import '../controllers/profile_controller.dart';
 import '../widgets/profile/profile_info_tile.dart';
 import '../widgets/profile/profile_editable_tile.dart';
@@ -63,7 +64,7 @@ class _ProfileViewState extends State<ProfileView> {
     return Directionality(
       textDirection: _textDirection,
       child: Scaffold(
-        backgroundColor: _bg,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: SafeArea(
           child: Column(
             children: [
@@ -152,15 +153,16 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Widget _buildIdentityCard(profile, ProfileController controller) {
+    final palette = context.khubrat;
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: palette.surface,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: const Color(0xFFF1F5F9)),
+        border: Border.all(color: palette.chipBorder),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: palette.cardShadow,
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -192,22 +194,22 @@ class _ProfileViewState extends State<ProfileView> {
                           )
                         : (url == null || url.isEmpty)
                         ? Container(
-                            color: const Color(0xFFF1F5F9),
-                            child: const Icon(
+                            color: palette.inputFill,
+                            child: Icon(
                               Icons.person,
                               size: 34,
-                              color: Color(0xFF94A3B8),
+                              color: palette.textSecondary,
                             ),
                           )
                         : Image.network(
                             url,
                             fit: BoxFit.cover,
                             errorBuilder: (_, __, ___) => Container(
-                              color: const Color(0xFFF1F5F9),
-                              child: const Icon(
+                              color: palette.inputFill,
+                              child: Icon(
                                 Icons.person,
                                 size: 34,
-                                color: Color(0xFF94A3B8),
+                                color: palette.textSecondary,
                               ),
                             ),
                           ),
@@ -250,9 +252,9 @@ class _ProfileViewState extends State<ProfileView> {
           Text(
             profile.fullName,
             style: GoogleFonts.cairo(
-              fontSize: 15, // ✅ إصلاح #5: 14 → 15
+              fontSize: 15,
               fontWeight: FontWeight.w900,
-              color: const Color(0xFF1E293B),
+              color: palette.title,
             ),
           ),
           const SizedBox(height: 2),
@@ -261,35 +263,35 @@ class _ProfileViewState extends State<ProfileView> {
                 ? '${profile.jobTitle ?? ''} (${profile.department!.name})'
                 : (profile.jobTitle ?? ''),
             style: GoogleFonts.cairo(
-              fontSize: 11, // ✅ إصلاح #5: 10 → 11
+              fontSize: 11,
               fontWeight: FontWeight.bold,
-              color: const Color(0xFF94A3B8),
+              color: palette.textSecondary,
             ),
           ),
           const SizedBox(height: 12),
           Container(
             width: double.infinity,
             padding: const EdgeInsets.only(top: 10),
-            decoration: const BoxDecoration(
-              border: Border(top: BorderSide(color: Color(0xFFF1F5F9))),
+            decoration: BoxDecoration(
+              border: Border(top: BorderSide(color: palette.chipBorder)),
             ),
             child: Column(
               children: [
                 Text(
                   'profile_hire_date'.tr,
                   style: GoogleFonts.cairo(
-                    fontSize: 9, // ✅ إصلاح #5: 8 → 9
+                    fontSize: 9,
                     fontWeight: FontWeight.bold,
-                    color: const Color(0xFF94A3B8),
+                    color: palette.textSecondary,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   _formatDate(profile.hireDate),
                   style: GoogleFonts.cairo(
-                    fontSize: 11, // ✅ إصلاح #5: 10 → 11
+                    fontSize: 11,
                     fontWeight: FontWeight.w900,
-                    color: const Color(0xFF334155),
+                    color: palette.textPrimary,
                   ),
                 ),
               ],
@@ -301,29 +303,29 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Widget _buildPersonalInfoCard(profile) {
+    final palette = context.khubrat;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: palette.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFF1F5F9)),
+        border: Border.all(color: palette.chipBorder),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
             padding: const EdgeInsets.only(bottom: 8),
-            decoration: const BoxDecoration(
-              border: Border(bottom: BorderSide(color: Color(0xFFF1F5F9))),
+            decoration: BoxDecoration(
+              border: Border(bottom: BorderSide(color: palette.chipBorder)),
             ),
             child: Text(
               'profile_personal_professional_data'.tr,
-              // ✅ إصلاح #1: start يعني يمين بالعربي، يسار بالإنجليزي
               textAlign: TextAlign.start,
               style: GoogleFonts.cairo(
-                fontSize: 13, // ✅ إصلاح #5: 12 → 13
+                fontSize: 13,
                 fontWeight: FontWeight.w900,
-                color: const Color(0xFF1E293B),
+                color: palette.title,
               ),
             ),
           ),
@@ -395,29 +397,29 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Widget _buildContactInfoCard(ProfileController controller) {
+    final palette = context.khubrat;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: palette.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFF1F5F9)),
+        border: Border.all(color: palette.chipBorder),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
             padding: const EdgeInsets.only(bottom: 8),
-            decoration: const BoxDecoration(
-              border: Border(bottom: BorderSide(color: Color(0xFFF1F5F9))),
+            decoration: BoxDecoration(
+              border: Border(bottom: BorderSide(color: palette.chipBorder)),
             ),
             child: Text(
               'profile_contact_data'.tr,
-              // ✅ إصلاح #1: start يعني يمين بالعربي، يسار بالإنجليزي
               textAlign: TextAlign.start,
               style: GoogleFonts.cairo(
                 fontSize: 14,
                 fontWeight: FontWeight.w900,
-                color: const Color(0xFF1E293B),
+                color: palette.title,
               ),
             ),
           ),

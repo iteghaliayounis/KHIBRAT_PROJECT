@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:khibrat_flutter2/core/routes/app_routes.dart';
+import '../../core/theme/khubrat_colors.dart';
 import '../controllers/login_controller.dart';
 import '../widgets/custom_text_field.dart';
 
@@ -10,8 +11,9 @@ class LoginView extends GetView<LoginController> {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.khubrat;
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFBFD),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -30,19 +32,19 @@ onTap: () => Get.offAllNamed('/onboarding'),
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: palette.surface,
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.04),
+                            color: palette.cardShadow,
                             blurRadius: 10,
                             offset: const Offset(0, 4),
                           ),
                         ],
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.arrow_back_ios_new_rounded,
-                        color: Color(0xFF002166),
+                        color: palette.title,
                         size: 16,
                       ),
                     ),
@@ -54,7 +56,7 @@ onTap: () => Get.offAllNamed('/onboarding'),
                       style: GoogleFonts.cairo(
                         fontSize: 18,
                         fontWeight: FontWeight.w700, // تخفيف الوزن لتصبح أرق
-                        color: const Color(0xFF002166),
+                        color: palette.title,
                       ),
                     ),
                   ),
@@ -87,7 +89,7 @@ onTap: () => Get.offAllNamed('/onboarding'),
                       style: GoogleFonts.cairo(
                         fontSize: 22,
                         fontWeight: FontWeight.w700, // وضوح ناعم وممتاز
-                        color: const Color(0xFF002166),
+                        color: palette.title,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -97,7 +99,7 @@ onTap: () => Get.offAllNamed('/onboarding'),
                       style: GoogleFonts.cairo(
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
-                        color: Colors.grey.shade500,
+                        color: palette.textSecondary,
                       ),
                     ),
                   ],
@@ -117,7 +119,7 @@ onTap: () => Get.offAllNamed('/onboarding'),
                       style: GoogleFonts.cairo(
                         fontSize: 13,
                         fontWeight: FontWeight.w600, // خط متناسق
-                        color: const Color(0xFF002166),
+                        color: palette.title,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -155,7 +157,7 @@ onTap: () => Get.offAllNamed('/onboarding'),
                       style: GoogleFonts.cairo(
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
-                        color: const Color(0xFF002166),
+                        color: palette.title,
                       ),
                     ),
                     const SizedBox(height: 8),

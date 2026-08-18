@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../core/theme/khubrat_colors.dart';
+
 class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
@@ -32,6 +34,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.khubrat;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -41,18 +44,20 @@ class _CustomTextFieldState extends State<CustomTextField> {
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20), // إنحناء أكثر نعومة
+                color: palette.inputFill,
+                borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                   color: widget.errorText != null
                       ? Colors.red.shade400
-                      : (_isFocused ? const Color(0xFFCBA158) : const Color(0xFFF1E6D3)),
+                      : (_isFocused
+                          ? const Color(0xFFCBA158)
+                          : palette.inputBorder),
                   width: _isFocused ? 1.6 : 1.2,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    // وهج ذهبي ناعم ودافئ متطابق مع التصميم
-                    color: const Color(0xFFCBA158).withOpacity(_isFocused ? 0.15 : 0.07),
+                    color: const Color(0xFFCBA158)
+                        .withValues(alpha: _isFocused ? 0.15 : 0.07),
                     blurRadius: _isFocused ? 18 : 12,
                     spreadRadius: 0,
                     offset: const Offset(0, 4),
@@ -66,15 +71,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 onChanged: widget.onChanged,
                 style: GoogleFonts.cairo(
                   fontSize: 14,
-                  fontWeight: FontWeight.w500, // خط ناعم وليس bold
-                  color: const Color(0xFF002166),
+                  fontWeight: FontWeight.w500,
+                  color: palette.title,
                 ),
                 decoration: InputDecoration(
                   hintText: widget.hintText,
                   hintStyle: GoogleFonts.cairo(
                     fontSize: 13,
                     fontWeight: FontWeight.w400,
-                    color: Colors.grey.shade400,
+                    color: palette.hint,
                   ),
                   prefixIcon: Icon(
                     widget.prefixIcon,

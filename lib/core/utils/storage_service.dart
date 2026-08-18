@@ -12,6 +12,7 @@ class StorageService {
   static const String _keyCompany = 'auth_company';
   static const String _keyIsFirstLogin = 'is_first_login';
   static const String _keyTwoFactor = 'two_factor_enabled';
+  static const String _keyDarkTheme = 'app_dark_theme';
 
   static Future<void> init() async {
     await GetStorage.init();
@@ -65,6 +66,9 @@ class StorageService {
       await _box.write(_keyUser, storedUser);
     }
   }
+
+  bool get isDarkTheme => _box.read(_keyDarkTheme) == true;
+  Future<void> saveDarkTheme(bool value) => _box.write(_keyDarkTheme, value);
 
   Future<void> clearSession() async {
     await _box.remove(_keyToken);

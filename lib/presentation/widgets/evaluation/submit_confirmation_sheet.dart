@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/theme/khubrat_colors.dart';
 
 class SubmitConfirmationSheet extends StatelessWidget {
   final bool isSubmitting;
@@ -17,11 +18,12 @@ class SubmitConfirmationSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.khubrat;
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 28, 24, 32),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      decoration: BoxDecoration(
+        color: palette.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -33,12 +35,12 @@ class SubmitConfirmationSheet extends StatelessWidget {
             child: const Icon(Icons.check_rounded, color: AppColors.accent, size: 32),
           ),
           const SizedBox(height: 18),
-          Text('ready_to_submit'.tr, style: AppTextStyles.h1.copyWith(color: AppColors.primary)),
+          Text('ready_to_submit'.tr, style: AppTextStyles.h1.copyWith(color: palette.title)),
           const SizedBox(height: 8),
           Text(
             'submit_warning'.tr,
             textAlign: TextAlign.center,
-            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+            style: AppTextStyles.bodyMedium.copyWith(color: palette.textSecondary),
           ),
           const SizedBox(height: 22),
           SizedBox(

@@ -71,7 +71,7 @@ class _TabButton extends StatelessWidget {
       duration: const Duration(milliseconds: 280),
       curve: Curves.easeOutCubic,
       child: Material(
-        color: selected ? Colors.white : Colors.transparent,
+        color: selected ? AppColors.brandGold : Colors.transparent,
         borderRadius: BorderRadius.circular(12),
         elevation: selected ? 2 : 0,
         shadowColor: Colors.black26,

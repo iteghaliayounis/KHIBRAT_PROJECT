@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/theme/khubrat_colors.dart';
 import '../../../data/models/salary_models.dart';
 import 'salary_ui_helpers.dart';
 
@@ -16,6 +17,7 @@ class AdvanceRecordCard extends StatelessWidget {
     final bg = SalaryUiHelpers.advanceStatusBg(record.status);
     final fg = SalaryUiHelpers.advanceStatusFg(record.status);
 
+    final palette = context.khubrat;
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0, end: 1),
       duration: Duration(milliseconds: 300 + (index * 50).clamp(0, 200)),
@@ -28,11 +30,11 @@ class AdvanceRecordCard extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: palette.surface,
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: const Color(0xFFE8EDF5)),
-          boxShadow: const [
-            BoxShadow(color: AppColors.cardShadow, blurRadius: 10, offset: Offset(0, 3)),
+          border: Border.all(color: palette.chipBorder),
+          boxShadow: [
+            BoxShadow(color: palette.cardShadow, blurRadius: 10, offset: const Offset(0, 3)),
           ],
         ),
         child: Row(
@@ -55,17 +57,17 @@ class AdvanceRecordCard extends StatelessWidget {
                     'salary_advance_amount_of'.trParams({
                       'amount': SalaryUiHelpers.formatMoney(record.requestedAmount),
                     }),
-                    style: AppTextStyles.h3.copyWith(color: AppColors.brandNavy),
+                    style: AppTextStyles.h3.copyWith(color: palette.title),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     '${record.repaymentMonths} ${'salary_months_short'.tr} | ${'salary_installment'.tr}: ${SalaryUiHelpers.formatMoney(record.monthlyInstallment)}',
-                    style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+                    style: AppTextStyles.bodySmall.copyWith(color: palette.textSecondary),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     '${'salary_date'.tr}: ${SalaryUiHelpers.formatDate(record.createdAt)}',
-                    style: AppTextStyles.bodySmall.copyWith(color: AppColors.hintText),
+                    style: AppTextStyles.bodySmall.copyWith(color: palette.hint),
                   ),
                 ],
               ),

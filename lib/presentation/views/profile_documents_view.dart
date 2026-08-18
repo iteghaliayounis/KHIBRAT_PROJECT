@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../controllers/profile_controller.dart';
 import '../widgets/profile/profile_upload_box.dart';
+import '../../core/theme/khubrat_colors.dart';
 
 class ProfileDocumentsView extends GetView<ProfileController> {
   const ProfileDocumentsView({super.key});
@@ -23,7 +24,7 @@ class ProfileDocumentsView extends GetView<ProfileController> {
     return Directionality(
       textDirection: _textDirection,
       child: Scaffold(
-        backgroundColor: _bg,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: SafeArea(
           child: Column(
             children: [
@@ -69,19 +70,17 @@ class ProfileDocumentsView extends GetView<ProfileController> {
                     Container(
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: context.khubrat.surface,
                         borderRadius: BorderRadius.circular(18),
-                        border: Border.all(color: const Color(0xFFF1F5F9)),
+                        border: Border.all(color: context.khubrat.chipBorder),
                       ),
                       child: Text(
                         'profile_documents_description'.tr,
-                        // ⬅️ إصلاح: start بدل right المطلق — بيتبدل
-                        // تلقائياً حسب اللغة، وما بيضل ثابت يمين.
                         textAlign: TextAlign.start,
                         style: GoogleFonts.cairo(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0xFF64748B),
+                          color: context.khubrat.textSecondary,
                           height: 1.6,
                         ),
                       ),
@@ -112,8 +111,8 @@ class ProfileDocumentsView extends GetView<ProfileController> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border(top: BorderSide(color: Colors.grey.shade100)),
+                  color: context.khubrat.surface,
+                  border: Border(top: BorderSide(color: context.khubrat.chipBorder)),
                 ),
                 child: Obx(() {
                   final loading = controller.isUploadingDocuments.value;

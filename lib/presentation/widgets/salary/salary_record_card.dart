@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/theme/khubrat_colors.dart';
 import '../../../data/models/salary_models.dart';
 import 'salary_ui_helpers.dart';
 
@@ -20,6 +21,7 @@ class SalaryRecordCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final statusColor = SalaryUiHelpers.salaryStatusDot(record.status);
+    final palette = context.khubrat;
 
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0, end: 1),
@@ -33,11 +35,11 @@ class SalaryRecordCard extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: palette.surface,
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: const Color(0xFFE8EDF5)),
-          boxShadow: const [
-            BoxShadow(color: AppColors.cardShadow, blurRadius: 10, offset: Offset(0, 3)),
+          border: Border.all(color: palette.chipBorder),
+          boxShadow: [
+            BoxShadow(color: palette.cardShadow, blurRadius: 10, offset: const Offset(0, 3)),
           ],
         ),
         child: Row(
@@ -49,7 +51,7 @@ class SalaryRecordCard extends StatelessWidget {
                 color: AppColors.brandNavy.withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(14),
               ),
-              child: const Icon(Icons.account_balance_wallet_rounded, color: AppColors.brandNavy),
+              child: Icon(Icons.account_balance_wallet_rounded, color: palette.title),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -58,7 +60,7 @@ class SalaryRecordCard extends StatelessWidget {
                 children: [
                   Text(
                     SalaryUiHelpers.monthYearLabel(record.month, record.year),
-                    style: AppTextStyles.h3.copyWith(color: AppColors.brandNavy),
+                    style: AppTextStyles.h3.copyWith(color: palette.title),
                   ),
                   const SizedBox(height: 4),
                   Row(
@@ -86,7 +88,7 @@ class SalaryRecordCard extends StatelessWidget {
                   Text(
                     SalaryUiHelpers.formatMoney(record.netSalary),
                     style: AppTextStyles.h3.copyWith(
-                      color: AppColors.textPrimary,
+                      color: palette.textPrimary,
                       fontWeight: FontWeight.w800,
                     ),
                   ),

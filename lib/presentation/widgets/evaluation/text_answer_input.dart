@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/theme/khubrat_colors.dart';
 
 /// Free-text answer box for `response_type == 'text'` questions.
 ///
@@ -32,9 +33,9 @@ class TextAnswerInput extends StatelessWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: context.khubrat.inputFill,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.inputBorder),
+            border: Border.all(color: context.khubrat.inputBorder),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           child: TextField(
@@ -44,10 +45,10 @@ class TextAnswerInput extends StatelessWidget {
             minLines: 6,
             maxLength: maxLength,
             buildCounter: (context, {required currentLength, required isFocused, maxLength}) => null,
-            style: AppTextStyles.bodyLarge,
+            style: AppTextStyles.bodyLarge.copyWith(color: context.khubrat.textPrimary),
             decoration: InputDecoration(
               hintText: 'write_your_answer'.tr,
-              hintStyle: AppTextStyles.hint,
+              hintStyle: AppTextStyles.hint.copyWith(color: context.khubrat.hint),
               border: InputBorder.none,
               isCollapsed: true,
             ),

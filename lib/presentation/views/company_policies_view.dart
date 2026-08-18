@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../core/theme/khubrat_colors.dart';
 import '../../data/models/company_policies_model.dart';
 import '../controllers/company_policies_controller.dart';
 
@@ -11,8 +12,6 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
   static const _navy = Color(0xFF002166);
   static const _gold = Color(0xFFA3813F);
   static const _goldSoft = Color(0xFFCBA158);
-  static const _bg = Color(0xFFF4F7FB);
-  static const _fieldBg = Color(0xFFF5F6F8);
   static const _green = Color(0xFF2E7D32);
   static const _red = Color(0xFFD32F2F);
   static const _weekendBg = Color(0xFFE8F0FE);
@@ -22,7 +21,7 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _bg,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Column(
         children: [
           _buildHeader(context),
@@ -129,7 +128,7 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
         children: [
           Row(
             children: [
-              const Icon(Icons.access_time_rounded, color: _navy, size: 20),
+              Icon(Icons.access_time_rounded, color: Get.context!.khubrat.title, size: 20),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
@@ -137,7 +136,7 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
                   style: GoogleFonts.cairo(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
-                    color: _navy,
+                    color: Get.context!.khubrat.title,
                   ),
                 ),
               ),
@@ -176,12 +175,13 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
             decoration: BoxDecoration(
-              color: _fieldBg,
+              color: Get.context!.khubrat.inputFill,
               borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: Get.context!.khubrat.chipBorder),
             ),
             child: Row(
               children: [
-                const Icon(Icons.work_outline_rounded, color: _navy, size: 22),
+                Icon(Icons.work_outline_rounded, color: Get.context!.khubrat.title, size: 22),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
@@ -189,7 +189,7 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
                     style: GoogleFonts.cairo(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
-                      color: Colors.grey.shade600,
+                      color: Get.context!.khubrat.textSecondary,
                     ),
                   ),
                 ),
@@ -200,7 +200,7 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
                   style: GoogleFonts.cairo(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
-                    color: _navy,
+                    color: Get.context!.khubrat.textPrimary,
                   ),
                 ),
               ],
@@ -240,11 +240,13 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
     required String value,
     required Color valueColor,
   }) {
+    final palette = Get.context!.khubrat;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       decoration: BoxDecoration(
-        color: _fieldBg,
+        color: palette.inputFill,
         borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: palette.chipBorder),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -256,7 +258,7 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
             style: GoogleFonts.cairo(
               fontSize: 11,
               fontWeight: FontWeight.w500,
-              color: Colors.grey.shade600,
+              color: palette.textSecondary,
             ),
           ),
           const SizedBox(height: 2),
@@ -274,10 +276,11 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
   }
 
   Widget _limitOutlineCard({required String label, required String value}) {
+    final palette = Get.context!.khubrat;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: palette.surface,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: _goldSoft.withOpacity(0.85), width: 1.2),
       ),
@@ -289,7 +292,7 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
             style: GoogleFonts.cairo(
               fontSize: 11,
               fontWeight: FontWeight.w500,
-              color: Colors.grey.shade600,
+              color: palette.textSecondary,
               height: 1.3,
             ),
           ),
@@ -322,7 +325,7 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
             style: GoogleFonts.cairo(
               fontSize: 15,
               fontWeight: FontWeight.w700,
-              color: _navy,
+              color: Get.context!.khubrat.title,
             ),
           ),
           const SizedBox(height: 14),
@@ -443,6 +446,7 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
   }
 
   Widget _buildLeaveGridCard(LeavePolicyItemModel item) {
+    final palette = Get.context!.khubrat;
     final icon = _iconForLeave(item.name);
     final valueText = item.isHourly
         ? 'hours_count'.trParams({'count': '${item.allocationValue}'})
@@ -451,8 +455,9 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 16, 12, 14),
       decoration: BoxDecoration(
-        color: _fieldBg,
+        color: palette.inputFill,
         borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: palette.chipBorder),
       ),
       child: Column(
         children: [
@@ -460,7 +465,9 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: const Color(0xFFF3E9D8),
+              color: palette.isDark
+                  ? const Color(0xFF3A2A12)
+                  : const Color(0xFFF3E9D8),
               shape: BoxShape.circle,
             ),
             child: Icon(icon, color: _gold, size: 20),
@@ -474,7 +481,7 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
             style: GoogleFonts.cairo(
               fontSize: 13,
               fontWeight: FontWeight.w700,
-              color: _navy,
+              color: palette.textPrimary,
               height: 1.25,
             ),
           ),
@@ -484,7 +491,7 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
             style: GoogleFonts.cairo(
               fontSize: 11,
               fontWeight: FontWeight.w500,
-              color: Colors.grey.shade600,
+              color: palette.textSecondary,
             ),
           ),
           const SizedBox(height: 2),
@@ -494,7 +501,7 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
             style: GoogleFonts.cairo(
               fontSize: 13,
               fontWeight: FontWeight.w800,
-              color: _navy,
+              color: palette.title,
             ),
           ),
         ],
@@ -534,6 +541,7 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
   // ───────────────── Section 3: Holidays calendar ─────────────────
   Widget _buildHolidaysCalendar(BuildContext context) {
     final locale = Get.locale?.languageCode ?? 'ar';
+    final palette = context.khubrat;
 
     return Obx(() {
       final month = controller.focusedMonth.value;
@@ -546,7 +554,7 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
           children: [
             Row(
               children: [
-                const Icon(Icons.calendar_today_rounded, color: _navy, size: 18),
+                Icon(Icons.calendar_today_rounded, color: palette.title, size: 18),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
@@ -556,7 +564,7 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
                     style: GoogleFonts.cairo(
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
-                      color: _navy,
+                      color: palette.title,
                     ),
                   ),
                 ),
@@ -564,15 +572,16 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: _weekendBg,
+                    color: palette.inputFill,
                     borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: palette.chipBorder),
                   ),
                   child: Text(
                     quarterKey.tr,
                     style: GoogleFonts.cairo(
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
-                      color: _navy,
+                      color: palette.textPrimary,
                     ),
                   ),
                 ),
@@ -584,7 +593,7 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
               children: [
                 IconButton(
                   onPressed: controller.previousMonth,
-                  icon: const Icon(Icons.chevron_left_rounded, color: _navy),
+                  icon: Icon(Icons.chevron_left_rounded, color: palette.title),
                   visualDensity: VisualDensity.compact,
                 ),
                 Text(
@@ -592,29 +601,29 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
                   style: GoogleFonts.cairo(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
-                    color: _navy,
+                    color: palette.title,
                   ),
                 ),
                 IconButton(
                   onPressed: controller.nextMonth,
-                  icon: const Icon(Icons.chevron_right_rounded, color: _navy),
+                  icon: Icon(Icons.chevron_right_rounded, color: palette.title),
                   visualDensity: VisualDensity.compact,
                 ),
               ],
             ),
             const SizedBox(height: 4),
-            _buildWeekdayHeader(),
+            _buildWeekdayHeader(palette),
             const SizedBox(height: 6),
-            _buildMonthGrid(month),
+            _buildMonthGrid(month, palette),
             const SizedBox(height: 14),
-            _buildLegend(),
+            _buildLegend(palette),
           ],
         ),
       );
     });
   }
 
-  Widget _buildWeekdayHeader() {
+  Widget _buildWeekdayHeader(KhubratColors palette) {
     final labels = [
       'cal_sun'.tr,
       'cal_mon'.tr,
@@ -634,7 +643,7 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
                 style: GoogleFonts.cairo(
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
-                  color: Colors.grey.shade500,
+                  color: palette.textSecondary,
                 ),
               ),
             ),
@@ -643,12 +652,17 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
     );
   }
 
-  Widget _buildMonthGrid(DateTime month) {
+  Widget _buildMonthGrid(DateTime month, KhubratColors palette) {
     final first = DateTime(month.year, month.month, 1);
-    // Sunday-based index: DateTime.weekday is Mon=1..Sun=7
-    final startOffset = first.weekday % 7; // Sun -> 0
+    final startOffset = first.weekday % 7;
     final daysInMonth = DateTime(month.year, month.month + 1, 0).day;
     final totalCells = ((startOffset + daysInMonth + 6) ~/ 7) * 7;
+    final weekendBg = palette.isDark ? const Color(0xFF1B3A6E) : _weekendBg;
+    final holidayBg = palette.isDark ? const Color(0xFF3A2A12) : _holidayBg;
+    final weekendBorder =
+        palette.isDark ? const Color(0xFF3A6AB0) : const Color(0xFFBBDEFB);
+    final holidayBorder =
+        palette.isDark ? const Color(0xFFCBA158) : _holidayBorder;
 
     return GridView.builder(
       shrinkWrap: true,
@@ -672,11 +686,11 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
         Color? bg;
         Color border = Colors.transparent;
         if (isHoliday) {
-          bg = _holidayBg;
-          border = _holidayBorder;
+          bg = holidayBg;
+          border = holidayBorder;
         } else if (weekly) {
-          bg = _weekendBg;
-          border = const Color(0xFFBBDEFB);
+          bg = weekendBg;
+          border = weekendBorder;
         }
 
         final tooltip = holiday?.name ??
@@ -697,9 +711,9 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
                 Text(
                   '$dayNum',
                   style: GoogleFonts.cairo(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: _navy,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800,
+                    color: palette.textPrimary,
                   ),
                 ),
                 if (isHoliday)
@@ -720,22 +734,30 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
     );
   }
 
-  Widget _buildLegend() {
+  Widget _buildLegend(KhubratColors palette) {
     final weeklyDays = controller.weeklyLegendDaysLabel();
+    final weekendBg = palette.isDark ? const Color(0xFF1B3A6E) : _weekendBg;
+    final holidayBg = palette.isDark ? const Color(0xFF3A2A12) : _holidayBg;
+    final weekendBorder =
+        palette.isDark ? const Color(0xFF3A6AB0) : const Color(0xFFBBDEFB);
+    final holidayBorder =
+        palette.isDark ? const Color(0xFFCBA158) : _holidayBorder;
     return Wrap(
       spacing: 16,
       runSpacing: 8,
       children: [
         if (weeklyDays.isNotEmpty)
           _legendItem(
-            color: _weekendBg,
-            border: const Color(0xFFBBDEFB),
+            color: weekendBg,
+            border: weekendBorder,
             label: 'legend_weekly_holiday'.trParams({'days': weeklyDays}),
+            textColor: palette.textSecondary,
           ),
         _legendItem(
-          color: _holidayBg,
-          border: _holidayBorder,
+          color: holidayBg,
+          border: holidayBorder,
           label: 'legend_official_holiday'.tr,
+          textColor: palette.textSecondary,
         ),
       ],
     );
@@ -745,6 +767,7 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
     required Color color,
     required Color border,
     required String label,
+    required Color textColor,
   }) {
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -764,7 +787,7 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
           style: GoogleFonts.cairo(
             fontSize: 11,
             fontWeight: FontWeight.w500,
-            color: Colors.grey.shade700,
+            color: textColor,
           ),
         ),
       ],
@@ -773,16 +796,17 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
 
   // ───────────────── Shared ─────────────────
   Widget _sectionCard({required Widget child}) {
+    final palette = Get.context!.khubrat;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: palette.surface,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: const Color(0xFFE8EEF5)),
+        border: Border.all(color: palette.chipBorder),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: palette.cardShadow,
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -804,7 +828,7 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
               textAlign: TextAlign.center,
               style: GoogleFonts.cairo(
                 fontSize: 14,
-                color: Colors.grey.shade700,
+                color: Get.context!.khubrat.textSecondary,
               ),
             ),
             const SizedBox(height: 12),
@@ -814,7 +838,7 @@ class CompanyPoliciesView extends GetView<CompanyPoliciesController> {
                 'company_policies_retry'.tr,
                 style: GoogleFonts.cairo(
                   fontWeight: FontWeight.w700,
-                  color: _navy,
+                  color: Get.context!.khubrat.title,
                 ),
               ),
             ),

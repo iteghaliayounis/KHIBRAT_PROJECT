@@ -4,7 +4,7 @@ class ApiConstants {
   ApiConstants._();
 
   static const String baseUrl =
-      'http://10.65.10.177:8000'; // TODO: set real base URL
+      'http://192.168.1.104:8000'; // TODO: set real base URL
 
   static const String login = '/api/auth/login';
   static const String logout = '/api/auth/logout';
