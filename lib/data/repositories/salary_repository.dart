@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import '../../core/constants/api_constants.dart';
 import '../../core/errors/api_exception.dart';
 import '../../core/network/api_client.dart';
@@ -9,9 +10,15 @@ class SalaryRepository {
 
   SalaryRepository({ApiClient? client}) : _client = client ?? ApiClient.instance;
 
+  void _log(String title, Object? body) {
+    debugPrint('========== $title ==========');
+    debugPrint('$body');
+  }
+
   /// GET /api/employee/advances/eligibility
   Future<AdvanceEligibilityModel> getEligibility() async {
     final json = await _client.get(ApiConstants.advancesEligibility);
+    _log('ADVANCES ELIGIBILITY RESPONSE', json);
     if (json['success'] == false) {
       throw ApiException.generic((json['message'] ?? 'generic_error').toString());
     }
@@ -24,31 +31,72 @@ class SalaryRepository {
     required int repaymentMonths,
     required String reason,
   }) async {
-    final json = await _client.post(
-      ApiConstants.advancesApply,
-      data: {
-        'requested_amount': requestedAmount,
-        'repayment_months': repaymentMonths,
-        'reason': reason,
-      },
-    );
-    if (json['success'] == false) {
-      throw ApiException.generic((json['message'] ?? 'generic_error').toString());
+    final payload = {
+      'requested_amount': requestedAmount,
+      'repayment_months': repaymentMonths,
+      'reason': reason,
+    };
+    _log('ADVANCE APPLY REQUEST', payload);
+    try {
+      final json = await _client.post(
+        ApiConstants.advancesApply,
+        data: payload,
+      );
+      _log('ADVANCE APPLY RESPONSE', json);
+      if (json['success'] == false) {
+        throw ApiException.generic((json['message'] ?? 'generic_error').toString());
+      }
+      return AdvanceApplyResult.fromJson(json);
+    } catch (e) {
+      _log('ADVANCE APPLY ERROR', e);
+      rethrow;
     }
-    return AdvanceApplyResult.fromJson(json);
   }
 
   /// GET /api/employee/advances
   Future<PaginatedList<AdvanceRecordModel>> getAdvancesList() async {
     final json = await _client.get(ApiConstants.advancesList);
+    _log('ADVANCES LIST RESPONSE', json);
     if (json['success'] == false) {
       throw ApiException.generic((json['message'] ?? 'generic_error').toString());
     }
     final data = json['data'];
+    final fallbackCurrency =
+        (json['currency'] ?? (data is Map ? data['currency'] : null))?.toString();
     if (data is Map) {
-      return PaginatedList.fromJson(
+      final inner = data['data'];
+      if (inner is List) {
+        for (final item in inner) {
+          if (item is Map) {
+            debugPrint(
+              'ADVANCE RAW STATUS id=${item['id']} status=${item['status']} type=${item['status'].runtimeType}',
+            );
+          }
+        }
+      }
+      final page = PaginatedList.fromJson(
         Map<String, dynamic>.from(data),
-        AdvanceRecordModel.fromJson,
+        (item) => AdvanceRecordModel.fromJson(
+          item,
+          fallbackCurrency: fallbackCurrency,
+        ),
+      );
+      return page;
+    }
+    if (data is List) {
+      return PaginatedList(
+        data: data
+            .whereType<Map>()
+            .map(
+              (e) => AdvanceRecordModel.fromJson(
+                Map<String, dynamic>.from(e),
+                fallbackCurrency: fallbackCurrency,
+              ),
+            )
+            .toList(),
+        currentPage: 1,
+        lastPage: 1,
+        total: data.length,
       );
     }
     return const PaginatedList(data: [], currentPage: 1, lastPage: 1, total: 0);
@@ -63,6 +111,7 @@ class SalaryRepository {
         'per_page': perPage,
       },
     );
+    _log('SALARIES LIST RESPONSE', json);
     if (json['success'] == false) {
       throw ApiException.generic((json['message'] ?? 'generic_error').toString());
     }
@@ -72,6 +121,7 @@ class SalaryRepository {
   /// GET /api/employee/salaries/{id}
   Future<SalaryDetailModel> getSalaryDetail(String id) async {
     final json = await _client.get(ApiConstants.employeeSalaryDetail(id));
+    _log('SALARY DETAIL RESPONSE', json);
     if (json['success'] == false) {
       throw ApiException.generic((json['message'] ?? 'generic_error').toString());
     }

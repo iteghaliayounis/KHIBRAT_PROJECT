@@ -18,7 +18,8 @@ class AdvanceEligibilityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final eligible = !data.hasActiveAdvance;
+    final blockedByActiveAdvance =
+        data.hasActiveAdvance && !data.allowMultipleActiveAdvances;
     final palette = context.khubrat;
 
     return Column(
@@ -50,13 +51,19 @@ class AdvanceEligibilityCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
-                      color: eligible ? const Color(0xFFD1FAE5) : const Color(0xFFFEF3C7),
+                      color: blockedByActiveAdvance
+                          ? const Color(0xFFFEF3C7)
+                          : const Color(0xFFD1FAE5),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      eligible ? 'salary_eligible'.tr : 'salary_active_advance'.tr,
+                      blockedByActiveAdvance
+                          ? 'salary_active_advance'.tr
+                          : 'salary_eligible'.tr,
                       style: AppTextStyles.bodySmall.copyWith(
-                        color: eligible ? const Color(0xFF065F46) : const Color(0xFF78350F),
+                        color: blockedByActiveAdvance
+                            ? const Color(0xFF78350F)
+                            : const Color(0xFF065F46),
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -98,7 +105,7 @@ class AdvanceEligibilityCard extends StatelessWidget {
             ],
           ),
         ),
-        if (data.hasActiveAdvance) ...[
+        if (blockedByActiveAdvance) ...[
           const SizedBox(height: 10),
           Container(
             width: double.infinity,

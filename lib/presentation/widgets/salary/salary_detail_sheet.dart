@@ -108,6 +108,7 @@ class _SalaryDetailBody extends StatelessWidget {
                   total: d.baseSalary + d.totalAdditions,
                   baseLabel: 'salary_basic'.tr,
                   baseAmount: d.baseSalary,
+                  currency: d.currency,
                 ),
                 const SizedBox(height: 12),
                 _LinesSection(
@@ -117,6 +118,7 @@ class _SalaryDetailBody extends StatelessWidget {
                   positive: false,
                   totalLabel: 'salary_total_deductions'.tr,
                   total: d.totalDeductions,
+                  currency: d.currency,
                 ),
                 const SizedBox(height: 14),
                 Container(
@@ -134,7 +136,10 @@ class _SalaryDetailBody extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        SalaryUiHelpers.formatMoney(d.netSalary),
+                        SalaryUiHelpers.formatMoney(
+                          d.netSalary,
+                          currency: d.currency,
+                        ),
                         style: AppTextStyles.h1.copyWith(
                           color: AppColors.brandGold,
                           fontSize: 24,
@@ -180,7 +185,10 @@ class _MetaCard extends StatelessWidget {
               children: [
                 Text('salary_currency'.tr, style: AppTextStyles.bodySmall.copyWith(color: palette.textSecondary)),
                 const SizedBox(height: 4),
-                Text('salary_currency_syp'.tr, style: AppTextStyles.label.copyWith(color: palette.title)),
+                Text(
+                  SalaryUiHelpers.currencyLabel(detail.currency),
+                  style: AppTextStyles.label.copyWith(color: palette.title),
+                ),
               ],
             ),
           ),
@@ -212,6 +220,7 @@ class _LinesSection extends StatelessWidget {
   final double total;
   final String? baseLabel;
   final double? baseAmount;
+  final String currency;
 
   const _LinesSection({
     required this.title,
@@ -220,6 +229,7 @@ class _LinesSection extends StatelessWidget {
     required this.positive,
     required this.totalLabel,
     required this.total,
+    required this.currency,
     this.baseLabel,
     this.baseAmount,
   });
@@ -256,7 +266,13 @@ class _LinesSection extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           if (baseLabel != null && baseAmount != null)
-            _LineRow(label: baseLabel!, amount: baseAmount!, signed: false, positive: true),
+            _LineRow(
+              label: baseLabel!,
+              amount: baseAmount!,
+              signed: false,
+              positive: true,
+              currency: currency,
+            ),
           if (items.isEmpty && baseLabel == null)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
@@ -271,6 +287,7 @@ class _LinesSection extends StatelessWidget {
                 amount: e.amount,
                 signed: true,
                 positive: positive,
+                currency: currency,
               ),
             ),
           if (items.isEmpty && baseLabel != null)
@@ -286,7 +303,7 @@ class _LinesSection extends StatelessWidget {
             children: [
               Expanded(child: Text(totalLabel, style: AppTextStyles.label.copyWith(color: palette.title))),
               Text(
-                SalaryUiHelpers.formatMoney(total),
+                SalaryUiHelpers.formatMoney(total, currency: currency),
                 style: AppTextStyles.label.copyWith(color: palette.title, fontWeight: FontWeight.w800),
               ),
             ],
@@ -302,12 +319,14 @@ class _LineRow extends StatelessWidget {
   final double amount;
   final bool signed;
   final bool positive;
+  final String currency;
 
   const _LineRow({
     required this.label,
     required this.amount,
     required this.signed,
     required this.positive,
+    required this.currency,
   });
 
   @override
@@ -332,7 +351,7 @@ class _LineRow extends StatelessWidget {
             child: Text(label, style: AppTextStyles.bodyMedium.copyWith(color: palette.textPrimary)),
           ),
           Text(
-            '$prefix${SalaryUiHelpers.formatMoney(amount)}',
+            '$prefix${SalaryUiHelpers.formatMoney(amount, currency: currency)}',
             style: AppTextStyles.label.copyWith(color: color),
           ),
         ],

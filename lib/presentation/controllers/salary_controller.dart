@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import '../../core/constants/api_constants.dart';
 import '../../core/errors/api_exception.dart';
 import '../../data/models/salary_models.dart';
 import '../../data/repositories/salary_repository.dart';
@@ -146,7 +148,12 @@ class SalaryController extends GetxController {
     final months = repaymentMonths.value;
     final why = reason.value.trim();
 
+    debugPrint('========== ADVANCE APPLY TAP ==========');
+    debugPrint('amount=$amount months=$months reason="$why"');
+    debugPrint('POST ${ApiConstants.baseUrl}${ApiConstants.advancesApply}');
+
     if (amount <= 0 || months <= 0 || why.isEmpty) {
+      debugPrint('ADVANCE APPLY BLOCKED: form invalid (empty amount/months/reason)');
       advanceErrorMsg.value = 'salary_advance_form_invalid'.tr;
       return;
     }
@@ -158,23 +165,28 @@ class SalaryController extends GetxController {
         repaymentMonths: months,
         reason: why,
       );
+      debugPrint('========== ADVANCE APPLY SUCCESS ==========');
+      debugPrint('message=${result.message} id=${result.record.id} currency=${result.record.currency}');
       Get.back();
       selectedTab.value = SalaryTab.advances;
       AppFeedback.showSuccess(
         result.message.isNotEmpty ? result.message : 'salary_advance_success',
       );
-      // Refresh from Backend so UI reflects real eligibility + list
       await Future.wait([
         fetchEligibility(),
         fetchAdvances(),
       ]);
     } on ApiException catch (e) {
+      debugPrint('========== ADVANCE APPLY API EXCEPTION ==========');
+      debugPrint('status=${e.statusCode} message=${e.message} errors=${e.errors}');
       if (e.statusCode == 422) {
         advanceErrorMsg.value = e.message;
       } else {
         AppFeedback.showError(e.message);
       }
-    } catch (_) {
+    } catch (e) {
+      debugPrint('========== ADVANCE APPLY UNKNOWN ERROR ==========');
+      debugPrint('$e');
       AppFeedback.showError('generic_error');
     } finally {
       isSubmittingAdvance.value = false;

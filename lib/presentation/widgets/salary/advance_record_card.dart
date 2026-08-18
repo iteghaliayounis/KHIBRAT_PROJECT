@@ -83,7 +83,7 @@ class AdvanceRecordCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
-                SalaryUiHelpers.advanceStatusLabelKey(record.status).tr,
+                SalaryUiHelpers.advanceStatusLabel(record.status),
                 style: AppTextStyles.bodySmall.copyWith(
                   color: fg,
                   fontWeight: FontWeight.w700,

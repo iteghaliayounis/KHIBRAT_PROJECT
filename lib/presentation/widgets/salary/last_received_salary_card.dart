@@ -90,7 +90,10 @@ class LastReceivedSalaryCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  SalaryUiHelpers.formatMoney(data.amount),
+                  SalaryUiHelpers.formatMoney(
+                    data.amount,
+                    currency: data.currency,
+                  ),
                   style: AppTextStyles.h1.copyWith(
                     color: Colors.white,
                     fontSize: 28,

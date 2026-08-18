@@ -47,6 +47,13 @@ class SalaryUiHelpers {
   static String formatMoney(num? value, {String? currency}) =>
       '${formatNumber(value)} ${resolveCurrency(currency)}';
 
+  static String currencyLabel(String? value) {
+    final code = resolveCurrency(value);
+    if (code == 'USD') return 'salary_currency_usd'.tr;
+    if (code == 'SYP') return 'salary_currency_syp'.tr;
+    return code;
+  }
+
   static String formatDate(String? raw) {
     if (raw == null || raw.isEmpty) return '—';
     return raw.split(' ').first;
@@ -78,44 +85,62 @@ class SalaryUiHelpers {
     }
   }
 
+  static String normalizeAdvanceStatus(String status) {
+    return status.trim().toLowerCase().replaceAll('-', '_');
+  }
+
   static String advanceStatusLabelKey(String status) {
-    switch (status.toLowerCase()) {
+    switch (normalizeAdvanceStatus(status)) {
       case 'pending_department_manager':
         return 'advance_status_pending_manager';
       case 'pending_hr':
         return 'advance_status_pending_hr';
       case 'approved':
         return 'advance_status_approved';
-      case 'rejected':
-        return 'advance_status_rejected';
+      case 'rejected_by_manager':
+        return 'advance_status_rejected_by_manager';
+      case 'rejected_by_hr':
+        return 'advance_status_rejected_by_hr';
+      case 'paid_off':
+        return 'advance_status_paid_off';
       default:
         return 'advance_status_unknown';
     }
   }
 
+  static String advanceStatusLabel(String status) {
+    return advanceStatusLabelKey(status).tr;
+  }
+
   static Color advanceStatusBg(String status) {
-    switch (status.toLowerCase()) {
+    switch (normalizeAdvanceStatus(status)) {
       case 'pending_department_manager':
       case 'pending_hr':
         return const Color(0xFFFEF3C7);
       case 'approved':
         return const Color(0xFFD1FAE5);
-      case 'rejected':
+      case 'rejected_by_manager':
+      case 'rejected_by_hr':
         return const Color(0xFFFFE4E6);
+      case 'paid_off':
+        return const Color(0xFFE0E7FF);
       default:
         return const Color(0xFFF1F5F9);
     }
   }
 
   static Color advanceStatusFg(String status) {
-    switch (status.toLowerCase()) {
+    switch (normalizeAdvanceStatus(status)) {
       case 'pending_department_manager':
       case 'pending_hr':
         return const Color(0xFF78350F);
       case 'approved':
         return const Color(0xFF065F46);
-      case 'rejected':
+      case 'rejected_by_manager':
+      case 'rejected_by_hr':
         return const Color(0xFF9F1239);
+      case 'paid_off':
+        return const Color(0xFF3730A3);
       default:
         return const Color(0xFF334155);
     }

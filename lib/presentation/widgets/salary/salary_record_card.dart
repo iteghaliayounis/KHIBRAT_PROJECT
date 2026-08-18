@@ -86,7 +86,10 @@ class SalaryRecordCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    SalaryUiHelpers.formatMoney(record.netSalary),
+                    SalaryUiHelpers.formatMoney(
+                      record.netSalary,
+                      currency: record.currency,
+                    ),
                     style: AppTextStyles.h3.copyWith(
                       color: palette.textPrimary,
                       fontWeight: FontWeight.w800,

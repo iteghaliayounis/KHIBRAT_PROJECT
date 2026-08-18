@@ -17,8 +17,23 @@ double? _asDouble(dynamic v) {
 
 String? _asString(dynamic v) {
   if (v == null) return null;
-  final s = v.toString();
+  final s = v.toString().trim();
   return s.isEmpty ? null : s;
+}
+
+String? _asAdvanceStatus(Map<String, dynamic> json) {
+  final raw = json['status'] ?? json['advance_status'] ?? json['state'];
+  if (raw is Map) {
+    return _asString(
+      raw['value'] ?? raw['name'] ?? raw['label'] ?? raw['key'] ?? raw['status'],
+    );
+  }
+  return _asString(raw);
+}
+
+String _asCurrency(dynamic v, [String fallback = 'SYP']) {
+  final s = _asString(v)?.toUpperCase();
+  return (s == null || s.isEmpty) ? fallback : s;
 }
 
 bool _asBool(dynamic v, {bool fallback = false}) {
@@ -115,7 +130,7 @@ class AdvanceEligibilityModel {
       policyConfigured: _asBool(root['policy_configured']),
       hasDepartmentManager: _asBool(root['has_department_manager']),
       hasActiveAdvance: _asBool(root['has_active_advance']),
-      currency: _asString(root['currency']) ?? 'SYP',
+      currency: _asCurrency(root['currency']),
       activeAdvanceDetails: details,
     );
   }
@@ -156,14 +171,17 @@ class AdvanceRecordModel {
     this.createdAt,
   });
 
-  factory AdvanceRecordModel.fromJson(Map<String, dynamic> json) {
+  factory AdvanceRecordModel.fromJson(
+    Map<String, dynamic> json, {
+    String? fallbackCurrency,
+  }) {
     return AdvanceRecordModel(
       id: _asString(json['id']) ?? '',
       requestedAmount: _asDouble(json['requested_amount']) ?? 0,
       repaymentMonths: _asInt(json['repayment_months']) ?? 0,
       monthlyInstallment: _asDouble(json['monthly_installment']) ?? 0,
-      status: (_asString(json['status']) ?? 'unknown').toLowerCase(),
-      currency: _asString(json['currency']) ?? 'SYP',
+      status: (_asAdvanceStatus(json) ?? 'unknown').toLowerCase(),
+      currency: _asCurrency(json['currency'], fallbackCurrency ?? 'SYP'),
       rejectionReason: _asString(json['rejection_reason']),
       createdAt: _asString(json['created_at']),
     );
@@ -193,6 +211,7 @@ class LastReceivedSalaryModel {
   final String? receivedAt;
   final String? paymentSummary;
   final String? salaryRecordId;
+  final String currency;
 
   const LastReceivedSalaryModel({
     required this.amount,
@@ -202,9 +221,13 @@ class LastReceivedSalaryModel {
     this.receivedAt,
     this.paymentSummary,
     this.salaryRecordId,
+    this.currency = 'SYP',
   });
 
-  factory LastReceivedSalaryModel.fromJson(Map<String, dynamic> json) {
+  factory LastReceivedSalaryModel.fromJson(
+    Map<String, dynamic> json, {
+    String? fallbackCurrency,
+  }) {
     return LastReceivedSalaryModel(
       amount: _asDouble(json['amount']) ?? 0,
       month: _asInt(json['month']) ?? 1,
@@ -213,6 +236,7 @@ class LastReceivedSalaryModel {
       receivedAt: _asString(json['received_at']),
       paymentSummary: _asString(json['payment_summary']),
       salaryRecordId: _asString(json['salary_record_id']),
+      currency: _asCurrency(json['currency'], fallbackCurrency ?? 'SYP'),
     );
   }
 }
@@ -230,6 +254,7 @@ class SalaryRecordModel {
   final bool isReceived;
   final String? paymentSummary;
   final String? receivedAt;
+  final String currency;
 
   const SalaryRecordModel({
     required this.id,
@@ -244,9 +269,13 @@ class SalaryRecordModel {
     this.period,
     this.paymentSummary,
     this.receivedAt,
+    this.currency = 'SYP',
   });
 
-  factory SalaryRecordModel.fromJson(Map<String, dynamic> json) {
+  factory SalaryRecordModel.fromJson(
+    Map<String, dynamic> json, {
+    String? fallbackCurrency,
+  }) {
     return SalaryRecordModel(
       id: _asString(json['id']) ?? '',
       month: _asInt(json['month']) ?? 1,
@@ -260,6 +289,7 @@ class SalaryRecordModel {
       isReceived: _asBool(json['is_received']),
       paymentSummary: _asString(json['payment_summary']),
       receivedAt: _asString(json['received_at']),
+      currency: _asCurrency(json['currency'], fallbackCurrency ?? 'SYP'),
     );
   }
 }
@@ -348,6 +378,7 @@ class SalaryDetailModel {
   final List<SalaryLineItemModel> additions;
   final List<SalaryLineItemModel> deductions;
   final List<SalaryLineItemModel> adjustments;
+  final String currency;
 
   const SalaryDetailModel({
     required this.id,
@@ -366,6 +397,7 @@ class SalaryDetailModel {
     this.period,
     this.paymentSummary,
     this.receivedAt,
+    this.currency = 'SYP',
   });
 
   factory SalaryDetailModel.fromJson(Map<String, dynamic> json) {
@@ -398,6 +430,7 @@ class SalaryDetailModel {
       additions: parseLines(root['additions']),
       deductions: parseLines(root['deductions']),
       adjustments: parseLines(root['adjustments']),
+      currency: _asCurrency(root['currency'], _asCurrency(json['currency'])),
     );
   }
 }
@@ -414,25 +447,32 @@ class SalariesDashboardModel {
   factory SalariesDashboardModel.fromJson(Map<String, dynamic> json) {
     final root = (json['data'] is Map) ? Map<String, dynamic>.from(json['data']) : json;
 
+    final fallbackCurrency = _asCurrency(root['currency'], _asCurrency(json['currency']));
+
     LastReceivedSalaryModel? last;
     final lastRaw = root['last_received_salary'];
     if (lastRaw is Map) {
-      last = LastReceivedSalaryModel.fromJson(Map<String, dynamic>.from(lastRaw));
+      last = LastReceivedSalaryModel.fromJson(
+        Map<String, dynamic>.from(lastRaw),
+        fallbackCurrency: fallbackCurrency,
+      );
     }
+
+    SalaryRecordModel parseRecord(Map<String, dynamic> item) =>
+        SalaryRecordModel.fromJson(item, fallbackCurrency: fallbackCurrency);
 
     final recordsRaw = root['records'];
     final PaginatedList<SalaryRecordModel> records;
     if (recordsRaw is Map) {
       records = PaginatedList.fromJson(
         Map<String, dynamic>.from(recordsRaw),
-        SalaryRecordModel.fromJson,
+        parseRecord,
       );
     } else if (recordsRaw is List) {
-      // HTML mock / flat list fallback
       records = PaginatedList(
         data: recordsRaw
             .whereType<Map>()
-            .map((e) => SalaryRecordModel.fromJson(Map<String, dynamic>.from(e)))
+            .map((e) => parseRecord(Map<String, dynamic>.from(e)))
             .toList(),
         currentPage: 1,
         lastPage: 1,

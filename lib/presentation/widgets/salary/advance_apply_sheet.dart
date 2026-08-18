@@ -14,96 +14,121 @@ class AdvanceApplySheet {
     Get.bottomSheet(
       _AdvanceApplyBody(controller: controller),
       isScrollControlled: true,
+      ignoreSafeArea: false,
       backgroundColor: Colors.transparent,
-      enterBottomSheetDuration: const Duration(milliseconds: 320),
-      exitBottomSheetDuration: const Duration(milliseconds: 220),
+      enterBottomSheetDuration: const Duration(milliseconds: 280),
+      exitBottomSheetDuration: const Duration(milliseconds: 200),
     );
   }
 }
 
-class _AdvanceApplyBody extends StatelessWidget {
+class _AdvanceApplyBody extends StatefulWidget {
   final SalaryController controller;
 
   const _AdvanceApplyBody({required this.controller});
 
   @override
+  State<_AdvanceApplyBody> createState() => _AdvanceApplyBodyState();
+}
+
+class _AdvanceApplyBodyState extends State<_AdvanceApplyBody> {
+  late final TextEditingController _amountController;
+  late final TextEditingController _reasonController;
+  late final FocusNode _amountFocus;
+  late final FocusNode _reasonFocus;
+
+  SalaryController get controller => widget.controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _amountController = TextEditingController(
+      text: controller.requestedAmount.value > 0
+          ? controller.requestedAmount.value.toInt().toString()
+          : '',
+    );
+    _reasonController = TextEditingController(text: controller.reason.value);
+    _amountFocus = FocusNode();
+    _reasonFocus = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _amountController.dispose();
+    _reasonController.dispose();
+    _amountFocus.dispose();
+    _reasonFocus.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final keyboard = MediaQuery.viewInsetsOf(context).bottom;
+    final maxHeight = MediaQuery.sizeOf(context).height - keyboard - 12;
     final elig = controller.eligibility.value;
     final maxAmount = elig?.maxAllowedAmount ?? 600000;
     final maxMonths = controller.safeMaxRepaymentMonths;
 
-    // ✅ Root-cause fix: back to Flutter's canonical minimal pattern for a
-    // scrollable, keyboard-safe modal bottom sheet — no fixed SizedBox
-    // height, no nested Scaffold (those two were fighting each other and
-    // leaving a dead gap). Just:
-    //   1) one Padding(bottom: viewInsets.bottom) so the whole sheet slides
-    //      up exactly as much as the keyboard needs, no more/no less;
-    //   2) the content sizes itself (mainAxisSize.min) instead of being
-    //      forced into a fixed height — so there's never leftover blank
-    //      space, and SingleChildScrollView only scrolls if content is
-    //      genuinely taller than the visible area above the keyboard.
-    return AnimatedPadding(
-      duration: const Duration(milliseconds: 150),
-      curve: Curves.easeOut,
-      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+    return Padding(
+      padding: EdgeInsets.only(bottom: keyboard),
       child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * 0.9,
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            color: context.khubrat.surface,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-          ),
+        constraints: BoxConstraints(maxHeight: maxHeight.clamp(280, double.infinity)),
+        child: Material(
+          color: context.khubrat.surface,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+          clipBehavior: Clip.antiAlias,
           child: SafeArea(
             top: false,
             child: SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(18, 12, 18, 24),
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              child: Obx(() {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 42,
-                        height: 4,
-                        decoration: BoxDecoration(
-                          color: context.khubrat.chipBorder,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 42,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: context.khubrat.chipBorder,
+                        borderRadius: BorderRadius.circular(4),
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        InkWell(
-                          onTap: () => Get.back(),
-                          borderRadius: BorderRadius.circular(20),
-                          child: Container(
-                            width: 36,
-                            height: 36,
-                            decoration: BoxDecoration(
-                              color: context.khubrat.inputFill,
-                              shape: BoxShape.circle,
-                              border: Border.all(color: context.khubrat.chipBorder),
-                            ),
-                            child: Icon(Icons.close_rounded, size: 18, color: context.khubrat.title),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      InkWell(
+                        onTap: () => Get.back(),
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          width: 36,
+                          height: 36,
+                          decoration: BoxDecoration(
+                            color: context.khubrat.inputFill,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: context.khubrat.chipBorder),
                           ),
+                          child: Icon(Icons.close_rounded, size: 18, color: context.khubrat.title),
                         ),
-                        const Spacer(),
-                        Icon(Icons.edit_note_rounded, color: context.khubrat.title, size: 22),
-                        const SizedBox(width: 6),
-                        Text(
-                          'salary_apply_title'.tr,
-                          style: AppTextStyles.h3.copyWith(color: context.khubrat.title),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 14),
-                    if (controller.advanceErrorMsg.value != null) ...[
-                      Container(
+                      ),
+                      const Spacer(),
+                      Icon(Icons.edit_note_rounded, color: context.khubrat.title, size: 22),
+                      const SizedBox(width: 6),
+                      Text(
+                        'salary_apply_title'.tr,
+                        style: AppTextStyles.h3.copyWith(color: context.khubrat.title),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 14),
+                  Obx(() {
+                    final err = controller.advanceErrorMsg.value;
+                    if (err == null) return const SizedBox.shrink();
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
                           color: const Color(0xFFFFF1F2),
@@ -125,7 +150,7 @@ class _AdvanceApplyBody extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 2),
                                   Text(
-                                    controller.advanceErrorMsg.value!,
+                                    err,
                                     style: AppTextStyles.bodySmall.copyWith(
                                       color: const Color(0xFF9F1239),
                                       height: 1.35,
@@ -137,22 +162,23 @@ class _AdvanceApplyBody extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 12),
-                    ],
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFFF8E8),
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(color: AppColors.brandGold),
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Icon(Icons.info_outline_rounded, color: AppColors.brandBrown, size: 18),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
+                    );
+                  }),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFFF8E8),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(color: AppColors.brandGold),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Icon(Icons.info_outline_rounded, color: AppColors.brandBrown, size: 18),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Obx(
+                            () => Text(
                               'salary_advance_limit_alert'.trParams({
                                 'amount': SalaryUiHelpers.formatNumber(maxAmount),
                                 'currency': controller.advanceCurrency,
@@ -163,17 +189,19 @@ class _AdvanceApplyBody extends StatelessWidget {
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 16),
-                    Text('salary_requested_amount'.tr, style: AppTextStyles.label.copyWith(color: context.khubrat.title)),
-                    const SizedBox(height: 8),
-                    TextFormField(
-                      initialValue: controller.requestedAmount.value > 0
-                          ? controller.requestedAmount.value.toInt().toString()
-                          : '',
+                  ),
+                  const SizedBox(height: 16),
+                  Text('salary_requested_amount'.tr, style: AppTextStyles.label.copyWith(color: context.khubrat.title)),
+                  const SizedBox(height: 8),
+                  Obx(
+                    () => TextFormField(
+                      controller: _amountController,
+                      focusNode: _amountFocus,
                       keyboardType: TextInputType.number,
+                      textInputAction: TextInputAction.next,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       style: AppTextStyles.bodyLarge.copyWith(color: context.khubrat.textPrimary),
                       decoration: InputDecoration(
@@ -189,15 +217,21 @@ class _AdvanceApplyBody extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                           borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: AppColors.brandNavy, width: 1.4),
+                        ),
                       ),
                       onChanged: (v) {
                         controller.requestedAmount.value = double.tryParse(v) ?? 0;
                       },
                     ),
-                    const SizedBox(height: 14),
-                    Text('salary_repayment_months'.tr, style: AppTextStyles.label.copyWith(color: context.khubrat.title)),
-                    const SizedBox(height: 8),
-                    DropdownButtonFormField<int>(
+                  ),
+                  const SizedBox(height: 14),
+                  Text('salary_repayment_months'.tr, style: AppTextStyles.label.copyWith(color: context.khubrat.title)),
+                  const SizedBox(height: 8),
+                  Obx(
+                    () => DropdownButtonFormField<int>(
                       value: controller.repaymentMonths.value.clamp(1, maxMonths).toInt(),
                       dropdownColor: context.khubrat.surface,
                       style: AppTextStyles.bodyLarge.copyWith(color: context.khubrat.textPrimary),
@@ -227,8 +261,10 @@ class _AdvanceApplyBody extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 12),
-                    Container(
+                  ),
+                  const SizedBox(height: 12),
+                  Obx(
+                    () => Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: context.khubrat.inputFill,
@@ -243,32 +279,47 @@ class _AdvanceApplyBody extends StatelessWidget {
                         style: AppTextStyles.label.copyWith(color: context.khubrat.title),
                       ),
                     ),
-                    const SizedBox(height: 14),
-                    Text('salary_advance_reason'.tr, style: AppTextStyles.label.copyWith(color: context.khubrat.title)),
-                    const SizedBox(height: 8),
-                    TextFormField(
-                      initialValue: controller.reason.value,
-                      maxLines: 3,
-                      style: AppTextStyles.bodyLarge.copyWith(color: context.khubrat.textPrimary),
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: context.khubrat.inputFill,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: context.khubrat.inputBorder),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: context.khubrat.inputBorder),
-                        ),
+                  ),
+                  const SizedBox(height: 14),
+                  Text('salary_advance_reason'.tr, style: AppTextStyles.label.copyWith(color: context.khubrat.title)),
+                  const SizedBox(height: 8),
+                  TextFormField(
+                    controller: _reasonController,
+                    focusNode: _reasonFocus,
+                    maxLines: 3,
+                    textInputAction: TextInputAction.done,
+                    style: AppTextStyles.bodyLarge.copyWith(color: context.khubrat.textPrimary),
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: context.khubrat.inputFill,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: context.khubrat.inputBorder),
                       ),
-                      onChanged: (v) => controller.reason.value = v,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: context.khubrat.inputBorder),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: AppColors.brandNavy, width: 1.4),
+                      ),
                     ),
-                    const SizedBox(height: 18),
-                    SizedBox(
+                    onChanged: (v) => controller.reason.value = v,
+                  ),
+                  const SizedBox(height: 18),
+                  Obx(
+                    () => SizedBox(
                       height: 52,
                       child: ElevatedButton.icon(
-                        onPressed: controller.isSubmittingAdvance.value ? null : controller.submitAdvance,
+                        onPressed: controller.isSubmittingAdvance.value
+                            ? null
+                            : () {
+                                controller.requestedAmount.value =
+                                    double.tryParse(_amountController.text.trim()) ?? 0;
+                                controller.reason.value = _reasonController.text;
+                                controller.submitAdvance();
+                              },
                         icon: controller.isSubmittingAdvance.value
                             ? const SizedBox(
                                 width: 18,
@@ -288,9 +339,9 @@ class _AdvanceApplyBody extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ],
-                );
-              }),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

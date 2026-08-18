@@ -4,7 +4,7 @@ class ApiConstants {
   ApiConstants._();
 
   static const String baseUrl =
-      'https://c321-212-8-252-163.ngrok-free.app'; // TODO: set real base URL
+      'https://bda0-135-136-39-69.ngrok-free.app'; // TODO: set real base URL
 
   static const String login = '/api/auth/login';
   static const String logout = '/api/auth/logout';
