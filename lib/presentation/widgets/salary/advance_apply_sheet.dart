@@ -155,6 +155,7 @@ class _AdvanceApplyBody extends StatelessWidget {
                             child: Text(
                               'salary_advance_limit_alert'.trParams({
                                 'amount': SalaryUiHelpers.formatNumber(maxAmount),
+                                'currency': controller.advanceCurrency,
                               }),
                               style: AppTextStyles.bodySmall.copyWith(
                                 color: AppColors.brandBrown,
@@ -176,7 +177,7 @@ class _AdvanceApplyBody extends StatelessWidget {
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       style: AppTextStyles.bodyLarge.copyWith(color: context.khubrat.textPrimary),
                       decoration: InputDecoration(
-                        prefixText: 'SYP  ',
+                        prefixText: '${controller.advanceCurrency}  ',
                         prefixStyle: AppTextStyles.label.copyWith(color: context.khubrat.textSecondary),
                         filled: true,
                         fillColor: context.khubrat.inputFill,
@@ -237,6 +238,7 @@ class _AdvanceApplyBody extends StatelessWidget {
                       child: Text(
                         'salary_monthly_installment_preview'.trParams({
                           'amount': SalaryUiHelpers.formatNumber(controller.calculatedInstallment),
+                          'currency': controller.advanceCurrency,
                         }),
                         style: AppTextStyles.label.copyWith(color: context.khubrat.title),
                       ),

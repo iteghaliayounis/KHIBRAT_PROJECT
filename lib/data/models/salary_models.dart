@@ -86,6 +86,7 @@ class AdvanceEligibilityModel {
   final bool policyConfigured;
   final bool hasDepartmentManager;
   final bool hasActiveAdvance;
+  final String currency;
   final Map<String, dynamic>? activeAdvanceDetails;
 
   const AdvanceEligibilityModel({
@@ -96,6 +97,7 @@ class AdvanceEligibilityModel {
     required this.policyConfigured,
     required this.hasDepartmentManager,
     required this.hasActiveAdvance,
+    this.currency = 'SYP',
     this.activeAdvanceDetails,
   });
 
@@ -113,11 +115,12 @@ class AdvanceEligibilityModel {
       policyConfigured: _asBool(root['policy_configured']),
       hasDepartmentManager: _asBool(root['has_department_manager']),
       hasActiveAdvance: _asBool(root['has_active_advance']),
+      currency: _asString(root['currency']) ?? 'SYP',
       activeAdvanceDetails: details,
     );
   }
 
-  AdvanceEligibilityModel copyWith({bool? hasActiveAdvance}) {
+  AdvanceEligibilityModel copyWith({bool? hasActiveAdvance, String? currency}) {
     return AdvanceEligibilityModel(
       basicSalary: basicSalary,
       maxAllowedAmount: maxAllowedAmount,
@@ -126,6 +129,7 @@ class AdvanceEligibilityModel {
       policyConfigured: policyConfigured,
       hasDepartmentManager: hasDepartmentManager,
       hasActiveAdvance: hasActiveAdvance ?? this.hasActiveAdvance,
+      currency: currency ?? this.currency,
       activeAdvanceDetails: activeAdvanceDetails,
     );
   }
@@ -137,6 +141,7 @@ class AdvanceRecordModel {
   final int repaymentMonths;
   final double monthlyInstallment;
   final String status;
+  final String currency;
   final String? rejectionReason;
   final String? createdAt;
 
@@ -146,6 +151,7 @@ class AdvanceRecordModel {
     required this.repaymentMonths,
     required this.monthlyInstallment,
     required this.status,
+    this.currency = 'SYP',
     this.rejectionReason,
     this.createdAt,
   });
@@ -157,6 +163,7 @@ class AdvanceRecordModel {
       repaymentMonths: _asInt(json['repayment_months']) ?? 0,
       monthlyInstallment: _asDouble(json['monthly_installment']) ?? 0,
       status: (_asString(json['status']) ?? 'unknown').toLowerCase(),
+      currency: _asString(json['currency']) ?? 'SYP',
       rejectionReason: _asString(json['rejection_reason']),
       createdAt: _asString(json['created_at']),
     );

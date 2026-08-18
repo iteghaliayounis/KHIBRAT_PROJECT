@@ -69,14 +69,20 @@ class AdvanceEligibilityCard extends StatelessWidget {
                   Expanded(
                     child: _MiniStat(
                       label: 'salary_basic'.tr,
-                      value: SalaryUiHelpers.formatNumber(data.basicSalary),
+                      value: SalaryUiHelpers.formatMoney(
+                        data.basicSalary,
+                        currency: data.currency,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: _MiniStat(
                       label: 'salary_max_allowed'.tr,
-                      value: SalaryUiHelpers.formatNumber(data.maxAllowedAmount),
+                      value: SalaryUiHelpers.formatMoney(
+                        data.maxAllowedAmount,
+                        currency: data.currency,
+                      ),
                       highlight: true,
                     ),
                   ),

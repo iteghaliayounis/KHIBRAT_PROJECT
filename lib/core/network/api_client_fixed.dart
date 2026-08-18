@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import '../constants/api_constants.dart';
 import '../errors/api_exception.dart';
 import '../utils/storage_service.dart';
@@ -26,6 +27,9 @@ class ApiClientFixed {
           if (token != null && token.isNotEmpty) {
             options.headers['Authorization'] = 'Bearer $token';
           }
+          final locale = _apiLocale();
+          options.headers['X-Locale'] = locale;
+          options.headers['Accept-Language'] = locale;
           handler.next(options);
         },
       ),
@@ -34,6 +38,16 @@ class ApiClientFixed {
 
   static final ApiClientFixed instance = ApiClientFixed._internal();
   late final Dio _dio;
+
+  /// Laravel SetLocale reads X-Locale then Accept-Language (`ar` / `en`).
+  static String _apiLocale() {
+    final stored = StorageService.instance.language;
+    final raw = (stored != null && stored.isNotEmpty)
+        ? stored
+        : (Get.locale?.languageCode ?? 'ar');
+    final code = raw.split(RegExp('[-_]')).first.toLowerCase();
+    return code == 'en' ? 'en' : 'ar';
+  }
 
   /// GET request (leaves, evaluations, …).
   /// Accepts either [query] or [queryParameters] for compatibility.

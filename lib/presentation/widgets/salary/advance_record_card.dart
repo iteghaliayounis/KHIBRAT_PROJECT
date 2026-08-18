@@ -55,13 +55,16 @@ class AdvanceRecordCard extends StatelessWidget {
                 children: [
                   Text(
                     'salary_advance_amount_of'.trParams({
-                      'amount': SalaryUiHelpers.formatMoney(record.requestedAmount),
+                      'amount': SalaryUiHelpers.formatMoney(
+                        record.requestedAmount,
+                        currency: record.currency,
+                      ),
                     }),
                     style: AppTextStyles.h3.copyWith(color: palette.title),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '${record.repaymentMonths} ${'salary_months_short'.tr} | ${'salary_installment'.tr}: ${SalaryUiHelpers.formatMoney(record.monthlyInstallment)}',
+                    '${record.repaymentMonths} ${'salary_months_short'.tr} | ${'salary_installment'.tr}: ${SalaryUiHelpers.formatMoney(record.monthlyInstallment, currency: record.currency)}',
                     style: AppTextStyles.bodySmall.copyWith(color: palette.textSecondary),
                   ),
                   const SizedBox(height: 2),

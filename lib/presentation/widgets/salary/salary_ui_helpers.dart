@@ -38,8 +38,14 @@ class SalaryUiHelpers {
     return buf.toString();
   }
 
-  static String formatMoney(num? value, {String currency = 'SYP'}) =>
-      '${formatNumber(value)} $currency';
+  static String resolveCurrency(String? value) {
+    final c = value?.trim();
+    if (c == null || c.isEmpty) return 'SYP';
+    return c.toUpperCase();
+  }
+
+  static String formatMoney(num? value, {String? currency}) =>
+      '${formatNumber(value)} ${resolveCurrency(currency)}';
 
   static String formatDate(String? raw) {
     if (raw == null || raw.isEmpty) return '—';

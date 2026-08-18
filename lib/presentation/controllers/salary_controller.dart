@@ -5,6 +5,7 @@ import '../../data/repositories/salary_repository.dart';
 import '../widgets/app_feedback.dart';
 import '../widgets/salary/advance_apply_sheet.dart';
 import '../widgets/salary/salary_detail_sheet.dart';
+import '../widgets/salary/salary_ui_helpers.dart';
 
 enum SalaryTab { salaries, advances }
 
@@ -47,6 +48,9 @@ class SalaryController extends GetxController {
     final v = eligibility.value?.maxRepaymentMonths ?? 6;
     return v < 1 ? 1 : v;
   }
+
+  String get advanceCurrency =>
+      SalaryUiHelpers.resolveCurrency(eligibility.value?.currency);
 
   @override
   void onInit() {
